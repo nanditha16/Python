@@ -13,12 +13,22 @@ print(is_newPatient)
 
 # scan from user:
 # remove whitespace from str and capitalize just 1st letter
-name = input('What is your name? ').strip().title()
-first,last = name.split(" ")
+try:
+    name = input('What is your name? ').strip().title()
+    print(len(name.split(' ')))
 
-color = input('What is your fav colour? ').strip().capitalize()
-print("Hi " + first + ". Your fav colour is :", color)
+    if len(name.split(' ')) > 1:
+        first, last = name.split(" ")
+    elif len(name.split(' ')) == 1:
+        first = name
+    else:
+        print("Invalid name")
 
+    color = input('What is your fav colour? ').strip().capitalize()
+
+    print("Hi " + first + ". Your fav colour is :", color)
+except Exception as e:
+    print(e)
 #
 """
 - str to int
@@ -41,10 +51,4 @@ print(age)
 print(f"hello, {first}")
 print("\"age\"", age, sep=":")
 print('"Just a number!"')
-
-"""
-- datatype :int 
-- Arithmetic  (+-*/%)
-- interactive mode 
-""" 
 

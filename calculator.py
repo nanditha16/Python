@@ -26,14 +26,16 @@ match numFlavor:
             exit(1)
 
 operation = input("What operation? [+-*/%]")
-def switch(operation):
-    if operation == "+":
+
+
+def switch(operationcheck):
+    if operationcheck == "+":
         return x + y
-    elif operation == "-":
+    elif operationcheck == "-":
         return x - y
-    elif operation == "*":
+    elif operationcheck == "*":
         return x * y
-    elif operation == "/":
+    elif operationcheck == "/":
         try:
             if y == 0:
                 raise ZeroDivisionError
@@ -41,7 +43,7 @@ def switch(operation):
         except ZeroDivisionError:
             print("Error: Division by zero is not allowed.")
             exit(1)
-    elif operation == "%":
+    elif operationcheck == "%":
         try:
             if y == 0:
                 raise ZeroDivisionError
@@ -53,4 +55,7 @@ def switch(operation):
         print("Unsupported operation. Please select one of '+', '-', '*', '/', '%'.")
         exit(1)
 
-print("Result:", switch(operation))
+
+result = round(switch(operation), 3)
+# adding , for readability like 1,000
+print(f"{result:,}")

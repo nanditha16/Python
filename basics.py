@@ -1,4 +1,8 @@
 import datetime
+import random
+import statistics
+
+from library import get_positive_number, get_input
 
 
 # CS50 Intro to Python
@@ -15,12 +19,17 @@ def main():
           "list Revise: 8\n"
           "dictionary Revise: 9\n"
           "list_of_dictionary Revise: 10\n"
+          "random Revise: 11\n"
+          "statistics Revise: 11\n"
           )
 
-    revisetopic = input("1/2/3/4/5/6/7/8/9/10: ")
+    revisetopic = get_input("1/2/3/4/5/6/7/8/9/10/11/12: ")
     match revisetopic:
         case "1":
-            printsomething()
+            try:
+                printsomething()
+            except ValueError:
+                print("Demo purpose only.")
         case "2":
             callingfunctionsomething()
         case "3":
@@ -39,12 +48,16 @@ def main():
             dictionarysomething()
         case "10":
             list_of_dictionarysomething()
+        case "11":
+            randomsomething()
+        case "12":
+            statisticssomething()
 
 
 def callingfunctionsomething():
     first = getfirstname()
     color = getcolor()
-    birth_year = input('What is your birth year? ')
+    birth_year = get_input('What is your birth year? ')
     # print(type(birth_year)) Input returns str
     print("Hi " + first + ". Your fav colour is ", color)
 
@@ -61,34 +74,34 @@ def callingfunctionsomething():
 
 
 def printsomething():
-    print("Nanditha")  # String
-    print("o----")
-    print(" ||||")
-    price = 10  # integers
-    print(price)
-    price = 20.4  # float
-    print(price)
-    is_newpatient = True  # boolean - keywords
-    print(is_newpatient)
-    print("echo \n" * 2, end="")  # loop the same word
+    try:
+        print("Nanditha")  # String
+        print("o----")
+        print(" ||||")
+        price = 10  # integers
+        print(price)
+        price = 20.4  # float
+        print(price)
+        is_newpatient = True  # boolean - keywords
+        print(is_newpatient)
+        print("echo \n" * 2, end="")  # loop the same word
+    except Exception:  # Not to be used with broad scope, demo purpose only
+        pass
 
 
 def getfirstname():
     # scan from user:
     # remove whitespace from str and capitalize just 1st letter
-    try:
-        name = input('What is your name? ').strip().title()
-        if len(name.split(' ')) > 1:
-            first, last = name.split(" ")
-        else:
-            first = name
-        return first
-    except Exception as e:
-        print(e)
+    name = get_input('What is your name? ').strip().title()
+    if len(name.split(' ')) > 1:
+        first, last = name.split(" ")
+    else:
+        first = name
+    return first
 
 
 def getcolor():
-    color = input('What is your fav colour? ').strip().capitalize()
+    color = get_input('What is your fav colour? ').strip().capitalize()
     return color
 
 
@@ -109,20 +122,17 @@ def getage(birth_year):
 
 def floatsomething():
     # round(number[, ndigits])
-    floatnum = round(float(input("Give me a float number: ")), 4)
+    floatnum = round(float(get_input("Give me a float number: ")), 4)
     print(f"{floatnum}")
     print(f"{floatnum:.2f}")
 
 
 def conditionalsomething():
     # conditional [ >, >=, <, <=, ==, != ]
-    try:
-        x = input("What's x? ")
-        y = input("What's y? ")
-        score = int(input("What's your score to grade? "))
-    except ValueError:
-        print("Invalid input. Please enter valid integers.")
-        exit(1)
+    x = get_input("What's x? ")
+    y = get_input("What's y? ")
+    score = int(get_input("What's your score to grade? "))
+
     compare(float(x), float(y))
     isequal(int(x), int(y))
     getgrade(score)
@@ -160,15 +170,15 @@ def getgrade(score):
 
 def paritysomething():
     # parity [ +, -, *, /, % ]
+    x = get_input("What's x? ")
     try:
-        x = input("What's x? ")
+        if is_even(int(x)):
+            print("x is even")
+        else:
+            print("x is odd")
     except ValueError:
         print("Invalid input. Please enter valid integers.")
         exit(1)
-    if is_even(int(x)):
-        print("x is even")
-    else:
-        print("x is odd")
 
 
 def is_even(n):
@@ -181,11 +191,14 @@ def is_even(n):
     :return:
     """
     # return True if n % 2 == 0 else False
-    return n % 2 == 0
+    try:
+        return n % 2 == 0
+    except ValueError:
+        pass
 
 
 def harrypottersomething():
-    name = input("What character's house do you want to check? ")
+    name = get_input("What character's house do you want to check? ")
     match name:
         case "Harry" | "Ron" | "Hermione":
             print("Gryffindor")
@@ -196,7 +209,7 @@ def harrypottersomething():
 
 
 def loopsomething():
-    echosomething = input("What do you want to echo? : ")
+    echosomething = get_input("What do you want to echo? : ")
     echotimes = get_positive_number()
     whilesomething(echosomething, echotimes)
     forsomething(echosomething, echotimes)
@@ -213,20 +226,6 @@ def forsomething(echosomething, echotimes):
     # for i in range(echotimes):
     for _ in range(echotimes):  # _ acts as a variable that is never used
         print("for: ", echosomething)
-
-
-def get_positive_number():
-    while True:
-        try:
-            echotimes = int(input("How many times do you want to hear echo? : "))
-            if echotimes <= 0:
-                print("Please enter a non-negative integer for echotimes.")
-            else:
-                # break
-                return echotimes  # same as break and then return
-        except ValueError:
-            print("Invalid input. Please enter a valid integer for echotimes.")
-    # return echotimes
 
 
 def listsomething():
@@ -273,6 +272,20 @@ def list_of_dictionarysomething():
 
     for student in hogwarts_students:
         print(student["name"], student["house"], student["patronus"], sep="- ")
+
+
+def randomsomething():
+    print(random.choice(["heads", "tails"]))
+    print(random.randint(1, 10))  # random number generation inclusive of both
+    # shuffle from a list randomly in place
+    cards = ["jack", "queen", "king"]
+    print("Before shuffle", cards)
+    random.shuffle(cards)
+    print("After shuffle", cards)
+
+
+def statisticssomething():
+    print(statistics.mean([100, 90]))
 
 
 """

@@ -1,3 +1,6 @@
+from library import get_positive_number
+
+
 def main():
     height = get_positive_number()
     print("column_pattern: ")
@@ -38,20 +41,6 @@ def right_reverse_triangle_pattern(size):
     # for each row in square
     for i in range(size):
         row_pattern(i + 1)
-
-
-def get_positive_number():
-    while True:
-        try:
-            number = int(input("Please enter a non-negative integer : "))
-            if number <= 0:
-                print("Please enter a non-negative integer for number.")
-            else:
-                # break
-                return number  # same as break and then return
-        except ValueError:
-            print("Invalid input. Please enter a valid integer for number.")
-    # return number
 
 
 """

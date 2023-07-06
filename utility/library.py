@@ -1,6 +1,6 @@
 def main():
     get_positive_number()
-    print(get_input("yes or no? : "))
+    print(get_input("quit yes or no? : "))
 
 
 def get_positive_number():

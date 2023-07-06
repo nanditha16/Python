@@ -1,4 +1,4 @@
-from library import get_positive_number
+from utility.library import get_positive_number
 
 
 def main():
@@ -46,4 +46,5 @@ def right_reverse_triangle_pattern(size):
 """
    Main function starts from here
 """
-main()
+if __name__ == "__main__":
+    main()

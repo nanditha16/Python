@@ -2,7 +2,7 @@ import datetime
 import random
 import statistics
 
-from library import get_positive_number, get_input
+from utility.library import get_positive_number, get_input
 
 
 # CS50 Intro to Python
@@ -20,10 +20,12 @@ def main():
           "dictionary Revise: 9\n"
           "list_of_dictionary Revise: 10\n"
           "random Revise: 11\n"
-          "statistics Revise: 11\n"
+          "statistics Revise: 12\n"
+          "array Revise: 13\n"
+          "fileIO Revise: 14\n"
           )
 
-    revisetopic = get_input("1/2/3/4/5/6/7/8/9/10/11/12: ")
+    revisetopic = get_input("1/2/3/4/5/6/7/8/9/10/11/12/13/14: ")
     match revisetopic:
         case "1":
             try:
@@ -52,7 +54,8 @@ def main():
             randomsomething()
         case "12":
             statisticssomething()
-
+        case "13":
+            arraysomething()
 
 def callingfunctionsomething():
     first = getfirstname()
@@ -288,7 +291,18 @@ def statisticssomething():
     print(statistics.mean([100, 90]))
 
 
+def arraysomething():
+    names = []
+    # save it in array
+    for _ in range(3):
+        names.append(get_input("What's your name? "))
+
+    for name in sorted(names):
+        print(f"hello, {name}")
+
+
 """
    Main function starts from here
 """
-main()
+if __name__ == "__main__":
+    main()

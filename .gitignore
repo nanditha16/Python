@@ -2,7 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+__init__.py
 # C extensions
 *.so
 
@@ -15,11 +15,11 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/
 var/
+data/
 wheels/
 pip-wheel-metadata/
 share/python-wheels/
@@ -128,3 +128,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Mac
+.DS_Store
+*/.DS_Store

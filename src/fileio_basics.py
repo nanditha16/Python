@@ -1,5 +1,6 @@
 import os
 import sys
+import csv
 
 from utility.library import get_input
 
@@ -13,9 +14,10 @@ def main():
           "fileIO read csv_list Revise: 5\n"
           "fileIO read csv_dictionary Revise: 6\n"
           "fileIO read csv_list_of_dictionary Revise: 7\n"
+          "fileIO read csv_package Revise: 8\n"
           )
 
-    revisetopic = get_input("1/2/3/4/5/6/7: ")
+    revisetopic = get_input("1/2/3/4/5/6/7/8: ")
     match revisetopic:
         case "1":
             # file will be available in current path
@@ -46,6 +48,10 @@ def main():
             # file should be available in current path
             filename = get_input("What csv file are you reading?: ")
             fileio_hogwarts_list_of_dictionary_manipulate_something(filename)
+        case "8":
+            # file should be available in current path
+            filename = get_input("What csv file are you reading?: ")
+            fileio_hogwarts_csv_manipulate_something(filename)
 
 
 def fileio_write_something(filename):
@@ -114,33 +120,129 @@ def fileio_hogwarts_list_manipulate_something(filename):
 
 
 def fileio_hogwarts_dictionary_manipulate_something(filename):
-    with open(filename) as file:  # hogwarts.csv
-        for line in file:
-            name, house = line.rstrip().split(",")  # py thing - dic
-            print(f"{name.title()} is in {house}")
+    try:
+        with open(filename) as file:  # hogwarts.csv
+            for line in file:
+                try:
+                    name, house = line.rstrip().split(",") # py thing - dic
+                    print(f"{name.title()} is in {house}")
+                except ValueError:
+                    print("Error: Invalid format in line. Skipping line. too many ',' seperated")
+    except FileNotFoundError:
+        print(f"The file '{filename}' does not exist.")
+    except PermissionError:
+        print(f"Permission denied. Unable to read the file.")
+    except IOError:
+        print(f"An error occurred while reading the file.")
+
 
 
 def fileio_hogwarts_list_of_dictionary_manipulate_something(filename):
     students = []  # hogwarts.csv
-    with open(filename) as file:
-        for line in file:
-            name, house = line.rstrip().split(",")
-            student = {"name": name, "house": house}  # store temporarily in a dic , notice colon
-            students.append(student)  # list of dictionary
+    try:
+        with open(filename) as file:
+            for line in file:
+                try:
+                    name, house = line.rstrip().split(",") # py thing - dic
+                    print(f"{name.title()} is in {house}")
+                except ValueError:
+                    print("Error: Invalid format in line. Skipping line. too many ',' seperated")
+                else:
+                    student = {"name": name, "house": house}  # store temporarily in a dic , notice colon
+                    students.append(student)  # list of dictionary
 
-    # listed dictionary
-    print()
-    print("reverse sort by name".title())
-    # py thing - allows to pass functions as arguments into another function
-    # pass teh function name, so sorted function can call
-    for student in sorted(students, key=get_name, reverse=True):
-        print(f"{student['name']} is in {student['house']}")  # note the single quote and double quote usage
-    print()
-    print("sort by house".title())
-    # py thing - allows to pass functions as arguments into another function
-    # using lambda anonymous function
-    for student in sorted(students, key=lambda student: student["house"], reverse=True):
-        print(f"{student['name']} is in {student['house']}")  # note the single quote and double quote usage
+        # listed dictionary
+        print()
+        print("reverse sort by name".title())
+        # py thing - allows to pass functions as arguments into another function
+        # pass teh function name, so sorted function can call
+        for student in sorted(students, key=get_name, reverse=True):
+            print(f"{student['name']} is in {student['house']}")  # note the single quote and double quote usage
+        print()
+        print("sort by house in reverse order ".title())
+        # py thing - allows to pass functions as arguments into another function
+        # using lambda anonymous function
+        for student_data in sorted(students, key=lambda s: s['house'], reverse=True):
+            # note the single quote and double quote usage
+            print(f"{student_data['name']} is in {student_data['house']}")
+    except FileNotFoundError:
+        print(f"The file '{filename}' does not exist.")
+    except PermissionError:
+        print(f"Permission denied. Unable to read the file.")
+    except IOError:
+        print(f"An error occurred while reading the file.")
+
+
+def fileio_hogwarts_csv_manipulate_something(filename):
+    # hogwarts.csv
+    option = get_input("do you want to read or write? ")
+    if option == "read":
+        fileio_hogwarts_csv_dictreader_something(filename)
+    elif option == "write":
+        fileio_hogwarts_csv_writer_something(filename)
+    else:
+        print("Error: you can only read or write.")
+
+def fileio_hogwarts_csv_writer_something(filename):
+    try:
+        name = get_input("Whats's your name? ")
+        house = get_input("whats's your house? ")
+
+        # Validate name and house inputs
+        if not name or not house:
+            print("Error: Name and house cannot be empty.")
+            return
+
+        with open(filename, "a") as file:
+            writer = csv.DictWriter(file, fieldnames=["name", "house"])
+            # Check if the file is empty
+
+            file.seek(0, os.SEEK_END)
+            if file.tell():  # if current position is truish (i.e != 0)
+                file.seek(0)  # rewind the file for later use
+                print("file is not empty.")
+            else:
+                print("file is empty. Header is added")
+                file.write("Name,house\n")
+
+            writer.writerow({"name": name, "house": house})
+        print("Data has been written successfully.")
+    except FileNotFoundError:
+        print(f"The file '{filename}' does not exist.")
+    except PermissionError:
+        print(f"Permission denied. Unable to write to the file.")
+    except IOError:
+        print(f"An error occurred while writing to the file.")
+
+
+def fileio_hogwarts_csv_dictreader_something(filename):
+    students = []  # hogwarts.csv
+    try:
+        with open(filename) as file:
+            reader = csv.DictReader(file)
+            # read csv file by header names and same
+            if "Name" not in reader.fieldnames or "House" not in reader.fieldnames:
+                print("Error: CSV file does not contain required headers 'Name' and 'House'.")
+                return
+
+            for row in reader:
+                name = row["Name"]  # type: ignore
+                house = row["House"]  # type: ignore
+                if name and house:
+                    students.append({"name": name, "house": house})
+
+        print("Sort by house".title())
+
+        sorted_students = sorted(students, key=lambda student: student["house"])
+        for student_info in sorted_students:
+            print(f"{student_info['name']} is in {student_info['house']}")
+
+    except FileNotFoundError:
+        print(f"The file '{filename}' does not exist.")
+    except PermissionError:
+        print(f"Permission denied. Unable to read the file.")
+    except IOError:
+        print(f"An error occurred while reading the file.")
 
 
 def get_name(student):

@@ -2,7 +2,9 @@ import os
 import sys
 import csv
 
-from utility.library import get_input
+from PIL import Image
+
+from utility.library import get_input, validate_list_of_file_from_directory
 
 
 def main():
@@ -15,10 +17,11 @@ def main():
           "fileIO read csv_dictionary Revise: 6\n"
           "fileIO read csv_list_of_dictionary Revise: 7\n"
           "fileIO read csv_package Revise: 8\n"
+          "fileIO read binary file(images) Revise: 9\n"
           )
 
-    revisetopic = get_input("1/2/3/4/5/6/7/8: ")
-    match revisetopic:
+    revise_topic = get_input("1/2/3/4/5/6/7/8/9: ")
+    match revise_topic:
         case "1":
             # file will be available in current path
             filename = get_input("What should the filename be?: ")
@@ -38,20 +41,35 @@ def main():
             fileio_write_to_path_something(directory, filename, data)
         case "5":
             # file should be available in current path
-            filename = get_input("What csv file are you reading?: ")
+            filename = get_input("What csv file are you manipulating?: ")
             fileio_hogwarts_list_manipulate_something(filename)
         case "6":
             # file should be available in current path
-            filename = get_input("What csv file are you reading?: ")
+            filename = get_input("What csv file are you manipulating?: ")
             fileio_hogwarts_dictionary_manipulate_something(filename)
         case "7":
             # file should be available in current path
-            filename = get_input("What csv file are you reading?: ")
+            filename = get_input("What csv file are you manipulating?: ")
             fileio_hogwarts_list_of_dictionary_manipulate_something(filename)
         case "8":
             # file should be available in current path
-            filename = get_input("What csv file are you reading?: ")
+            filename = get_input("What csv file are you manipulating?: ")
             fileio_hogwarts_csv_manipulate_something(filename)
+        case "9":
+            directory = input("What is the full path where the images should be placed? ")
+            try:
+                image_count = int(input("How many images are you sending? "))
+            except ValueError:
+                print("Error: Invalid image count.")
+                exit(1)
+
+            images = []
+            while image_count != 0:
+                image = input("What is the image file name? ")
+                images.append(image)
+                image_count -= 1
+
+            fileio_image_gif_something(images, directory)
 
 
 def fileio_write_something(filename):
@@ -124,7 +142,7 @@ def fileio_hogwarts_dictionary_manipulate_something(filename):
         with open(filename) as file:  # hogwarts.csv
             for line in file:
                 try:
-                    name, house = line.rstrip().split(",") # py thing - dic
+                    name, house = line.rstrip().split(",")  # py thing - dic
                     print(f"{name.title()} is in {house}")
                 except ValueError:
                     print("Error: Invalid format in line. Skipping line. too many ',' seperated")
@@ -136,14 +154,13 @@ def fileio_hogwarts_dictionary_manipulate_something(filename):
         print(f"An error occurred while reading the file.")
 
 
-
 def fileio_hogwarts_list_of_dictionary_manipulate_something(filename):
     students = []  # hogwarts.csv
     try:
         with open(filename) as file:
             for line in file:
                 try:
-                    name, house = line.rstrip().split(",") # py thing - dic
+                    name, house = line.rstrip().split(",")  # py thing - dic
                     print(f"{name.title()} is in {house}")
                 except ValueError:
                     print("Error: Invalid format in line. Skipping line. too many ',' seperated")
@@ -177,16 +194,17 @@ def fileio_hogwarts_csv_manipulate_something(filename):
     # hogwarts.csv
     option = get_input("do you want to read or write? ")
     if option == "read":
-        fileio_hogwarts_csv_dictreader_something(filename)
+        fileio_hogwarts_csv_dict_reader_something(filename)
     elif option == "write":
         fileio_hogwarts_csv_writer_something(filename)
     else:
         print("Error: you can only read or write.")
 
+
 def fileio_hogwarts_csv_writer_something(filename):
     try:
-        name = get_input("Whats's your name? ")
-        house = get_input("whats's your house? ")
+        name = get_input("Whats is your name? ")
+        house = get_input("whats is your house? ")
 
         # Validate name and house inputs
         if not name or not house:
@@ -198,7 +216,7 @@ def fileio_hogwarts_csv_writer_something(filename):
             # Check if the file is empty
 
             file.seek(0, os.SEEK_END)
-            if file.tell():  # if current position is truish (i.e != 0)
+            if file.tell():  # if current position is true (i.e != 0)
                 file.seek(0)  # rewind the file for later use
                 print("file is not empty.")
             else:
@@ -215,7 +233,7 @@ def fileio_hogwarts_csv_writer_something(filename):
         print(f"An error occurred while writing to the file.")
 
 
-def fileio_hogwarts_csv_dictreader_something(filename):
+def fileio_hogwarts_csv_dict_reader_something(filename):
     students = []  # hogwarts.csv
     try:
         with open(filename) as file:
@@ -243,6 +261,22 @@ def fileio_hogwarts_csv_dictreader_something(filename):
         print(f"Permission denied. Unable to read the file.")
     except IOError:
         print(f"An error occurred while reading the file.")
+
+
+def fileio_image_gif_something(images, directory):
+    if validate_list_of_file_from_directory(directory, images):
+        # Perform further processing or saving of the images
+        test_images = []
+        for image in images:
+            # Process or save each image in the specified directory
+            image_path = os.path.join(directory, image)
+            print(f"Processing image: {image_path}")
+            image_info = Image.open(image_path)
+            test_images.append(image_info)
+
+        test_images[0].save(
+            os.path.join(directory, "Road1.gif", ), save_all=True, append_images=[test_images[1]], duration=200, loop=0
+        )
 
 
 def get_name(student):

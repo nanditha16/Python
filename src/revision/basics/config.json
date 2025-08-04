@@ -1,0 +1,1 @@
+{"app_name": "MyApp", "version": "1.0", "allowed_hosts": ["localhost", "example.com"], "database": {"host": "localhost", "port": 5432, "username": "db_user", "password": "****"}, "is_https_enabled": true, "max_connections": 1000, "timeout": 30, "log_level": "INFO", "debug": false}

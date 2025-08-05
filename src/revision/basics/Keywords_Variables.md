@@ -116,8 +116,8 @@
       del x[0]
       ```
 14. **elif**:  
-    - **Definition**: `elif` is used in conditional statements as "else if".
-    - **Usage**: Checks another condition if previous ones are false.
+    - **Definition**: `elif` is used in conditional statements as "else if", if the previous `if` or `elif` conditions are `False`.
+    - **Usage**: Checks another condition if previous ones are false. You can have multiple `elif` statements after the initial `if` statement.
     - **Example**:
       ```python
       if x < 0:
@@ -127,13 +127,24 @@
       ```
 15. **else**:  
     - **Definition**: `else` is used in conditional and loop statements to specify a block of code to run if all previous conditions are false.
-    - **Usage**: Executes when previous conditions are not met.
+    - **Usage**: Executes when previous conditions are not met i.e when none of the previous conditions (in the `if` and `elif` statements) are `True`.
+
     - **Example**:
       ```python
       if x > 0:
           print("Positive")
       else:
           print("Not positive")
+      ```
+
+      ```python
+      x = 10
+      if x > 15:
+          print("x is greater than 15")
+      elif x > 5:
+          print("x is greater than 5 but not greater than 15")
+      else:
+          print("x is not greater than 5")
       ```
 16. **except**:  
     - **Definition**: `except` is used to catch and handle exceptions.
@@ -182,7 +193,7 @@
       ```
 21. **if**:  
     - **Definition**: `if` is used to make a conditional statement.
-    - **Usage**: Executes a block of code if a condition is true.
+    - **Usage**: Executes a block of code if a condition is `True`. If the condition is `False`, the code block is skipped.
     - **Example**:
       ```python
       if x > 0:

@@ -33,6 +33,11 @@ def calculator_check(operationcheck, x, y):
     Side Effects:
         Prints an error message and exits the program if division/modulo by zero is attempted or if the operation is unsupported.
     """
+    # Conditional statements are a fundamental part of programming :
+    # Allow to make decisions and execute different blocks of code based on certain conditions. 
+    # `if`, `elif` (short for "else if"), and `else` to create conditional statements.
+
+    # Conditional statements Usage demonstration 
     if operationcheck == "+":
         return x + y
     elif operationcheck == "-":

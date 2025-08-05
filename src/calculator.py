@@ -3,10 +3,36 @@
 - Arithmetic  (+-*/%)
 - interactive mode
 """
+import sys
+import os
+
+# Ensure the parent directory is in sys.path so 'utility' can be imported
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+# Importing get_input from utility.library
+# This assumes that the utility/library.py file is in the parent directory of src/calculator.py
+# Add an empty __init__.py file to your utility folder. This makes it a Python package and allows for proper imports.
+from utility.library import get_positive_number
 from utility.library import get_input
 
+def calculator_check(operationcheck, x, y): 
+    """
+    Performs a basic arithmetic operation on two numbers.
 
-def calculator_check(operationcheck, x, y):
+    Args:
+        operationcheck (str): The operation to perform. Supported values are '+', '-', '*', '/', '%'.
+        x (float or int): The first operand.
+        y (float or int): The second operand.
+
+    Returns:
+        float or int: The result of the arithmetic operation.
+
+    Raises:
+        SystemExit: If division or modulo by zero is attempted, or if an unsupported operation is provided.
+
+    Side Effects:
+        Prints an error message and exits the program if division/modulo by zero is attempted or if the operation is unsupported.
+    """
     if operationcheck == "+":
         return x + y
     elif operationcheck == "-":

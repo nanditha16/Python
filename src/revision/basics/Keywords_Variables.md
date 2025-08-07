@@ -74,7 +74,7 @@
      ```
 9. **break**:  
    - **Definition**: `break` is used to exit a loop prematurely.
-   - **Usage**: Stops the nearest enclosing loop.
+   - **Usage**: Stops the nearest enclosing loop. It can be applied to both "for" and "while" loops, allowing you to terminate the loop when a particular condition is met.
    - **Example**:
      ```python
      for i in range(5):
@@ -91,7 +91,7 @@
       ```
 11. **continue**:  
     - **Definition**: `continue` skips the rest of the code inside a loop for the current iteration.
-    - **Usage**: Proceeds to the next iteration of the loop.
+    - **Usage**: Proceeds to the next iteration of the loop. It can be used in both "for" and "while" loops, enabling you to bypass certain iterations based on a condition.
     - **Example**:
       ```python
       for i in range(5):
@@ -167,8 +167,14 @@
           print("Always runs")
       ```
 18. **for**:  
-    - **Definition**: `for` is used to create a for loop.
-    - **Usage**: Iterates over a sequence.
+    - **Definition**: `for` is used to create a for loop. 
+
+    - **Usage**: Iterates over a sequence (such as a list, tuple, string, or range) and execute a set of statements for each item in the sequence. The loop continues until all items in the sequence have been processed.
+    - **Syntax**:
+      ```python
+      for variable in sequence:
+      # Code to be executed for each item in the sequence
+      ```
     - **Example**:
       ```python
       for i in range(3):
@@ -292,7 +298,12 @@
       ```
 33. **while**:  
     - **Definition**: `while` is used to create a while loop.
-    - **Usage**: Repeats a block of code while a condition is true.
+    - **Usage**: Repeats a block of code while a condition is true. It's often used when you don't know in advance how many times the loop should run.
+    - **Syntax:**
+      ```python
+      while condition:
+        # Code to be executed as long as the condition is true
+      ```
     - **Example**:
       ```python
       i = 0

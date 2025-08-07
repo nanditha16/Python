@@ -72,9 +72,12 @@
 
 **1. List Data Type in Python:**
 - Allows you to store a collection of items.
-- Lists are ordered
+- Lists are mutable, meaning you can modify their elements after creation.
+- Lists can contain duplicate elements.
+- Lists are ordered collections of elements. The order in which elements are added is preserved.
 - Can contain elements of various data types, such as numbers, strings, and objects.
 - List elements are indexed, starting from 0 for the first element. You can access elements by their index.
+- Usage: Use lists when you need an ordered collection with the ability to modify elements.
 
    ### List Manipulation and Common List Operations  
    1. Can find the length of a list using the `len()` function.
@@ -137,6 +140,32 @@
    6. **Use Cases**:
       - Tuples are used when you need an ordered collection of elements that should not change, such as representing a point in 2D space (x, y), or when you want to ensure the integrity of the data.
 
+   ## Mapping Types
+
+   ### dictionary
+      - A dictionary in Python is a data structure that allows you to store and retrieve values using keys. 
+      - It is also known as a hashmap or associative array in other programming languages.
+      - Dictionaries are implemented as hash tables, providing fast access to values based on their keys.
+
+   ## Set Type
+
+    ### Set
+      - Sets are unordered collections of unique, Mutable elements (can be changed)
+      - It is useful for mathematical operations like union, intersection, and difference.
+      - The order in which elements are added is not preserved.
+      - Elements cannot be accessed by their index.
+      - Sets do not allow duplicate elements. 
+      - If you try to add a duplicate, it won't raise an error, but the set won't change.
+      - Cannot be dictionary key. Supports all set operations + add/remove/update
+      - Temporary collections, filtered sets
+      - **Syntax**: set([iterable])
+      - Usage: Use sets when you need an unordered collection of unique elements, and you want to perform set operations like union, intersection, and difference.
+      
+    ### Frozenset
+      - Frozensets are immutable sets (useful as dictionary keys, for caching, etc.)
+      - Supports only set operations (no add/remove)
+      - Cache keys, fixed config sets, dict keys
+      - **Syntax**: frozenset([iterable])
 
 # arguments and environment variables 
 

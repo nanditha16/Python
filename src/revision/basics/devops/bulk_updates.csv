@@ -1,0 +1,4 @@
+vm_type,hostname,field,value
+linux,linux01,ip,10.0.0.45
+windows,win01,env,production
+linux,linux02,owner,nanditha

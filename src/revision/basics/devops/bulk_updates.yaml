@@ -1,0 +1,14 @@
+- vm_type: linux
+  hostname: linux01
+  field: ip
+  value: 10.0.0.45
+
+- vm_type: windows
+  hostname: win01
+  field: env
+  value: production
+
+- vm_type: linux
+  hostname: linux02
+  field: owner
+  value: nanditha

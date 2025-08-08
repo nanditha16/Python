@@ -1,1 +1,40 @@
-{"app_name": "MyApp", "version": "1.0", "allowed_hosts": ["localhost", "example.com"], "database": {"host": "localhost", "port": 5432, "username": "db_user", "password": "****"}, "is_https_enabled": true, "max_connections": 1000, "timeout": 30, "log_level": "INFO", "debug": false}
+{
+  "app_name": "MyApp",
+  "version": "1.0",
+  "allowed_hosts": [
+    "localhost",
+    "example.com"
+  ],
+  "database": {
+    "host": "localhost",
+    "port": 5432,
+    "username": "db_user",
+    "password": "****"
+  },
+  "is_https_enabled": true,
+  "max_connections": 1000,
+  "timeout": 30,
+  "log_level": "INFO",
+  "debug": false,
+  "VMs": {
+    "linux": [
+      {
+        "hostname": "linux01",
+        "ip": "10.0.0.45",
+        "env": "staging"
+      },
+      {
+        "hostname": "linux02",
+        "ip": "10.0.0.2",
+        "owner": "nanditha"
+      }
+    ],
+    "windows": [
+      {
+        "hostname": "win01",
+        "ip": "10.0.0.3",
+        "env": "production"
+      }
+    ]
+  }
+}

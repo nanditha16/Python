@@ -1,0 +1,10 @@
+VMs:
+  linux:
+  - hostname: linux01
+    ip: 10.0.0.45
+    env: dev
+  windows:
+  - hostname: win01
+    ip: 192.168.1.49
+    env: production
+    owner: nanditha

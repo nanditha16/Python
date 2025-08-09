@@ -63,3 +63,67 @@
 **Step 5** : Enable MFA on the user account.
 **Step 6** : Use IAM Access Analyzer to validate permission boundaries.
 **Step 7** : Periodically review CloudTrail logs and IAM Access Advisor.
+
+### AWS resource:
+
+1. EC2 (Virtual Server) 
+   - Starting, stopping, and terminating instances.
+   - Monitoring instance performance and utilization.
+2. Lambda (Serverless): 
+   - Cost Optimization Basic Example:
+   ```
+   import boto3
+
+   def lambda_handler(event, context):
+      ec2 = boto3.client('ec2')
+
+      # Get all running EC2 instance IDs
+      active_instance_ids = get_active_instance_ids(ec2)
+
+      # Iterate through all snapshots using pagination
+      for snapshot in get_all_snapshots(ec2):
+         snapshot_id = snapshot['SnapshotId']
+         volume_id = snapshot.get('VolumeId')
+
+         if not volume_id:
+               delete_snapshot(ec2, snapshot_id, "not attached to any volume. Deleted.")
+               continue
+
+         try:
+               volume = ec2.describe_volumes(VolumeIds=[volume_id])['Volumes'][0]
+               attachments = volume.get('Attachments', [])
+
+               attached_instance_ids = {
+                  att['InstanceId'] for att in attachments if 'InstanceId' in att
+               }
+
+               if not attached_instance_ids & active_instance_ids:
+                  delete_snapshot(ec2, snapshot_id, "volume not attached to any running instance. Deleted.")
+
+         except ec2.exceptions.ClientError as e:
+               if e.response['Error']['Code'] == 'InvalidVolume.NotFound':
+                  delete_snapshot(ec2, snapshot_id, "associated volume not found. Deleted.")
+
+
+   def get_active_instance_ids(ec2):
+      paginator = ec2.get_paginator('describe_instances')
+      active_ids = set()
+
+      for page in paginator.paginate(Filters=[{'Name': 'instance-state-name', 'Values': ['running']}]):
+         for reservation in page['Reservations']:
+               for instance in reservation['Instances']:
+                  active_ids.add(instance['InstanceId'])
+
+      return active_ids
+
+   def get_all_snapshots(ec2):
+      paginator = ec2.get_paginator('describe_snapshots')
+      for page in paginator.paginate(OwnerIds=['self']):
+         for snapshot in page['Snapshots']:
+               yield snapshot
+
+   def delete_snapshot(ec2_client, snapshot_id, reason):
+      ec2_client.delete_snapshot(SnapshotId=snapshot_id)
+      print(f"Deleted snapshot {snapshot_id}: {reason}")
+   ```
+   - Security/Compliance

@@ -126,4 +126,4 @@
       ec2_client.delete_snapshot(SnapshotId=snapshot_id)
       print(f"Deleted snapshot {snapshot_id}: {reason}")
    ```
-   - Security/Compliance
+   - Security/Compliance : Device Protection Across Multiple Locations

@@ -53,3 +53,14 @@ class Solution:
                     right -= 1
 
         return result
+
+    
+# Create an instance of the class
+sol = Solution()
+
+# Call the method with an input list
+nums = [-1, 0, 1, 2, -1, -4]
+output = sol.threeSum(nums)
+
+# Print the result
+print(output)

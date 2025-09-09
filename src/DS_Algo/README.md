@@ -47,11 +47,13 @@
         # For n words:  O(n⋅klogk) Where n is number of words, k is average word length
     # Space Complexity: O(n⋅k) for storing grouped anagrams
 
+*** IMPORTNAT*** 
 #9. addBinaryaddBinary(self, a: str, b: str) -> str: Given two binary strings a and b, return their sum as a binary string.
     “To add two binary strings, I simulate binary addition from right to left. At each step I add the corresponding bits plus a carry, compute the new bit (total % 2), and update the carry (total // 2). I keep appending results and reverse at the end. This handles unequal lengths naturally, and runs in O(n) time with O(n) space, where n is the max length of the inputs.”
     # Time Complexity: O(max(n,m)), Where n and m are lengths of a and b
     # Space Complexity: O(max(n,m)) For storing result  
 
+*** IMPORTNAT*** 
 #10. minWindow(self, s: str, t: str) -> str: Given two strings s and t of lengths m and n respectively, return  the minimum window substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string ""
     “I use a sliding window with two pointers. I count required chars from t and scan s with a right pointer, updating a window map and a formed counter when a char meets its needed freq. When all required chars are satisfied (formed == required), I shrink from the left to find the smallest valid window, updating the best answer. Expanding and contracting each pointer at most |s| times gives O(|s| + |t|) time and O(Σ) space for the frequency maps.”
     # Time Complexity: O(m+n) Each character is visited at most twice (once by right, once by left)

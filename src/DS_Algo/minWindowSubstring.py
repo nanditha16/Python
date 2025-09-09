@@ -65,3 +65,13 @@ class Solution:
         if min_len == float("inf"):
             return ""
         return s[min_window[0]:min_window[1] + 1]
+    
+# Create an instance of the class
+sol = Solution()
+
+# Call the method with an input list
+s, t = "ADOBECODEBANC", "ABC"
+output = sol.minWindow(s, t)
+
+# Print the result
+print(output)

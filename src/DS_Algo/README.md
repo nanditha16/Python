@@ -76,3 +76,11 @@
     # Method 2: using pointers - For performance and memory efficiency, especially with large strings 
     # Time Complexity: Single pass through the string → O(n) 
     # Space Complexity: No extra space used → O(1)
+
+#13. read(self, buf, n): Read N Characters Given read4
+    “I repeatedly call read4 into a 4-char temp buffer and copy out only what I still need, stopping when I’ve read n chars or read4 hits EOF. Each iteration adds min(count, n - total_read) to the destination buf, and I track total_read as I go. This guarantees we never over-read or write past n. The algorithm is O(n) time and O(1) extra space.”
+    Notes (if asked):
+        - Handles partial final chunk and EOF cleanly.
+        - For the follow-up (function called multiple times), keep a persistent leftover buffer across calls to store unread chars from the last read4.
+    # Time Complexity: O(n) Because in the worst case, we read one character at a time up to n.
+    # Space Complexity: O(1) Only a fixed-size buffer buf4 of size 4 is used.

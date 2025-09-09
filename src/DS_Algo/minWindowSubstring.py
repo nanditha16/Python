@@ -8,7 +8,7 @@
 
 # m == s.length
 # n == t.length
-# 1 <= m, n <= 105
+# 1 <= m, n <= 10^5
 # s and t consist of uppercase and lowercase English letters.
 
 # Time Complexity: O(m+n) Each character is visited at most twice (once by right, once by left)

@@ -63,3 +63,16 @@
     “I merge from the end to avoid shifting and extra space. I keep three pointers: i at the last real element of nums1, j at the end of nums2, and k at the write position (end of nums1). At each step I place the larger of nums1[i] or nums2[j] into nums1[k] and move pointers. When one side finishes, any remaining nums2 elements are copied over. This is O(m+n) time and O(1) extra space.”
     # Time Complexity: O(m+n) Each element is visited once
     # Space Complexity: O(1) In-place merge, no extra space used
+
+#12. isPalindrome(self, s: str) -> bool: Is palindrom using Slicing or two pointers
+    “I normalize the string to compare only alphanumerics case-insensitively. One approach builds a filtered lowercase list and checks if it equals its reverse — simple and Pythonic, O(n) time, O(n) space. More optimal on space uses two pointers from both ends, skipping non-alphanumerics and comparing lowercase characters; if any mismatch appears, return false, otherwise true. That keeps it O(n) time and O(1) extra space.”
+    # Method i : using Slicing ([::-1]) - For quick, readable code in small-scale use → Slicing is fine.
+    # Time Complexity:
+        # Reversing the string: O(n)
+        # Comparing strings: O(n)
+        # Total: O(n)
+    # Space Complexity: Creates a new reversed string →  O(n) extra space 
+
+    # Method 2: using pointers - For performance and memory efficiency, especially with large strings 
+    # Time Complexity: Single pass through the string → O(n) 
+    # Space Complexity: No extra space used → O(1)

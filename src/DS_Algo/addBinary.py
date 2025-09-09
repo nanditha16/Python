@@ -54,7 +54,7 @@ sol = Solution()
 
 # Call the method with an input list
 a, b = "1010", "1011"
-output = sol.addBinary(a,b)
+output = sol.addBinary(a, b)
 
 # Print the result
 print(output)

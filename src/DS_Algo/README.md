@@ -52,4 +52,7 @@
     # Time Complexity: O(max(n,m)), Where n and m are lengths of a and b
     # Space Complexity: O(max(n,m)) For storing result  
 
-    
+#10. minWindow(self, s: str, t: str) -> str: Given two strings s and t of lengths m and n respectively, return  the minimum window substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string ""
+    “I use a sliding window with two pointers. I count required chars from t and scan s with a right pointer, updating a window map and a formed counter when a char meets its needed freq. When all required chars are satisfied (formed == required), I shrink from the left to find the smallest valid window, updating the best answer. Expanding and contracting each pointer at most |s| times gives O(|s| + |t|) time and O(Σ) space for the frequency maps.”
+    # Time Complexity: O(m+n) Each character is visited at most twice (once by right, once by left)
+    # Space Complexity: O(n) For storing character counts

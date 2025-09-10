@@ -65,6 +65,7 @@ class Solution:
         for i in range(last_non_zero, len(nums)):
             nums[i] = 0
 
+    # Go with this, less complex hence better runtime 
     def moveZeroesOnePass(self, nums: List[int]) -> None:
         """
         Move all zeros to the end while keeping the relative order of non-zeros.

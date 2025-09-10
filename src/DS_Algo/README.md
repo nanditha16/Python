@@ -125,3 +125,8 @@
         - Time: O(n)
         - Space: O(1)
         - Writes: Minimal — only when necessary.
+
+19. lengthOfLongestSubstringKDistinct(self, s: str, k: int) -> int:  Longest Substring with At Most K Distinct Characters
+    - “I use a sliding window with a hash map counting chars. Expand the right pointer, increment the count for s[right]. If the window has > k distinct characters, I shrink from the left: decrement s[left], remove it from the map when its count hits 0, and move left forward until we’re back to ≤ k distinct. After each step I update the best length. Each char enters and leaves the window at most once → O(n) time and O(k) space.”
+    - Time Complexity: O(n) — each character is visited at most twice.
+    - Space Complexity: O(k) — for the character count dictionary.

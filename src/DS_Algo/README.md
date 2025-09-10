@@ -150,3 +150,8 @@
     - Time: O(max(n, m)) — we traverse each list once, bounded by the longer one.
     - Space: O(max(n, m)) for the result list (plus a possible extra node for the final carry).
     - Auxiliary space (not counting output): O(1) — just a few pointers and the carry.
+
+23. mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]: Merge Two Sorted Lists
+    - “I merge two sorted linked lists with a dummy head and a moving tail. I walk both lists, always attaching the smaller current node to current.next and advancing that list; this preserves sorted order. When one list finishes, I append the remaining nodes of the other. Using the dummy avoids edge-case checks for the head. Time: O(m+n) since each node is visited once. Aux space: O(1) (relinks nodes in place).”
+    - Time Complexity: O(n+m) where n and m are the lengths of list1 and list2
+    - Space Complexity: O(1) (in-place merge using existing nodes, no extra space except dummy node).

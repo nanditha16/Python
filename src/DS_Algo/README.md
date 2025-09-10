@@ -180,3 +180,9 @@
     - “I flatten the tree in-place using a preorder-style Morris traversal. At each node, if there’s a left subtree, I find its rightmost node, splice the current right subtree onto that rightmost’s right, then move the entire left subtree to right and set left = None. Then I advance to current.right. This rewiring preserves preorder order without a stack or recursion. Time: O(n) (each node/edge visited a constant number of times). Space: O(1) extra.”
     - Time Complexity	O(n) — each node is visited once
     - Space Complexity	O(1) — no recursion or stack used
+
+## *** IMPORTNAT*** 
+28. maxPathSum(self, root: Optional[TreeNode]) -> int: Binary Tree Maximum Path Sum
+    - “I compute the maximum path sum with a post-order DFS that returns each node’s max gain to its parent. For a node, I take left_gain = max(dfs(left), 0) and right_gain = max(dfs(right), 0)—dropping negative branches. The best path through this node is val + left_gain + right_gain; I update a global max_path_sum with that. The value I return upward is val + max(left_gain, right_gain) since a parent can only extend one side. This visits each node once: O(n) time, O(h) space for recursion (h = tree height).”
+    - Time: O(n) — each node is visited once.
+    - Space: O(h) — recursion stack, where h is the height of the tree.

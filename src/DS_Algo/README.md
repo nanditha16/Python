@@ -202,4 +202,11 @@
     - Space Complexity: O(w) — where w is the maximum width of the tree (nodes at the widest level).
 
 ## *** IMPORTANT*** 
-31. 
+31. numIslands
+    - 31a. Method 1 : numIslands(self, grid: List[List[str]]) -> int: Number of Islands
+    - “I count islands with DFS flood-fill. I scan the grid; when I hit a '1', that’s a new island, so I increment the count and DFS from that cell, flipping connected '1's to '0' to mark them visited. DFS explores the four directions (up/down/left/right) and prevents revisits by mutating the grid. Each cell is visited at most once → O(R·C) time and O(R·C) worst-case stack space (or O(min(R,C)) average for thin islands).”
+    - 31b. Method 2 : numIslandsIterative(self, grid: List[List[str]]) -> int: 
+    - “I use BFS flood-fill to count islands. Scan the grid; when I find a '1', that’s a new island—increment count, flip it to '0', and push it into a queue. Then BFS pops cells and explores 4 neighbors; any neighbor that’s '1' gets flipped to '0' (mark visited) and enqueued. This removes the whole connected component. Each cell is processed at most once, so it’s O(R·C) time and O(R·C) worst-case space (queue). Mutating the grid avoids an extra visited set and keeps it in-place.”
+    - Time Complexity: O(m×n) — each cell is visited once
+    - Space Complexity: DFS recursion stack: O(m × n) in worst case (all land) Can be reduced using iterative BFS
+    

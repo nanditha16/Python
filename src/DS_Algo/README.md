@@ -174,3 +174,9 @@
     - “I validate a BST with DFS and value bounds. Each node must lie in an open interval (low, high). Starting at (-∞, +∞), when I go left I tighten the upper bound to node.val; when I go right I raise the lower bound to node.val. If any node violates low < val < high, return false; if I finish, it’s valid. This enforces the BST rule globally, not just with immediate children. Time: O(n). Space: O(h) recursion stack (h = tree height). Duplicates are disallowed because of strict <.”
     - Time Complexity: O(n) — each node is visited once.
     - Space Complexity: O(h) — where h is the height of the tree (due to recursion stack).
+
+## *** IMPORTNAT*** 
+27. flatten(self, root: Optional[TreeNode]) -> None: Flatten Binary Tree to Linked List
+    - “I flatten the tree in-place using a preorder-style Morris traversal. At each node, if there’s a left subtree, I find its rightmost node, splice the current right subtree onto that rightmost’s right, then move the entire left subtree to right and set left = None. Then I advance to current.right. This rewiring preserves preorder order without a stack or recursion. Time: O(n) (each node/edge visited a constant number of times). Space: O(1) extra.”
+    - Time Complexity	O(n) — each node is visited once
+    - Space Complexity	O(1) — no recursion or stack used

@@ -96,7 +96,14 @@
     - Time Complexity: O(n) — where n is the length of the shorter string.
     - Space Complexity: O(1) — no extra space used.
 
-16. Product of Array Except Self
+## *** IMPORTNAT*** 
+16. productExceptSelf(self, nums: List[int]) -> List[int]: Product of Array Except Self
     - “I compute the product of all elements except self without division using two passes. First pass builds prefix products: answer[i] = product of everything left of i. Second pass runs right-to-left with a running suffix product and multiplies it into answer[i]. This way each index gets (prefix × suffix) of all other elements. It naturally handles zeros and uses O(n) time and O(1) extra space (excluding the output array).”
     - Time Complexity: O(n) — two linear passes.
     - Space Complexity:O(1) extra space if we don't count the output array. Otherwise, O(n) for the output.
+
+## *** IMPORTNAT*** 
+17. def numberToWords(self, num: int) -> str: Integer to English Words
+    - “I convert an integer to English words by processing it in 3-digit chunks (ones/tens/hundreds) from right to left. A recursive helper handles numbers <1000: direct lookup for <20, tens lookup plus ones for <100, and "X Hundred" plus the remainder for >=100. I iterate over the chunks, appending the appropriate scale — ["", "Thousand", "Million", "Billion"] — and concatenate non-zero parts. Edge case 0 → "Zero". Finally I strip() spaces. Runs in O(d) where d is digits (effectively constant for 32-bit ints), with O(1) extra space.”
+    - Time Complexity: O(log 10​ (n)) — we process each group of 3 digits.
+    - Space Complexity: O(1) — fixed-size arrays and recursion depth.

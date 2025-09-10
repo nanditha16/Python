@@ -168,3 +168,9 @@
     - “I reorder the list in three in-place steps. First, I find the middle with slow/fast pointers. Second, I reverse the second half. Third, I merge the two halves by alternating nodes: L0, Ln, L1, Ln-1, …. Splitting at the middle ensures we weave ends inward without extra storage. Each node is visited a constant number of times, so it’s O(n) time and O(1) extra space.”
     - Time Complexity: O(n)
     - Space Complexity: O(1)
+
+## *** IMPORTNAT*** 
+26. isValidBST(self, root: Optional[TreeNode]) -> bool: Validate Binary Search Tree
+    - “I validate a BST with DFS and value bounds. Each node must lie in an open interval (low, high). Starting at (-∞, +∞), when I go left I tighten the upper bound to node.val; when I go right I raise the lower bound to node.val. If any node violates low < val < high, return false; if I finish, it’s valid. This enforces the BST rule globally, not just with immediate children. Time: O(n). Space: O(h) recursion stack (h = tree height). Duplicates are disallowed because of strict <.”
+    - Time Complexity: O(n) — each node is visited once.
+    - Space Complexity: O(h) — where h is the height of the tree (due to recursion stack).

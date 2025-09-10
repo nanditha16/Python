@@ -163,3 +163,8 @@
         3. Unweave to separate the two lists by restoring original.next and advancing copy.next. This avoids extra hash maps, runs in O(n) time, and uses O(1) extra space.”
     - Time Complexity: O(n) — each node is visited 3 times.
     - Space Complexity: O(1) — no extra hash maps used; in-place manipulation.
+
+25. reorderList(self, head: Optional[ListNode]) -> None: Reorder List
+    - “I reorder the list in three in-place steps. First, I find the middle with slow/fast pointers. Second, I reverse the second half. Third, I merge the two halves by alternating nodes: L0, Ln, L1, Ln-1, …. Splitting at the middle ensures we weave ends inward without extra storage. Each node is visited a constant number of times, so it’s O(n) time and O(1) extra space.”
+    - Time Complexity: O(n)
+    - Space Complexity: O(1)

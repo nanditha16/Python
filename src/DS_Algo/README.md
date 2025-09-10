@@ -47,13 +47,13 @@
         - For n words:  O(n⋅klogk) Where n is number of words, k is average word length
     - Space Complexity: O(n⋅k) for storing grouped anagrams
 
-## *** IMPORTNAT*** 
+## *** IMPORTANT*** 
 9. addBinaryaddBinary(self, a: str, b: str) -> str: Given two binary strings a and b, return their sum as a binary string.
     - “To add two binary strings, I simulate binary addition from right to left. At each step I add the corresponding bits plus a carry, compute the new bit (total % 2), and update the carry (total // 2). I keep appending results and reverse at the end. This handles unequal lengths naturally, and runs in O(n) time with O(n) space, where n is the max length of the inputs.”
     - Time Complexity: O(max(n,m)), Where n and m are lengths of a and b
     - Space Complexity: O(max(n,m)) For storing result  
 
-## *** IMPORTNAT*** 
+## *** IMPORTANT*** 
 10. minWindow(self, s: str, t: str) -> str: Given two strings s and t of lengths m and n respectively, return  the minimum window substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string.
     - “I use a sliding window with two pointers. I count required chars from t and scan s with a right pointer, updating a window map and a formed counter when a char meets its needed freq. When all required chars are satisfied (formed == required), I shrink from the left to find the smallest valid window, updating the best answer. Expanding and contracting each pointer at most |s| times gives O(|s| + |t|) time and O(Σ) space for the frequency maps.”
     - Time Complexity: O(m+n) Each character is visited at most twice (once by right, once by left)
@@ -99,13 +99,13 @@
     - Time Complexity: O(n) — where n is the length of the shorter string.
     - Space Complexity: O(1) — no extra space used.
 
-## *** IMPORTNAT*** 
+## *** IMPORTANT*** 
 16. productExceptSelf(self, nums: List[int]) -> List[int]: Product of Array Except Self
     - “I compute the product of all elements except self without division using two passes. First pass builds prefix products: answer[i] = product of everything left of i. Second pass runs right-to-left with a running suffix product and multiplies it into answer[i]. This way each index gets (prefix × suffix) of all other elements. It naturally handles zeros and uses O(n) time and O(1) extra space (excluding the output array).”
     - Time Complexity: O(n) — two linear passes.
     - Space Complexity:O(1) extra space if we don't count the output array. Otherwise, O(n) for the output.
 
-## *** IMPORTNAT*** 
+## *** IMPORTANT*** 
 17. numberToWords(self, num: int) -> str: Integer to English Words
     - “I convert an integer to English words by processing it in 3-digit chunks (ones/tens/hundreds) from right to left. A recursive helper handles numbers <1000: direct lookup for <20, tens lookup plus ones for <100, and "X Hundred" plus the remainder for >=100. I iterate over the chunks, appending the appropriate scale — ["", "Thousand", "Million", "Billion"] — and concatenate non-zero parts. Edge case 0 → "Zero". Finally I strip() spaces. Runs in O(d) where d is digits (effectively constant for 32-bit ints), with O(1) extra space.”
     - Time Complexity: O(log 10​ (n)) — we process each group of 3 digits.
@@ -169,26 +169,37 @@
     - Time Complexity: O(n)
     - Space Complexity: O(1)
 
-## *** IMPORTNAT*** 
+## *** IMPORTANT*** 
 26. isValidBST(self, root: Optional[TreeNode]) -> bool: Validate Binary Search Tree
     - “I validate a BST with DFS and value bounds. Each node must lie in an open interval (low, high). Starting at (-∞, +∞), when I go left I tighten the upper bound to node.val; when I go right I raise the lower bound to node.val. If any node violates low < val < high, return false; if I finish, it’s valid. This enforces the BST rule globally, not just with immediate children. Time: O(n). Space: O(h) recursion stack (h = tree height). Duplicates are disallowed because of strict <.”
     - Time Complexity: O(n) — each node is visited once.
     - Space Complexity: O(h) — where h is the height of the tree (due to recursion stack).
 
-## *** IMPORTNAT*** 
+## *** IMPORTANT*** 
 27. flatten(self, root: Optional[TreeNode]) -> None: Flatten Binary Tree to Linked List
     - “I flatten the tree in-place using a preorder-style Morris traversal. At each node, if there’s a left subtree, I find its rightmost node, splice the current right subtree onto that rightmost’s right, then move the entire left subtree to right and set left = None. Then I advance to current.right. This rewiring preserves preorder order without a stack or recursion. Time: O(n) (each node/edge visited a constant number of times). Space: O(1) extra.”
     - Time Complexity	O(n) — each node is visited once
     - Space Complexity	O(1) — no recursion or stack used
 
-## *** IMPORTNAT*** 
+## *** IMPORTANT*** 
 28. maxPathSum(self, root: Optional[TreeNode]) -> int: Binary Tree Maximum Path Sum
     - “I compute the maximum path sum with a post-order DFS that returns each node’s max gain to its parent. For a node, I take left_gain = max(dfs(left), 0) and right_gain = max(dfs(right), 0)—dropping negative branches. The best path through this node is val + left_gain + right_gain; I update a global max_path_sum with that. The value I return upward is val + max(left_gain, right_gain) since a parent can only extend one side. This visits each node once: O(n) time, O(h) space for recursion (h = tree height).”
     - Time: O(n) — each node is visited once.
     - Space: O(h) — recursion stack, where h is the height of the tree.
 
-## *** IMPORTNAT*** 
+## *** IMPORTANT*** 
 29. cloneGraph(self, node: Optional['Node']) -> Optional['Node']: deep copy (clone) of the graph.
     - “I clone an undirected graph with DFS + a hash map. The map visited stores the mapping original → clone to avoid re-cloning and to handle cycles. On visiting a node: if it’s already in visited, return its clone; otherwise create a clone, record it, then recursively clone each neighbor and append to the clone’s neighbors. This guarantees every node is copied once and preserves all edges. Time: O(V+E). Space: O(V) for the map, plus O(V) recursion stack in the worst case. (Can do the same with BFS to avoid deep recursion.)”
     - Time Complexity: O(N+E) where N is the number of nodes and E is the number of edges.
     - Space Complexity: O(N) — for the visited dictionary and recursion stack.
+
+## *** IMPORTANT*** 
+30. rightSideView(self, root: Optional[TreeNode]) -> List[int]: Binary Tree Right Side View
+    - “I take the right side view using level-order BFS. I push the root into a queue and process level by level; for each level I track its size and when I pop nodes, I record the last node’s value (index i == level_size - 1)—that’s the node visible from the right for that level. I enqueue children left→right so traversal is standard. This visits each node once → O(n) time and uses the queue for at most a level’s nodes → O(w) space, where w is tree width.”
+    - (If they ask for DFS: do right-first preorder, recording the first value seen at each depth.)
+    - “I do a right-first DFS. At each depth, the first node I encounter is the visible one, so when depth == len(res) I append its value. Visiting right before left ensures the first visit per depth is the rightmost. Time: O(n). Space: O(h) recursion or stack (h = height).”
+    - Time Complexity: O(n) — each node is visited once.
+    - Space Complexity: O(w) — where w is the maximum width of the tree (nodes at the widest level).
+
+## *** IMPORTANT*** 
+31. 

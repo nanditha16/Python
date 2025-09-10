@@ -95,3 +95,8 @@
     - “I check if two strings are exactly one edit apart (insert, delete, or replace). I first make s the shorter string; if the length gap > 1, return false. Then I scan until the first mismatch. If lengths are equal, I verify the rest after that index matches (replacement). If lengths differ by 1, I compare s[i:] with t[i+1:] to simulate a single insertion/deletion. If no mismatch appears, it’s true only when t has exactly one extra trailing char. Runs in O(n) time and O(1) space.”
     - Time Complexity: O(n) — where n is the length of the shorter string.
     - Space Complexity: O(1) — no extra space used.
+
+16. Product of Array Except Self
+    - “I compute the product of all elements except self without division using two passes. First pass builds prefix products: answer[i] = product of everything left of i. Second pass runs right-to-left with a running suffix product and multiplies it into answer[i]. This way each index gets (prefix × suffix) of all other elements. It naturally handles zeros and uses O(n) time and O(1) extra space (excluding the output array).”
+    - Time Complexity: O(n) — two linear passes.
+    - Space Complexity:O(1) extra space if we don't count the output array. Otherwise, O(n) for the output.

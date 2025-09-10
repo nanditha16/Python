@@ -103,7 +103,25 @@
     - Space Complexity:O(1) extra space if we don't count the output array. Otherwise, O(n) for the output.
 
 ## *** IMPORTNAT*** 
-17. def numberToWords(self, num: int) -> str: Integer to English Words
+17. numberToWords(self, num: int) -> str: Integer to English Words
     - “I convert an integer to English words by processing it in 3-digit chunks (ones/tens/hundreds) from right to left. A recursive helper handles numbers <1000: direct lookup for <20, tens lookup plus ones for <100, and "X Hundred" plus the remainder for >=100. I iterate over the chunks, appending the appropriate scale — ["", "Thousand", "Million", "Billion"] — and concatenate non-zero parts. Edge case 0 → "Zero". Finally I strip() spaces. Runs in O(d) where d is digits (effectively constant for 32-bit ints), with O(1) extra space.”
     - Time Complexity: O(log 10​ (n)) — we process each group of 3 digits.
     - Space Complexity: O(1) — fixed-size arrays and recursion depth.
+
+18. moveZeroes
+    - 18.a Method 1 : moveZeroes(self, nums: List[int]) -> None: Two pass
+        - “I use a two-pass, in-place approach. First pass compacts all non-zeros to the front while tracking last_non_zero, writing each seen non-zero to that index. After this, the first last_non_zero positions are correct but the tail may contain old values; second pass fills the rest with zeros. This preserves the relative order of non-zeros (stable) and uses O(1) extra space. Overall time is O(n).”
+        - (If asked for a one-pass variant: swap nums[last_non_zero], nums[i] whenever nums[i] != 0, increment last_non_zero.)
+        - Time Complexity: O(n)
+        - Space Complexity: O(1) (in-place)
+        - Writes: Up to n writes (non-zero + zero fill)
+    - 18.b Method 2 : moveZeroesOnePass(self, nums: List[int]) -> None: One pass
+        - “I keep a write pointer last_non_zero. As I scan, every non-zero goes to last_non_zero; if positions differ, I set the current to zero. That compacts non-zeros stably and pushes zeros to the end in one pass, O(n) time, O(1) space.”
+        - Time: O(n)
+        - Space: O(1)
+        - Swaps: Fewer than n, but each swap is 2 writes. - Swapping involves 2 writes per operation, which may be more costly than direct assignment.
+    - 18.c Method 3 : moveZeroesFewerWritesThanSwapping(self, nums: List[int]) -> None: optimal for writes without extra passes;
+        - “I keep a write index last_non_zero. As I scan once, every non-zero is written to nums[last_non_zero]. If the current index differs, I set the current slot to 0. This compacts non-zeros in stable order and pushes zeros to the end in a single pass. It minimizes writes vs swapping (each non-zero written once; zeros only written when needed). Runs in O(n) time and O(1) extra space.”
+        - Time: O(n)
+        - Space: O(1)
+        - Writes: Minimal — only when necessary.

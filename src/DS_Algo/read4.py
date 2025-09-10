@@ -8,7 +8,6 @@
 # Definition of read4:
 #     Parameter:  char[] buf4
 #     Returns:    int
-
 # buf4[] is a destination, not a source. The results from read4 will be copied to buf4[].
 
 # Example:

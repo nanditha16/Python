@@ -84,3 +84,9 @@
         - For the follow-up (function called multiple times), keep a persistent leftover buffer across calls to store unread chars from the last read4.
     # Time Complexity: O(n) Because in the worst case, we read one character at a time up to n.
     # Space Complexity: O(1) Only a fixed-size buffer buf4 of size 4 is used.
+
+#14. read(self, buf: List[str], n: int) -> int: Read N Characters Given read4 - Call multiple times.
+    Your read(buf, n) method may be called multiple times, and you must preserve state between calls. - (persistent buffer)
+    “read returns up to n chars using only read4. I keep a persistent 4-char internal buffer across calls (buffer, buf_ptr, buf_count). For each request, I first drain leftovers from that buffer into buf. When it’s empty, I refill by calling read4, reset the pointer, and continue copying until I’ve produced n chars or read4 hits EOF. This guarantees correct behavior across multiple calls without rereading the file. Time is O(n) per call, extra space is O(1) beyond the fixed internal buffer. (In LeetCode, we write into a preallocated buf; in local tests here I append.)”
+    # Time Complexity: O(n) — We read up to n characters.
+    # Space Complexity: O(1) — Only a fixed-size buffer is used.

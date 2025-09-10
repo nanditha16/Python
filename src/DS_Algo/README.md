@@ -143,3 +143,10 @@
     - “I use a prefix sum + hashmap to count subarrays summing to k. As I scan, let prefix_sum be sum up to the current index. Any earlier prefix x where prefix_sum − x = k implies a subarray (x+1..i) sums to k. So I keep a map prefix_map of how many times each prefix has occurred; at each step I add prefix_map[prefix_sum - k] to the answer, then increment prefix_map[prefix_sum]. Initialize prefix_map[0]=1 for subarrays starting at index 0. Works with negatives, runs in O(n) time and O(n) space.”
     - Time:  O(n) We traverse the array once..
     - Space:  O(n) We store prefix sums in a hashmap.
+
+22. addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]: Add Two Numbers Singly Linked List
+    - “I add two numbers stored in reverse-order linked lists using a running carry. I walk both lists simultaneously; for each step I take value1/value2 (0 if a list ended), compute carry, digit = divmod(value1 + value2 + carry, 10), append digit to the result via a dummy head, and advance pointers. The loop continues while either list has nodes or a carry remains, so it naturally handles unequal lengths and a final carry node. Time: O(max(m, n)) (a.k.a. O(m+n)). Space: O(max(m, n)) for the output list; aux space: O(1).”
+    - If they ask for edge cases: empty list treated as 0; final carry creates an extra node (e.g., 5→ and 5→ yields 0→1).
+    - Time: O(max(n, m)) — we traverse each list once, bounded by the longer one.
+    - Space: O(max(n, m)) for the result list (plus a possible extra node for the final carry).
+    - Auxiliary space (not counting output): O(1) — just a few pointers and the carry.

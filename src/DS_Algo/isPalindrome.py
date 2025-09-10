@@ -7,7 +7,7 @@
 # Constraints:
 
 # 1 <= s.length <= 2 * 10^5
-# s consists only of printable ASCII characters.
+# s consists only of printable ASCII characters, of lowercase English letters.
 
 # Method i : using Slicing ([::-1]) - For quick, readable code in small-scale use → Slicing is fine.
 # Time Complexity:
@@ -20,11 +20,23 @@
 # Time Complexity: Single pass through the string → O(n) 
 # Space Complexity: No extra space used → O(1)
 
-# Two pointers:
+# Explanation - Two pointers:
 # 1. left starts at the beginning, right at the end.
 # 2. Compare characters: If s[left] != s[right], it's not a palindrome.
 # 3. Move inward: Increment left, decrement right.
 # 4. Stop when pointers meet or cross.
+
+# Method 3: valid Palindrome: Given a string s, return true if the s can be palindrome after deleting at most one character from it.
+# Time Complexity: Single pass through the string → O(n) 
+# Space Complexity: No extra space used → O(1)
+
+# Explanation - valid Palindrome:
+# To determine if a string s can become a palindrome after deleting at most one character, we can use a two-pointer approach.
+    # Use two pointers (left, right) to compare characters from both ends.
+    # If a mismatch is found:
+    # Try skipping the character at left or right.
+    # Check the resulting substring is a palindrome.
+    # If no mismatch is found, the string is already a palindrome.
 
 class Solution:
     def isPalindrome(self, s: str) -> bool:
@@ -53,6 +65,28 @@ class Solution:
 
         return True
 
+    # Method 3 - To determine if a string s can become a palindrome after deleting at most one character, we can use a two-pointer approach.
+    def validPalindrome(self, s: str) -> bool:
+        def is_palindrome_range(left: int, right: int) -> bool:
+            while left < right:
+                if s[left] != s[right]:
+                    return False
+                left += 1
+                right -= 1
+            return True
+
+        left, right = 0, len(s) - 1
+
+        while left < right:
+            if s[left] != s[right]:
+                # Try skipping either the left or right character
+                return is_palindrome_range(left + 1, right) or is_palindrome_range(left, right - 1)
+            left += 1
+            right -= 1
+
+        return True
+
+
 # Create an instance of the class
 sol = Solution()
 
@@ -64,3 +98,8 @@ output2 = sol.is_palindrome("cat")
 # Print the result
 print(output1)
 print(output2)
+
+
+print(sol.validPalindrome("aba"))   # True — already a palindrome
+print(sol.validPalindrome("abca"))  # True — remove 'c' to get "aba"
+print(sol.validPalindrome("abc"))   # False — needs more than one deletion

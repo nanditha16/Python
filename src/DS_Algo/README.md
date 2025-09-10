@@ -65,17 +65,20 @@
     - Space Complexity: O(1) In-place merge, no extra space used
 
 12. isPalindrome(self, s: str) -> bool: Is palindrom using Slicing or two pointers
-    - “I normalize the string to compare only alphanumerics case-insensitively. One approach builds a filtered lowercase list and checks if it equals its reverse — simple and Pythonic, O(n) time, O(n) space. More optimal on space uses two pointers from both ends, skipping non-alphanumerics and comparing lowercase characters; if any mismatch appears, return false, otherwise true. That keeps it O(n) time and O(1) extra space.”
-    - Method 1 : using Slicing ([::-1]) - For quick, readable code in small-scale use → Slicing is fine.
-    - Time Complexity:
-        - Reversing the string: O(n)
-        - Comparing strings: O(n)
-        - Total: O(n)
-    - Space Complexity: Creates a new reversed string →  O(n) extra space 
-
-    - Method 2: using pointers - For performance and memory efficiency, especially with large strings 
-    - Time Complexity: Single pass through the string → O(n) 
-    - Space Complexity: No extra space used → O(1)
+    - 12a. Method 1 : using Slicing ([::-1]) - For quick, readable code in small-scale use → Slicing is fine.
+        - Time Complexity:
+            - Reversing the string: O(n)
+            - Comparing strings: O(n)
+            - Total: O(n)
+        - Space Complexity: Creates a new reversed string →  O(n) extra space 
+    - 12b. Method 2: using pointers - For performance and memory efficiency, especially with large strings 
+        - “I normalize the string to compare only alphanumerics case-insensitively. One approach builds a filtered lowercase list and checks if it equals its reverse — simple and Pythonic, O(n) time, O(n) space. More optimal on space uses two pointers from both ends, skipping non-alphanumerics and comparing lowercase characters; if any mismatch appears, return false, otherwise true. That keeps it O(n) time and O(1) extra space.”
+        - Time Complexity: Single pass through the string → O(n) 
+        - Space Complexity: No extra space used → O(1)
+    - 12c. Method 3: Valid Palindrome - one more 
+        - “I use a two-pointer check with one allowed deletion. Move left and right inward while chars match. At the first mismatch, I try both options: skip s[left] or skip s[right], and verify the remaining range is a palindrome with a helper. If either succeeds, the whole string is valid after deleting at most one char. This is O(n) time (each index visited a constant number of times) and O(1) extra space.”
+        - Time Complexity: Single pass through the string → O(n) 
+        - Space Complexity: No extra space used → O(1)
 
 13. read(self, buf, n): Read N Characters Given read4
     - “I repeatedly call read4 into a 4-char temp buffer and copy out only what I still need, stopping when I’ve read n chars or read4 hits EOF. Each iteration adds min(count, n - total_read) to the destination buf, and I track total_read as I go. This guarantees we never over-read or write past n. The algorithm is O(n) time and O(1) extra space.”

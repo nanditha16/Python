@@ -155,3 +155,11 @@
     - “I merge two sorted linked lists with a dummy head and a moving tail. I walk both lists, always attaching the smaller current node to current.next and advancing that list; this preserves sorted order. When one list finishes, I append the remaining nodes of the other. Using the dummy avoids edge-case checks for the head. Time: O(m+n) since each node is visited once. Aux space: O(1) (relinks nodes in place).”
     - Time Complexity: O(n+m) where n and m are the lengths of list1 and list2
     - Space Complexity: O(1) (in-place merge using existing nodes, no extra space except dummy node).
+
+24.  copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]': deep copying a linked list with random pointers. 
+    - “I clone a linked list with random pointers in three in-place passes. 
+        1. Weave each copy node right after its original (A→A'→B→B'…).
+        2. Set each copy’s random via neighbors: if orig.random exists, then orig.next.random = orig.random.next (since every original’s copy is right after it).
+        3. Unweave to separate the two lists by restoring original.next and advancing copy.next. This avoids extra hash maps, runs in O(n) time, and uses O(1) extra space.”
+    - Time Complexity: O(n) — each node is visited 3 times.
+    - Space Complexity: O(1) — no extra hash maps used; in-place manipulation.

@@ -333,3 +333,16 @@
     - “I implement integer division using repeated doubling with bit shifts. After handling the INT_MIN / -1 overflow case and figuring out the sign, I work with positives. While the dividend ≥ divisor, I double (<<) the divisor (temp_divisor) and a multiple until doubling would exceed the dividend. Then I subtract that biggest chunk from the dividend and add multiple to the quotient. Repeat until the dividend is smaller than the divisor, then apply the sign. This simulates long division efficiently using powers of two. Time: about O(log² N) in worst case (doubling inside a loop), Space: O(1).”
     - Time	O(log n)	Each loop halves the dividend
     - Space	O(1)	Constant space used
+
+## *** IMPORTANT*** 
+48. isAlienSorted(self, words: List[str], order: str) -> bool: Verifying an Alien Dictionary
+    - “I verify the dictionary order by mapping each alien letter to its rank, then comparing adjacent words. For each pair, I scan characters left→right; at the first difference, I check if word1’s char rank < word2’s—if not, it’s unsorted. If all compared chars are equal, the shorter word must come first (to handle prefix cases). Do this for every adjacent pair; if none violate the rule, it’s sorted. Time: O(total characters across all words). Space: O(1) for the 26-char map (or O(Σ) for the alphabet size).”
+    - Intuition: We just need to know the ordering of letters in the alien alphabet and then check whether the list of words respects that order. If you compare each pair of adjacent words the same way a dictionary does—scan left to right and stop at the first differing character—you can tell if the earlier word should indeed come first. One extra edge case: if one word is a prefix of the other, the shorter word must come first.
+    - Approach: 
+        1. Build a map order_index[ch] = rank from the alien order.
+        2. For each adjacent pair (w1, w2), compare chars c1, c2 left→right:
+            If ranks differ, ensure rank(c1) < rank(c2); otherwise return False.
+            If all compared chars are equal, ensure len(w1) <= len(w2) (prefix rule).
+        3. If all pairs pass, return True. Complexity: Time O(total characters), Space O(Σ) for the rank map (Σ = alphabet size).
+    - Time complexity: O(N⋅L) Where: N is the number of words. L is the average length of the words. We compare each pair of words character by character.
+    - Space complexity: O(1) - The character-to-index mapping uses a fixed size of 26 characters, so it’s constant space.

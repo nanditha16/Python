@@ -263,3 +263,9 @@
     - “I convert a BST to a sorted circular doubly linked list using an in-order DFS. I keep two pointers: first (head) and last (tail). During inorder, when I visit a node, I stitch it after last (last.right = node; node.left = last); if last is None, this is the first node. Then I set last = node and continue. After traversal, I make it circular by linking first.left = last and last.right = first. Inorder guarantees ascending order. Time: O(n). Space: O(h) recursion stack (h = tree height).”
     - Time	O(n)	Each node is visited once
     - Space	O(h)	Recursion stack, where h is the height of the tree
+
+## *** IMPORTANT*** 
+39.  isBipartite(self, graph: List[List[int]]) -> bool: Is Graph Bipartite?
+    - “I check bipartiteness by 2-coloring each connected component with BFS. I keep a color array initialized to −1. For every unvisited node, I start a BFS, assign it color 0, and for each edge (u,v) I assign v the opposite color 1 - color[u]. If I ever see a neighbor already colored the same as its parent, there’s an odd cycle → not bipartite, return False. If all components color successfully, return True. Time: O(V+E). Space: O(V) for the queue and color array.”
+    - Time	O(V + E)	Each node and edge is visited once
+    - Space	O(V)	For color array and BFS queue

@@ -269,3 +269,9 @@
     - “I check bipartiteness by 2-coloring each connected component with BFS. I keep a color array initialized to −1. For every unvisited node, I start a BFS, assign it color 0, and for each edge (u,v) I assign v the opposite color 1 - color[u]. If I ever see a neighbor already colored the same as its parent, there’s an odd cycle → not bipartite, return False. If all components color successfully, return True. Time: O(V+E). Space: O(V) for the queue and color array.”
     - Time	O(V + E)	Each node and edge is visited once
     - Space	O(V)	For color array and BFS queue
+
+## *** IMPORTANT*** 
+40. verticalOrder(self, root: Optional[TreeNode]) -> List[List[int]]: Binary Tree Vertical Order Traversal
+    - “I do a BFS with column indices. Start at the root with column 0, push (node, col) into a queue. When I pop a node, I append its value to column_table[col], then push left with col−1 and right with col+1. While traversing, I track min_col/max_col. BFS preserves top-to-bottom, left-to-right order within each column. At the end, I output columns from min_col to max_col. Time: O(n) to visit nodes; Space: O(n) for the table and queue.”
+    - Time	O(n)	Each node is visited once
+    - Space	O(n)	For queue and column table

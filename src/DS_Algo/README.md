@@ -296,3 +296,9 @@
         - Time	O(n × n!)	Worst-case with all unique elements
         - Space	O(n)	Recursion depth and used array
 
+## *** IMPORTANT*** 
+43. removeInvalidParentheses(self, s: str) -> List[str]: Remove Invalid Parentheses
+    - “I solve it with BFS over strings formed by deleting one parenthesis at a time. BFS ensures the first valid level we reach uses the minimum removals; once any string at a level is valid, I collect all valid strings at that same level and don’t expand deeper. I keep a visited set to avoid revisiting duplicates. Validity is checked by a single pass counter that never lets closes exceed opens and ends at zero. Time (worst case): O(2^P · n)—we may generate and validate exponentially many candidates (P = number of parentheses, n = length for validation). Space (worst case): O(2^P) for the queue + visited.”
+    - Time	O(2ⁿ × n)	Worst-case: generate all substrings
+    - Space	O(2ⁿ)	For queue and visited set
+    

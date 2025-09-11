@@ -245,3 +245,12 @@
         - “I still BFS from each building, but I reuse the grid to avoid extra visited sets and to prune unreachable cells. I keep a walk marker (starting at 0). During a building’s BFS I only step onto empty cells whose value equals walk; when I visit one, I set it to walk-1 and add its distance into dist. After finishing that building, I decrement walk. This means later BFS runs only traverse cells that were reachable from all previous buildings. Finally, among cells marked -buildings, I take the minimum summed distance. Same worst case O(B·R·C) time, but far fewer pushes in practice; space is O(R·C) for dist (no per-BFS visited).”
         - Time Complexity: O(m × n × b)
         - Space Complexity: O(m × n)
+
+## *** IMPORTANT*** 
+36. diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int: Diameter of Binary Tree
+    - “I compute the tree’s diameter with one post-order DFS. The helper returns each node’s height (max depth of its subtrees). At every node, the longest path through it is left_height + right_height; I update a global max_diameter with that. Then I return 1 + max(left_height, right_height) to the parent. After visiting all nodes, max_diameter is the answer. Time: O(n) (each node once). Space: O(h) recursion stack (h = tree height).”
+    - Time Complexity: O(n)
+    - Space Complexity: O(h)
+
+## *** IMPORTANT*** 
+37. 

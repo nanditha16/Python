@@ -229,7 +229,19 @@
         - Time: Appends/pops on the list are O(1). At each leaf, join costs O(L) once. Across all paths: O(N + ∑ Lᵢ) = O(N + total_output_chars). (Much better overhead.)
         - Space: O(H) for the call stack + O(H) for the path list + result storage.
 
+## *** IMPORTANT*** 
 34. alienOrder(self, words: List[str]) -> str: Alien Dictionary
     - “I infer the alien alphabet by building a graph of letter precedences. First, I init all chars with in-degree 0. Then for each adjacent word pair, I find the first differing character; that gives a directed edge w1[j] → w2[j] and I increment in-degree. If a longer word precedes its exact prefix, it’s invalid (return ''). Finally, I run Kahn’s topological sort: push all zero-in-degree letters, pop/append to the result, decrement neighbors, and enqueue new zeros. If I don’t output all letters, there’s a cycle → return ''. Time: O(V+E). Space: O(V+E).”
     - Time Complexity: O(N × L)
     - Space Complexity: O(V + E)
+
+## *** IMPORTANT*** 
+35. Shortest Distance from All Buildings
+    - 35a. Method 1: shortestDistance(self, grid: List[List[int]]) -> int: 
+        - “I run BFS from every building to accumulate distances to all empty lands. For each building (cell==1), a BFS explores only empty cells (0), marking visited, and for each reached cell adds dist+1 into total_dist[r][c] and increments reach_count[r][c]. After processing all buildings, I scan all empty cells and pick the minimum total_dist among those whose reach_count equals the number of buildings (i.e., reachable from all). If none qualify, return -1. Each BFS touches each cell at most once → Time: O(B·R·C). Space: O(R·C).”
+        - Time Complexity: O(m × n × b)
+        - Space Complexity: O(m × n)
+    - 35b. Method 2: shortestDistance_optimized(grid: List[List[int]]) -> int:
+        - “I still BFS from each building, but I reuse the grid to avoid extra visited sets and to prune unreachable cells. I keep a walk marker (starting at 0). During a building’s BFS I only step onto empty cells whose value equals walk; when I visit one, I set it to walk-1 and add its distance into dist. After finishing that building, I decrement walk. This means later BFS runs only traverse cells that were reachable from all previous buildings. Finally, among cells marked -buildings, I take the minimum summed distance. Same worst case O(B·R·C) time, but far fewer pushes in practice; space is O(R·C) for dist (no per-BFS visited).”
+        - Time Complexity: O(m × n × b)
+        - Space Complexity: O(m × n)

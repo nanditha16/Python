@@ -281,3 +281,18 @@
     - “I generate all phone keypad combinations with backtracking. At position index, I iterate the letters mapped from digits[index], append one letter to the current path, recurse to the next index, and backtrack. When index == len(digits), I add the built string to result. This explores the full Cartesian product in lexical order. Time: O(3^m · 4^n) where m digits map to 3 letters and n to 4 (7/9), since we must output all combos; space: O(L) recursion depth (L = number of digits) plus output size.”
     - Time	O(4ⁿ)	Each digit can map to up to 4 letters (e.g., '7', '9')
     - Space	O(n)	Recursion depth and path string
+
+42. Permutations
+    - 42a. Method 1 : permute(self, nums: List[int]) -> List[List[int]]:
+        - “I generate all permutations with backtracking + in-place swapping. At position start, I try each choice i ∈ [start..n-1]: swap nums[start] with nums[i] to fix that element, recurse on the next position, then swap back to restore state. When start == n, I copy the current arrangement into result. This explores every ordering exactly once. Time: O(n · n!) (n! permutations, ~n work to copy), space: O(n) recursion (excluding output).”
+        - If they ask for an alternative: use a used set and build a path list instead of swapping.
+        - Time	O(n!)	There are n! permutations
+        - Space	O(n)	Recursion stack depth is n
+    - 42b. Method 2 : permuteNoInplaceSwaps(nums: List[int]) -> List[List[int]]:
+        - “I build permutations by growing a path and tracking which indices are used. For each position, I iterate all indices; if unused, I mark it, append the number, recurse, then backtrack (pop + unmark). When path length reaches n, I record a permutation. This avoids in-place swaps. Time: O(n·n!), space: O(n) recursion + O(n) for used (excluding output).”
+        - If you have duplicates in nums, add a sort and a “skip duplicates” guard inside the loop.
+    - 42c. Method 3 : permuteUnique(self, nums: List[int]) -> List[List[int]]: Permutations II - Given a collection of numbers, nums, that might contain duplicates, return all possible unique permutations in any order.
+        - “I generate unique permutations with backtracking. I first sort nums so duplicates are adjacent. At each position I iterate indices; if an index is already used, skip. To avoid duplicate branches, I also skip a value if it’s the same as the previous and the previous hasn’t been used yet (i>0 and nums[i]==nums[i-1] and not used[i-1]): that ensures we only place the first copy of a duplicate before its twins at a given depth. I append, recurse, then backtrack (pop + unmark). Time: O(n·n!) in worst case; space: O(n) recursion + used (excluding output).”
+        - Time	O(n × n!)	Worst-case with all unique elements
+        - Space	O(n)	Recursion depth and used array
+

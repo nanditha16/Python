@@ -317,3 +317,9 @@
             lru_cache memoizes subproblems, making it O(m·n) time and O(m·n) space.”
         - Time	O(m × n)	Memoized calls for each (i, j) pair
         - Space	O(m × n)	Cache and recursion stack
+
+45. subsets(self, nums: List[int]) -> List[List[int]]: Subsets
+    - “I list every subset by walking a decision tree: for each number I can take it or skip it. I keep a small list called path with what I’ve taken so far. At every step I first record the current path (that’s one valid subset), then I try adding the next number, go deeper, and undo (pop) to try the next option. Doing this for all positions systematically produces all combinations. There are 2^n subsets total; we spend up to n steps building each, so about  O(n⋅2^n) time; extra space is O(n) for the current path.”
+    - “I generate all subsets with backtracking. Starting at index 0, I add the current path to results (that’s one subset), then for each next index i I choose nums[i], recurse on the remainder, and backtrack (pop) to try other choices. This systematically explores the ‘take it / skip it’ tree for every element, so we get all 2^n subsets. Time: O(n⋅2^n) (each subset built up to length n). Space: O(n) recursion (excluding the output).”
+    - Time	O(2ⁿ)	Each element has two choices: include or exclude
+    - Space	O(n)	Recursion depth and temporary path

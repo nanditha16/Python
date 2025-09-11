@@ -95,6 +95,7 @@
 # Same correctness, still O(B·R·C) worst-case, but much faster in
 # practice with tighter memory use.
 
+from collections import deque
 from typing import List
 
 class Solution:

@@ -54,6 +54,7 @@
 # Return Result:
 #     If no conflicts are found, return True.
 
+from collections import deque
 from typing import List
 
 class Solution:

@@ -257,3 +257,9 @@
     - “I use Union–Find (DSU) to group emails that belong to the same person. For each account, I take the first email as the anchor and union it with every other email in that account. I also map every email → name. After processing all accounts, I find the root parent for each email and collect emails per root (a set). Finally, for each group I output [name] + sorted(emails), using the name associated with the root. Path compression keeps operations near-constant. Time: ~O(N·α(N) + E·logE) where N = emails (union/find), E = emails per group for sorting. Space: O(N) for DSU/maps.”
     - Time Complexity: O(N × α(N) + M log M)
     - Space Complexity: O(N) for parent map, email-to-name map, and groupings
+
+## *** IMPORTANT*** 
+38. treeToDoublyList(self, root: 'Optional[Node]') -> 'Optional[Node]': Convert a Binary Search Tree (BST) to a sorted Circular Doubly Linked List in place
+    - “I convert a BST to a sorted circular doubly linked list using an in-order DFS. I keep two pointers: first (head) and last (tail). During inorder, when I visit a node, I stitch it after last (last.right = node; node.left = last); if last is None, this is the first node. Then I set last = node and continue. After traversal, I make it circular by linking first.left = last and last.right = first. Inorder guarantees ascending order. Time: O(n). Space: O(h) recursion stack (h = tree height).”
+    - Time	O(n)	Each node is visited once
+    - Space	O(h)	Recursion stack, where h is the height of the tree

@@ -329,3 +329,7 @@
     - Time	O(5^(n/2))	Each level adds up to 5 pairs
     - Space	O(5^(n/2))	Result list and recursion stack
     
+47. divide(self, dividend: int, divisor: int) -> int: Divide Two Integers Without Using Multiplication, Division, or Modulus Operators
+    - “I implement integer division using repeated doubling with bit shifts. After handling the INT_MIN / -1 overflow case and figuring out the sign, I work with positives. While the dividend ≥ divisor, I double (<<) the divisor (temp_divisor) and a multiple until doubling would exceed the dividend. Then I subtract that biggest chunk from the dividend and add multiple to the quotient. Repeat until the dividend is smaller than the divisor, then apply the sign. This simulates long division efficiently using powers of two. Time: about O(log² N) in worst case (doubling inside a loop), Space: O(1).”
+    - Time	O(log n)	Each loop halves the dividend
+    - Space	O(1)	Constant space used

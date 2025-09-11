@@ -215,3 +215,19 @@
     - “I find the LCA in a general binary tree with DFS. If the current root is None, or equals p or q, I return it. Otherwise I recurse left and right. If both sides return non-null, it means p and q were found in different subtrees, so the current root is the LCA. If only one side returns non-null, I bubble that up. This checks each node once → O(n) time and O(h) space for recursion (h = tree height). Handles cases where one node is ancestor of the other naturally.”
     - Time Complexity: O(n)
     - Space Complexity: O(h) for recursion stack, where h is the height of the tree.
+
+## *** IMPORTANT*** 
+33. Binary Tree Paths - Return all root-to-leaf paths in a binary tree
+    - 33a. Method 1: binaryTreePaths(self, root: Optional[TreeNode]) -> List[str]:
+        - “I collect all root-to-leaf paths with a simple DFS. I pass along the current path string; when I hit a leaf (no left/right), I append that path to the result. Otherwise I recurse on children, adding '->' between nodes. This visits each node once, so O(n) time; recursion uses O(h) space for the call stack (h = tree height).”
+        - Time: Each path += str(node.val) creates a new string (strings are immutable). For a path of length L, you do ~L concatenations → O(L²) work per path. Across P root-to-leaf paths: ~O(∑ Lᵢ²). In a skewed tree this can reach O(N²).
+        - Space: O(H) recursion stack (H = height) + result storage. Extra transient strings created along the way inflate constant factors.
+    - 33b. Method 2: binaryTreePathsBacktracking(self, root: Optional[TreeNode]) -> List[str]:
+        - (If asked to optimize string ops: carry a list of node values, append/pop during DFS, and paths.append('->'.join(parts)) at leaves.) 
+        - “I build paths with backtracking: keep a path list of node values, append on entry and pop on exit. At a leaf, I '->'.join(path) once to form the string. This avoids O(n²) string concatenations, keeps time O(n) overall, and uses O(h) stack space.”
+        - The list + join approach avoids quadratic string-building overhead and is the preferred, scalable solution.
+        - Time: Appends/pops on the list are O(1). At each leaf, join costs O(L) once. Across all paths: O(N + ∑ Lᵢ) = O(N + total_output_chars). (Much better overhead.)
+        - Space: O(H) for the call stack + O(H) for the path list + result storage.
+
+
+        

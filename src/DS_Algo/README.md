@@ -302,3 +302,18 @@
     - Time	O(2ⁿ × n)	Worst-case: generate all substrings
     - Space	O(2ⁿ)	For queue and visited set
     
+44. Regular Expression Matching 
+    - 44a. isMatch(self, s: str, p: str) -> bool:  using Dynamic Programming,
+        - “We build a table that answers: ‘Do the first i letters of the text match the first j letters of the pattern?’ We fill it left-to-right, top-to-bottom. A normal letter or dot . matches one character: we just look diagonally up-left (did the previous parts match?). A star * means the previous thing can appear zero times (skip the pair, look two cells left) or one/more times (stay on the same pattern column but move up one row if the current text char fits). Initialize empty=empty as True and allow patterns like a* to match empty. The final cell tells us if the whole strings match. Runs in O(m·n) time, O(m·n) space (O(n) with 1D DP).”
+        -  “I do regex matching with DP over prefixes. Let dp[i][j] mean s[:i] matches p[:j]. Base: dp[0][0]=True; also prefill the first row for patterns like a*, a*b* where * can delete its preceding char: dp[0][j]=dp[0][j-2] when p[j-1]=='*'. For transitions: if p[j-1] is a literal or '.', match it with s[i-1] → dp[i][j]=dp[i-1][j-1]. If p[j-1]=='*', either use zero of the preceding char → dp[i][j]=dp[i][j-2], or use one+ if p[j-2] equals s[i-1] (or '.') → dp[i][j]|=dp[i-1][j]. Answer is dp[m][n]. Time: O(m·n). Space: O(m·n) (can be reduced to O(n) with row DP).”
+        - Time	O(m × n)	Nested loops over s and p
+        - Space	O(m × n)	DP table of size (m+1) × (n+1)
+    - 44b. def isMatchRecurssive(self, s: str, p: str) -> bool: Recursive Version with Memoization
+        - “I match the text and pattern from their current positions. A normal letter must match the same letter; a dot . matches any one letter. If the next pattern symbol is a star *, it means ‘the previous thing can repeat’: I try two options—either skip that x* entirely (use it zero times) or, if the current letter fits, use it once and stay on the same pattern spot to keep repeating. I memoize results for each (text, pattern) position so I don’t rework the same cases. This covers all possibilities efficiently (about m×n cases).”
+        - “I do regex match with top-down recursion + memo. dp(i, j) asks: do s[i:] and p[j:] match? 
+            Base: if pattern is finished, we must also be at the end of the string.Compute first_match = current chars match (or pattern has .).
+            If the next pattern char is *, we try two choices: skip the x* (zero uses) → dp(i, j+2), or use it if first_match (consume one char from s) → dp(i+1, j).
+            Otherwise, advance both on a match → dp(i+1, j+1).
+            lru_cache memoizes subproblems, making it O(m·n) time and O(m·n) space.”
+        - Time	O(m × n)	Memoized calls for each (i, j) pair
+        - Space	O(m × n)	Cache and recursion stack

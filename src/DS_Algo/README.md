@@ -323,3 +323,9 @@
     - “I generate all subsets with backtracking. Starting at index 0, I add the current path to results (that’s one subset), then for each next index i I choose nums[i], recurse on the remainder, and backtrack (pop) to try other choices. This systematically explores the ‘take it / skip it’ tree for every element, so we get all 2^n subsets. Time: O(n⋅2^n) (each subset built up to length n). Space: O(n) recursion (excluding the output).”
     - Time	O(2ⁿ)	Each element has two choices: include or exclude
     - Space	O(n)	Recursion depth and temporary path
+
+46. findStrobogrammatic(self, n: int) -> List[str]: Strobogrammatic Number II - all strobogrammatic numbers of length n
+    - “I build strobogrammatic numbers from the middle outward using valid mirror pairs: (0,0),(1,1),(6,9),(8,8),(9,6). Recursively generate all valid middles for length n-2, then wrap each middle with every pair a…b. For odd n, the middle can be only 0,1,8. To avoid leading zeros, when filling the outermost layer I skip the (0,0) pair. This produces all numbers whose 180° rotation is itself. Time is exponential—about O(5^{⌊n/2⌋}) to generate all outputs; recursion depth is O(n).”
+    - Time	O(5^(n/2))	Each level adds up to 5 pairs
+    - Space	O(5^(n/2))	Result list and recursion stack
+    

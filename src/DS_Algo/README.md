@@ -229,5 +229,7 @@
         - Time: Appends/pops on the list are O(1). At each leaf, join costs O(L) once. Across all paths: O(N + ∑ Lᵢ) = O(N + total_output_chars). (Much better overhead.)
         - Space: O(H) for the call stack + O(H) for the path list + result storage.
 
-
-        
+34. alienOrder(self, words: List[str]) -> str: Alien Dictionary
+    - “I infer the alien alphabet by building a graph of letter precedences. First, I init all chars with in-degree 0. Then for each adjacent word pair, I find the first differing character; that gives a directed edge w1[j] → w2[j] and I increment in-degree. If a longer word precedes its exact prefix, it’s invalid (return ''). Finally, I run Kahn’s topological sort: push all zero-in-degree letters, pop/append to the result, decrement neighbors, and enqueue new zeros. If I don’t output all letters, there’s a cycle → return ''. Time: O(V+E). Space: O(V+E).”
+    - Time Complexity: O(N × L)
+    - Space Complexity: O(V + E)

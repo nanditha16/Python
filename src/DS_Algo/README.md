@@ -253,4 +253,7 @@
     - Space Complexity: O(h)
 
 ## *** IMPORTANT*** 
-37. 
+37. accountsMerge(self, accounts: List[List[str]]) -> List[List[str]]: Accounts Merge problem using Union-Find (Disjoint Set Union)
+    - “I use Union–Find (DSU) to group emails that belong to the same person. For each account, I take the first email as the anchor and union it with every other email in that account. I also map every email → name. After processing all accounts, I find the root parent for each email and collect emails per root (a set). Finally, for each group I output [name] + sorted(emails), using the name associated with the root. Path compression keeps operations near-constant. Time: ~O(N·α(N) + E·logE) where N = emails (union/find), E = emails per group for sorting. Space: O(N) for DSU/maps.”
+    - Time Complexity: O(N × α(N) + M log M)
+    - Space Complexity: O(N) for parent map, email-to-name map, and groupings

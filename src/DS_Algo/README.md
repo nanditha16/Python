@@ -275,3 +275,9 @@
     - “I do a BFS with column indices. Start at the root with column 0, push (node, col) into a queue. When I pop a node, I append its value to column_table[col], then push left with col−1 and right with col+1. While traversing, I track min_col/max_col. BFS preserves top-to-bottom, left-to-right order within each column. At the end, I output columns from min_col to max_col. Time: O(n) to visit nodes; Space: O(n) for the table and queue.”
     - Time	O(n)	Each node is visited once
     - Space	O(n)	For queue and column table
+
+## *** IMPORTANT*** 
+41. letterCombinations(self, digits: str) -> List[str]: Letter Combinations of a Phone Number
+    - “I generate all phone keypad combinations with backtracking. At position index, I iterate the letters mapped from digits[index], append one letter to the current path, recurse to the next index, and backtrack. When index == len(digits), I add the built string to result. This explores the full Cartesian product in lexical order. Time: O(3^m · 4^n) where m digits map to 3 letters and n to 4 (7/9), since we must output all combos; space: O(L) recursion depth (L = number of digits) plus output size.”
+    - Time	O(4ⁿ)	Each digit can map to up to 4 letters (e.g., '7', '9')
+    - Space	O(n)	Recursion depth and path string

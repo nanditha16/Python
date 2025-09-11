@@ -209,4 +209,9 @@
     - “I use BFS flood-fill to count islands. Scan the grid; when I find a '1', that’s a new island—increment count, flip it to '0', and push it into a queue. Then BFS pops cells and explores 4 neighbors; any neighbor that’s '1' gets flipped to '0' (mark visited) and enqueued. This removes the whole connected component. Each cell is processed at most once, so it’s O(R·C) time and O(R·C) worst-case space (queue). Mutating the grid avoids an extra visited set and keeps it in-place.”
     - Time Complexity: O(m×n) — each cell is visited once
     - Space Complexity: DFS recursion stack: O(m × n) in worst case (all land) Can be reduced using iterative BFS
-    
+
+## *** IMPORTANT*** 
+32. lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode': Lowest Common Ancestor of a Binary Tree
+    - “I find the LCA in a general binary tree with DFS. If the current root is None, or equals p or q, I return it. Otherwise I recurse left and right. If both sides return non-null, it means p and q were found in different subtrees, so the current root is the LCA. If only one side returns non-null, I bubble that up. This checks each node once → O(n) time and O(h) space for recursion (h = tree height). Handles cases where one node is ancestor of the other naturally.”
+    - Time Complexity: O(n)
+    - Space Complexity: O(h) for recursion stack, where h is the height of the tree.

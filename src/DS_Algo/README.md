@@ -722,3 +722,28 @@
         - Space Complexity: O(n)
             Stack and to_remove set can grow up to size of input in worst case.
             Result list also takes up to O(n) space.
+
+## *** IMPORTANT*** 
+50. Nested List Weight Sum
+    - 50a. Method 1: depthSum_Recursive_DFS(self, nestedList: List[NestedInteger]) -> int:
+        - “I treat the nested list as a tree and do a DFS carrying the current depth. If I see an integer, I add value * depth; if I see a sublist, I recurse with depth+1 and add that sum. Starting at depth 1, this naturally multiplies deeper integers more. It visits each element once—O(N) time, O(D) stack.”
+        - Intuition: A nested list is like a tree: each list is a node whose children are either integers (leaves) or sublists. The problem says “weight by depth,” so every time we go one level deeper, that integer’s contribution should be multiplied by +1 depth. A natural fit is a depth-first traversal that carries the current depth along.
+        - Approach: Use a recursive DFS dfs(nlist, depth):
+            1. Initialize total = 0.
+            2. For each item:
+                - If it’s an integer, add item.getInteger() * depth.
+                - Otherwise, recurse on item.getList() with depth + 1 and add the result.
+            3. Return total.
+                - Call dfs(nestedList, 1) and return the sum.
+        - Time: O(N) where N is total integers + lists. Space: O(D) recursion stack, D = max depth.
+            - Time Complexity: O(n) Where n is the total number of integers and lists in the structure. Each element is visited once.
+            - Space Complexity: O(d) Where d is the maximum depth of nesting due to recursive call stack.
+    - 50b. Method 2: depthSum_Iterative(self, nestedList: List['NestedInteger']) -> int:
+        - “I do a BFS over the nested structure, carrying the current depth in the queue. For each popped list, every integer adds value * depth; every sublist gets enqueued with depth+1. This visits everything once and accumulates the weighted sum. Time O(N), space O(W).”
+        - Intuition: Treat the nested list like a tree where each sublist is a node and each integer is a leaf. Since each integer’s contribution is weighted by its depth, traverse level by level and multiply each integer by the depth at which you encounter it. A simple BFS naturally tracks depth as you go.
+        - Approach: Use a queue of (list, depth), initialized with (nestedList, 1). While the queue isn’t empty, pop a pair and scan its items:
+            1. If item.isInteger(): add item.getInteger() * depth to total.
+            2. Else: push (item.getList(), depth + 1) back into the queue. Return total after processing all levels.
+        - Complexity: O(N) time over all integers and lists; O(W) space for the queue (W = max breadth).
+            - Time Complexity:  O(n) — each element is visited once.
+            - Space Complexity: O(n) — queue stores elements at each level.

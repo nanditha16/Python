@@ -747,3 +747,19 @@
         - Complexity: O(N) time over all integers and lists; O(W) space for the queue (W = max breadth).
             - Time Complexity:  O(n) — each element is visited once.
             - Space Complexity: O(n) — queue stores elements at each level.
+
+51. search(self, nums: List[int], target: int) -> int: Search in Rotated Sorted Array using binary search
+    - “I run a binary search that, at each step, figures out which side is sorted. If the left side [left..mid] is sorted and the target lies inside its range, I search there; otherwise I search the right side. If the right side is sorted, I apply the same logic symmetrically. This halves the search space each time and returns the index if found, or -1. O(log n) time, O(1) space.”
+    - Intuition: In a rotated sorted array, at any time one half is still sorted. If we pick the middle, either the left half [left..mid] is sorted or the right half [mid..right] is sorted. If the target falls within the sorted half’s range, we discard the other half; otherwise we discard this half. Repeat like binary search.
+    - Approach: Do a modified binary search:
+        1. Compute mid. If nums[mid] == target, return mid.
+        2. If nums[left] <= nums[mid], left half is sorted:
+            - If nums[left] <= target < nums[mid], move right = mid - 1; else left = mid + 1.
+        3. Else, right half is sorted:
+            - If nums[mid] < target <= nums[right], move left = mid + 1; else right = mid - 1.
+            - If not found, return -1. 
+    - Time: O(log n). Space: O(1).
+        - Time Complexity: O(logn) — binary search.
+        - Space Complexity: O(1) — constant space.
+
+52.    

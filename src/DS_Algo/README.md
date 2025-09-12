@@ -795,4 +795,33 @@
         - Time Complexity: O(logn) — binary exponentiation.
         - Space Complexity: O(1) — constant space.
 
-54. Merge Intervals
+54. merge(self, intervals: List[List[int]]) -> List[List[int]]: Merge Intervals using sorting and iteration
+    - “I sort by start so overlaps come adjacent. Walk once, keeping a merged tail. If the next interval’s start is within the last merged end, I extend the end; if not, I start a new interval. That single pass after sorting yields all merged ranges. Runs in O(n log n) time, O(1) extra space.”
+    - Intuition: Overlaps are easiest to see when intervals are sorted by start. Then you only need to compare each interval to the last merged one: if the current start is ≤ last end, they overlap and should be merged; otherwise, start a new block.
+    - Approach: 
+        1. Sort intervals by start.
+        2. Initialize merged with the first interval.
+        3. For each current:
+            Let last = merged[-1].
+            If current.start ≤ last.end, set last.end = max(last.end, current.end) (merge).
+            Else, merged.append(current) (no overlap).
+            Return merged. 
+    - Time: O(n log n) (sorting), Space: O(1) extra (in-place list of results).
+        - Time Complexity: O(nlogn) — due to sorting
+        - Space Complexity: O(n) — for storing the merged intervals
+        - Auxiliary space (excluding output): O(1) — we sort in place and only keep a few variables.
+        - Total space (including output): O(n) — for the merged result.
+
+55. findPeakElement(self, nums: List[int]) -> int: Find Peak Element
+    - “I run a slope-following binary search. At mid, compare with mid+1: if it’s rising, a peak must be right, so move left = mid+1; if it’s falling, a peak is at/left, so set right = mid. Strict inequality guarantees we always shrink the search space. When pointers meet, that index is a peak. Time O(log n), space O(1).”
+    - Intuition: A peak sits where the array stops rising and starts falling. If at some index mid we see nums[mid] < nums[mid+1], we’re on an uphill—there must be a peak to the right. If nums[mid] > nums[mid+1], we’re on a downhill—a peak lies at mid or to the left. Since adjacent values are all different, each comparison gives a strict direction to move.
+    - Approach: Do a binary search over indices:
+        1. Initialize left=0, right=n-1.
+        2. While left < right:
+            mid = (left+right)//2
+            If nums[mid] > nums[mid+1]: set right = mid (keep left side).
+            Else: set left = mid + 1 (go right).
+            When the loop ends, left == right at a peak index. This works because “follow the slope” never skips all peaks.
+    - Complexity: Time O(log n), space O(1).
+        - Time Complexity: O(logn) — binary search.
+        - Space Complexity: O(1) — constant space.

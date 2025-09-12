@@ -825,3 +825,16 @@
     - Complexity: Time O(log n), space O(1).
         - Time Complexity: O(logn) — binary search.
         - Space Complexity: O(1) — constant space.
+
+56. firstBadVersion(self, n: int) -> int:  First Bad Version problem using binary search, which minimizes the number of calls to the isBadVersion(version) API
+    - “I do a binary search on version numbers. Check mid: if it’s bad, the first bad is at or before mid → move high = mid. If it’s good, the first bad is after mid → move low = mid + 1. When low meets high, that index is the first bad version. This runs in O(log n) time and constant space.”
+    - Intuition: Versions switch from good → bad at some unknown point and stay bad afterward. That monotonic pattern is perfect for binary search: if a middle version is bad, the first bad is at or before it; if it’s good, the first bad is after it. Repeatedly halving the search space finds the earliest bad version quickly.
+    - Approach: Maintain low=1, high=n. While low < high:
+        1. Compute mid = low + (high - low)//2 (avoids overflow).
+        2. If isBadVersion(mid) is True, set high = mid (candidate could be earlier).
+        3. Else set low = mid + 1 (must be later). When the loop ends, low == high and points to the first bad version.
+    - Complexity: O(log n) time, O(1) space.
+        - Time Complexity: O(logn) — binary search.
+        - Space Complexity: O(1) — constant space.
+        
+    

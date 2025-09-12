@@ -883,3 +883,42 @@
         - Complexity: Time O(n + m) where n=len(nums1), m=len(nums2); Memory O(U1) for the counter (U1 = unique in nums1) plus O(chunk_size). Works without sorting and with duplicates.
             - Time Complexity: O(n+m) — where n is size of nums1, m is total elements in nums2.
             - Space Complexity:O(n) — for storing frequency map of nums1.
+
+59. Longest Palindromic Substring
+    - 59a. Method 1: longestPalindrome(self, s: str) -> str: Longest Palindromic Substring using the expand-around-center technique
+        - “I try each index as a center and expand outwards for odd and even palindromes. The helper expands while characters match and returns the length. If this center’s palindrome is longer than my current best, I update [start, end]. After scanning all centers, I return the substring s[start:end+1]. It’s simple, in-place, and runs in O(n²) time.”
+        - Intuition: Every palindrome is defined by a center and expands symmetrically. For each index, there are two possible centers: the character itself (odd-length) and the gap between it and the next character (even-length). If we expand outward while ends match, we can find the longest palindrome centered there. Taking the best over all centers yields the answer.
+        - Approach: Loop i over all indices. For each i, compute:
+            1. len1 = expand(i, i) for odd palindromes,
+            2. len2 = expand(i, i+1) for even palindromes.
+            3. Pick max_len = max(len1, len2). If it beats the current best [start, end], update: 
+            start = i - (max_len - 1)//2, end = i + max_len//2.
+            expand(l, r) moves l--, r++ while in-bounds and s[l]==s[r], then returns length r - l - 1. Finally return s[start:end+1]. 
+        - Time: O(n²) worst case, Space: O(1).
+            - Time Complexity: O(n^2) — each center expansion can take up to O(n).
+            - Space Complexity: O(1) — no extra space used beyond variables.
+    - 59b. Method 2: longestPalindromeDP(self, s: str) -> str: using dynamic programming 
+        - “I fill a DP table where dp[i][j] tells if s[i..j] is a palindrome. Singles are true; doubles are true if the two chars match; longer ones are true when ends match and the middle dp[i+1][j-1] is true. I iterate lengths from small to large, updating the best window whenever I mark True. Finally I slice out that longest palindromic substring.”
+        - Intuition: A substring s[i..j] is a palindrome iff the ends match (s[i]==s[j]) and the inside is a palindrome (s[i+1..j-1]). That gives a natural DP substructure: build answers for short substrings and reuse them to decide longer ones. Track the longest true window as you go.
+        - Approach: Create dp[i][j] = True if s[i..j] is palindromic.
+            1. Base cases: all length-1 substrings are True; check length-2 pairs (s[i]==s[i+1]).
+            2. For lengths 3..n, for each start i (end j=i+len-1): set dp[i][j] = (s[i]==s[j] and dp[i+1][j-1]).
+            3. Whenever dp[i][j] becomes True, update start and max_len.
+            Return s[start:start+max_len].
+        - Complexity: Time O(n²), space O(n²).
+            - Time Complexity: O(n^2) — nested loops for all substrings.
+            - Space Complexity: O(n^2) — DP table.
+    - 59c. Method 3: longestPalindromeManacher(self, s: str) -> str: using Manacher’s Algorithm Optimal
+        - “I insert # between characters so all palindromes are odd. As I scan, I keep the rightmost-known palindrome and use its mirror to prefill the radius at i, then only expand beyond the known boundary. If we beat the boundary, update the center/right. In the end, the largest radius maps directly to the longest palindromic substring.”
+        - Intuition: Center-expansion is O(n²) because many centers repeat work. Manacher’s algorithm avoids this by keeping the rightmost palindrome seen so far (center, radius) and using mirror symmetry: the palindrome radius at position i is at least the mirror’s radius clipped to the current right boundary. Then we try to expand only the uncovered part. Preprocessing with separators (#a#b#…) makes odd/even palindromes uniform.
+        - Approach: 
+            1. Preprocess: t = '#' + '#'.join(s) + '#', so every palindrome has odd length.
+            2. Maintain center and right boundary radius. For each index i:
+                - Let mirror = 2*center - i. If i < right, seed radii[i] = min(right - i, radii[mirror]).
+                - Expand around i while chars match, increasing radii[i].
+                - If i + radii[i] > right, update center=i, right=i + radii[i].
+            3. Take the index with max radius, map back to original string: start = (max_center - max_len)//2, answer is s[start:start+max_len].
+        - Complexity: O(n) time, O(n) space.
+            - Time Complexity: O(n) — linear scan with efficient reuse of previous computations.
+            - Space Complexity: O(n) — for the radii array and preprocessed string.
+            

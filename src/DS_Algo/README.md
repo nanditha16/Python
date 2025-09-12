@@ -763,7 +763,7 @@
         - Space Complexity: O(1) — constant space.
 
 52. searchRange(self, nums: List[int], target: int) -> List[int]: Find First and Last Position of Element in Sorted Array using binary search
-    - 
+    - “I run two binary searches. The first, when it hits target, keeps going left to nail the first index; the second keeps going right to nail the last index. If the value isn’t found, I return [-1, -1]. This is O(log n) time and constant space.”
     - Intuition: In a sorted array, all occurrences of target form one contiguous block. We can find the first and last indices separately with binary search variants: when we see target, keep searching left to find the earliest index, and right to find the latest. If target doesn’t exist, both searches return -1.
     - Approach: Write a helper find_bound(is_left) that does binary search:
         1. Maintain left, right, and bound = -1.
@@ -777,3 +777,22 @@
     - Time: O(log n) per search → O(log n) total. Space: O(1).
         - Time Complexity: O(logn) — binary search twice.
         - Space Complexity: O(1) — no extra space used.
+
+53. myPow(self, x: float, n: int) -> float: Pow(x, n) using binary exponentiation
+    - “I use fast exponentiation. Treat n in binary: while n > 0, if the current bit is 1, multiply result by x. Each step I square x and halve n. For negative powers, flip to (1/x) and use -n. This computes x^n in O(log n) multiplications and constant space.”
+    - Intuition: Raising x to n doesn’t need n multiplications. Use the fact that:
+        if n is even, x^n = (x^2)^(n/2)
+        if n is odd, x^n = x * x^(n-1)
+        So we can square x and halve n repeatedly, multiplying into the answer only when the current bit of n is 1. For negative n, compute x^{-n} as (1/x)^n.
+    - Approach: 
+        1. If n < 0, set x = 1/x, n = -n.
+        2. Initialize result = 1.
+        3. While n > 0:
+            If n is odd (n % 2 == 1), result *= x.
+            Square x (x *= x) and integer-divide n //= 2.
+        4. Return result.
+    - Complexity: O(log n) time (processes bits of n), O(1) space.
+        - Time Complexity: O(logn) — binary exponentiation.
+        - Space Complexity: O(1) — constant space.
+
+54. Merge Intervals

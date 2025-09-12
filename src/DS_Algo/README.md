@@ -921,4 +921,53 @@
         - Complexity: O(n) time, O(n) space.
             - Time Complexity: O(n) — linear scan with efficient reuse of previous computations.
             - Space Complexity: O(n) — for the radii array and preprocessed string.
-            
+
+## *** IMPORTANT*** 
+60. Longest Valid Parentheses problem - 
+    Optimal Solution?
+    1. Best Overall: - Two-Pass Counter Method
+        Constant space
+        Linear time
+        Elegant and handles all edge cases
+    2. Best for Tracking Indices: - Stack Method
+        Useful if you need to recover the actual substring or track positions
+    3. Best for Substring Lengths: - Dynamic Programming
+        Good for problems that require more detailed state tracking
+    - 60a. Method 1: using a stack-based approach
+        - “I walk the string with a stack of indices. I push '(' indices; on ')' I pop. If the stack empties, that ')' becomes the new base index; otherwise, the current valid length is i - stack[-1], and I update the max. A sentinel -1 handles prefixes cleanly. This finds the longest valid parentheses in O(n) time.”
+        - Intuition: Use indices as anchors to measure valid spans. A closing ')' needs a matching '(' before it; if not, it resets the base of any future valid substring. A stack of indices tracks the last unmatched '('. Keeping an initial -1 sentinel lets us compute lengths directly as i - stack[-1] whenever we find a match.
+        - Approach: Scan s with a stack of indices:
+            1. Start stack = [-1], max_len = 0.
+            2. On '(', push its index.
+            3. On ')', pop once (using up one '(' if available).
+                If stack becomes empty, push current index i (new base).
+                Else, update max_len = max(max_len, i - stack[-1]) (length since last unmatched index). Return max_len. 
+        - Time: O(n). Space: O(n).
+            - Time Complexity: O(n) — single pass through the string.
+            - Space Complexity: O(n) — stack stores indices.
+    - 60b. Method 2: using Dynamic Programming (DP)
+        - “I use DP where dp[i] is the length of the longest valid substring ending at i. When I see ')', either it pairs with i-1 (forming "()") or it pairs with a '(' that sits just before the valid block ending at i-1. In both cases I add 2 and, if applicable, chain with earlier lengths. Track the maximum over all i. Runs in O(n) time, O(n) space.”
+        - Intuition: Let dp[i] be the length of the longest valid parentheses substring that ends at i. If s[i] is '(', it can’t end a valid substring. If s[i] is ')', there are two ways to close something: either it directly closes '(' at i-1 → "()", or it closes a '(' that sits just before the longest valid block ending at i-1. This captures nesting and concatenation by reusing previously computed lengths.
+        - Approach: Initialize dp = [0]*n, max_len = 0. For i from 1..n-1:
+            1. If s[i] == ')':
+                - Case 1: if s[i-1] == '(' → dp[i] = (dp[i-2] if i>=2 else 0) + 2.
+                - Case 2: else let prev = dp[i-1]. If i-prev-1 >= 0 and s[i-prev-1] == '(', then dp[i] = prev + 2 + (dp[i-prev-2] if i-prev-2 >= 0 else 0) (attach to earlier block). Update max_len = max(max_len, dp[i]). Return max_len.
+        - Time: O(n). Space: O(n).
+            - Time Complexity: O(n) We iterate through the string once.
+            - Space Complexity: O(n) We use a DP array of size n.
+    - 60c. Method 3: (Optimal) Two-pass counter approach (also known as the left-right scan method)
+        - “I do two counter sweeps. Left→right: count '(' and ')'; when counts match, record length; if ')' ever exceeds '(', reset. Right→left: same idea but roles flipped to catch left-heavy tails. The best length from either pass is the answer. This runs in O(n) time and O(1) space.”
+        - Intuition: Balanced parentheses require equal counts of '(' and ')' and never more ')' than '(' in a valid prefix. A single left→right pass misses cases that are “left-heavy” near the end, so we do two passes: left→right to catch segments where ')' doesn’t overrun, and right→left to catch segments where '(' doesn’t overrun.
+        - Approach: Scan left→right with counters left, right:
+            1. Increment left on '(', right on ')'.
+            2. If left == right, update max_len = max(max_len, 2*right).
+            3. If right > left, reset both to 0 (invalid prefix). Then scan right→left symmetrically:
+            4. Increment right on ')', left on '('.
+            5. If left == right, update max_len = max(max_len, 2*left).
+            6. If left > right, reset. Return max_len. 
+        - Time: O(n). Space: O(1).
+            - Time Complexity: O(n) Two linear scans of the string.
+            - Space Complexity: O(1) Only counters are used, no extra space proportional to input size.
+
+
+    

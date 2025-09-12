@@ -762,4 +762,18 @@
         - Time Complexity: O(logn) — binary search.
         - Space Complexity: O(1) — constant space.
 
-52.    
+52. searchRange(self, nums: List[int], target: int) -> List[int]: Find First and Last Position of Element in Sorted Array using binary search
+    - 
+    - Intuition: In a sorted array, all occurrences of target form one contiguous block. We can find the first and last indices separately with binary search variants: when we see target, keep searching left to find the earliest index, and right to find the latest. If target doesn’t exist, both searches return -1.
+    - Approach: Write a helper find_bound(is_left) that does binary search:
+        1. Maintain left, right, and bound = -1.
+        2. While left <= right: compute mid.
+            - If nums[mid] == target: set bound = mid, then
+                if is_left: move right = mid - 1 (push left),
+                else: move left = mid + 1 (push right).
+            - Else if nums[mid] < target: left = mid + 1;
+            - Else: right = mid - 1. 
+            - Run start = find_bound(True) and end = find_bound(False), return [start, end].
+    - Time: O(log n) per search → O(log n) total. Space: O(1).
+        - Time Complexity: O(logn) — binary search twice.
+        - Space Complexity: O(1) — no extra space used.

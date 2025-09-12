@@ -969,5 +969,24 @@
             - Time Complexity: O(n) Two linear scans of the string.
             - Space Complexity: O(1) Only counters are used, no extra space proportional to input size.
 
-
-    
+61. Decode Ways 
+    - 61a. Method 1: numDecodingsDP(self, s: str) -> int: Dynamic Programming
+        - “I count ways to decode prefixes. At position i, if the last char is non-zero, I can extend all decodings of s[:i-1]. If the last two chars form 10..26, I can also extend all decodings of s[:i-2]. Summing those gives dp[i]. Start with dp[0]=1, handle leading zero, and iterate once. Answer is dp[n].”
+        - Intuition: Think of decoding as ways to partition the string into valid codes: a single digit '1'..'9' or a two-digit '10'..'26'. The number of ways to decode up to position i depends on whether the last one or two digits form a valid letter. This creates a natural recurrence: choices at the end build on counts from earlier positions.
+        - Approach: Use DP where dp[i] = ways to decode the prefix s[:i]. Initialize dp[0]=1 (empty string) and dp[1]=1 if the first char isn’t '0'. For each i from 2..n:
+            1. If s[i-1] is '1'..'9', add dp[i-1] (take last one digit).
+            2. If s[i-2:i] is '10'..'26', add dp[i-2] (take last two digits). Return dp[n]. 
+        - Time: O(n). Space: O(n) (can be O(1) with two rolling variables).
+            - Time Complexity: O(n) — one pass through the string.
+            - Space Complexity: O(n) — for the dp array.
+            - Can be optimized to  O(1) using two variables instead of an array.
+    - 61b. Method 2: numDecodingsRecursiveDP(self, s: str) -> int: Recursive Dynamic Programming
+        - “I iterate backward. At each position i, if it’s '0', there are 0 ways. Otherwise, I can take the single digit (add dp[i+1]), and if the next two digits form 10..26, also take the pair (add dp[i+2]). I seed dp[len(s)] = 1 for the empty tail and finally return dp[0]. This counts all valid partitions.”
+        - Intuition: Decoding ways depend only on the tail you choose next. From index i, you can take one digit (if s[i] != '0') or two digits (if 10..26), then the problem reduces to the suffix starting at i+1 or i+2. So the total ways at i is the sum of ways from those next positions—classic overlapping subproblems → use DP.
+        - Approach: Build a memo dp from right to left with base dp[len(s)] = 1 (empty suffix). For each i:
+            - If s[i] == '0': dp[i] = 0 (no code starts with zero).
+            - Else set dp[i] = dp[i+1] (use one digit).
+            - If the two-digit number s[i:i+2] is valid ('10'..'26'), add dp[i+2]. Return dp[0].
+        - Complexity: O(n) time, O(n) space (can be reduced to O(1) with two rolling vars).
+            - Time Complexity: O(n) — each index is processed once.
+            - Space Complexity: O(n) — dictionary dp stores results for each index.

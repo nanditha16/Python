@@ -703,3 +703,22 @@
     - Complexity: Time O(total characters), Space O(Σ) for the rank map (Σ = alphabet size).
         - Time complexity: O(N⋅L) Where: N is the number of words. L is the average length of the words. We compare each pair of words character by character.
         - Space complexity: O(1) - The character-to-index mapping uses a fixed size of 26 characters, so it’s constant space.
+
+## *** IMPORTANT*** 
+49. minRemoveToMakeValid(self, s: str) -> str: Minimum Remove to Make Valid Parentheses
+    - “I scan once, matching parentheses with a stack. Unmatched ')' get marked immediately; unmatched '(' left on the stack after the scan are also marked. Then I rebuild the string, skipping only those marked indices—this yields a valid string with the minimum removals. Runs in O(n) time, O(n) space.”
+    - Intuition: We want to remove the fewest parentheses so the string is valid. Scan once to determine which parens are unmatched: push indices of '(' onto a stack; when we see ')', pop a '(' if available, otherwise mark this ')' as invalid. Any '(' left in the stack at the end are also invalid. Finally, rebuild the string skipping all invalid indices. 
+    - Approach: 
+        1. Traverse s with a stack of indices for '(' and a set to_remove.
+        2. On '(' → push index. On ')':
+            - If stack non-empty → pop (matched).
+            - Else → add index to to_remove (unmatched right).
+        3. After the scan, add any leftover '(' indices from the stack to to_remove.
+        4. Build the result by concatenating chars whose indices are not in to_remove.
+    - Time: O(n). Space: O(n) in worst case for the stack/set.
+        - Time Complexity: O(n)
+            One pass to identify invalid parentheses.
+            One pass to build the result string.
+        - Space Complexity: O(n)
+            Stack and to_remove set can grow up to size of input in worst case.
+            Result list also takes up to O(n) space.

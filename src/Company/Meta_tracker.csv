@@ -47,7 +47,7 @@ In progress,88,Merge Sorted Array,39.4%,Easy,1.4313521714101423, https://leetcod
 ,896,Monotonic Array,57.9%,Easy,1.4253001116063013, https://leetcode.com/problems/monotonic-array
 In progress,785,Is Graph Bipartite?,47.5%,Medium,1.4051826456400964, https://leetcode.com/problems/is-graph-bipartite
 In progress,721,Accounts Merge,48.8%,Medium,1.3810374792408489, https://leetcode.com/problems/accounts-merge
-,349,Intersection of Two Arrays,62.5%,Easy,1.3262693184793644, https://leetcode.com/problems/intersection-of-two-arrays
+In Progress,349,Intersection of Two Arrays,62.5%,Easy,1.3262693184793644, https://leetcode.com/problems/intersection-of-two-arrays
 In progress,29,Divide Two Integers,16.4%,Medium,1.3132705131849702, https://leetcode.com/problems/divide-two-integers
 ,249,Group Shifted Strings,55.1%,Medium,1.2602327507507307, https://leetcode.com/problems/group-shifted-strings
 In progress,339,Nested List Weight Sum,74.0%,Easy,1.2338014599366327, https://leetcode.com/problems/nested-list-weight-sum
@@ -124,7 +124,7 @@ In Progress,15,3Sum,26.8%,Medium,0.4923847546019265, https://leetcode.com/proble
 In progress,50,Pow(x;n),30.3%,Medium,0.4274653596092084, https://leetcode.com/problems/powx-n
 ,224,Basic Calculator,36.8%,Hard,0.42504615330727086, https://leetcode.com/problems/basic-calculator
 ,1233,Remove Sub-Folders from the Filesystem,59.5%,Medium,0.4243747624654565, https://leetcode.com/problems/remove-sub-folders-from-the-filesystem
-,350,Intersection of Two Arrays II,51.4%,Easy,0.42028659580670896, https://leetcode.com/problems/intersection-of-two-arrays-ii
+In Progress,350,Intersection of Two Arrays II,51.4%,Easy,0.42028659580670896, https://leetcode.com/problems/intersection-of-two-arrays-ii
 In progress,257,Binary Tree Paths,51.5%,Easy,0.4154891624073732, https://leetcode.com/problems/binary-tree-paths
 In Progress,8,String to Integer (atoi),15.4%,Medium,0.407141925712164, https://leetcode.com/problems/string-to-integer-atoi
 ,163,Missing Ranges,24.3%,Medium,0.4067714440222198, https://leetcode.com/problems/missing-ranges

@@ -836,5 +836,50 @@
     - Complexity: O(log n) time, O(1) space.
         - Time Complexity: O(logn) — binary search.
         - Space Complexity: O(1) — constant space.
-        
-    
+
+57. intersection(self, nums1: List[int], nums2: List[int]) -> List[int]: Intersection of Two Arrays 
+    - “I remove duplicates by converting both arrays to sets, then take their intersection to get the distinct values present in both. Convert that intersection back to a list and return it. Runs in linear time overall with linear extra space.”
+    - Intuition: We only care about unique numbers that appear in both arrays. Sets naturally represent uniqueness and support fast membership checks and intersections. So, turning both lists into sets and intersecting them gives exactly the distinct common elements.
+    - Approach: 
+        1. Convert nums1 and nums2 to sets: set1, set2 (deduplicate).
+        2. Compute set1 & set2 (set intersection).
+        3. Return it as a list.
+    - Complexity: Building sets is O(n + m) expected time; intersection is O(min(n, m)); overall O(n + m) time and O(n + m) space.
+        - Time Complexity: O(n+m) Where n and m are the lengths of nums1 and nums2
+        - Space Complexity: O(n+m) For storing the sets.
+
+58. Intersection of Two Arrays II where each element in the result must appear as many times as it shows in both arrays.
+    - 58a. Method 1: intersect(self, nums1: List[int], nums2: List[int]) -> List[int]: 
+        - “I compute frequencies for both arrays, then for each value present in both, I add it to the output min(count in nums1, count in nums2) times. That directly models intersection with duplicates. Runs in linear time with linear extra space for the counts.”
+        - Intuition: This is the intersection with multiplicity: if 2 appears 3 times in nums1 and 1 time in nums2, it should appear min(3,1)=1 time in the result. So just count how many times each value occurs in each array, then for every common key, take the minimum count.
+        - Approach: Build two frequency maps: count1 = Counter(nums1), count2 = Counter(nums2). 
+        1. Iterate keys of the smaller map (or count1 as in your code):
+            If the key exists in count2, append [key] * min(count1[key], count2[key]) to the result. Return the built list.
+        - Complexity: Time O(n + m) to count + up to O(U) to merge (U = unique keys). Space O(n + m) for the counters.
+            - Time Complexity: O(n+m) Where n and m are the lengths of nums1 and nums2.
+            - Space Complexity: O(n+m) For storing the frequency maps.
+    - 58b. Method 2: intersectTwoPointer(self, nums1: List[int], nums2: List[int]) -> List[int]: two-pointer version for sorted arrays
+        - When to Use This:
+            - When arrays are already sorted, this method avoids extra space and is very efficient.
+            - Especially useful when working with large datasets or streamed data.
+        - “I sort both lists and sweep with two pointers. When they’re equal, I record the value and move both; otherwise I advance the pointer with the smaller value. This collects the intersection with correct multiplicities in one pass after sorting. Time: O(n log n + m log m) for sorting + O(n+m) scan; Space: O(1) extra (output aside).”
+        - Intuition: If both arrays are sorted, common elements appear in the same order. Walk them with two pointers: when values match, it’s part of the intersection; otherwise, advance the pointer on the side with the smaller value to catch up. This naturally handles duplicates (each match consumes one occurrence on both sides).
+        - Approach: Sort nums1 and nums2. Initialize pointers i=j=0 and an empty result. While i < len(nums1) and j < len(nums2):
+            If nums1[i] == nums2[j]: append to result, increment both.
+            Else if nums1[i] < nums2[j]: increment i.
+            Else: increment j.
+            Return result.
+        - Time: O(n log n + m log m) for sorting + O(n+m) scan; Space: O(1) extra (output aside).
+            - Time Complexity: O(nlogn+mlogm) for sorting, O(n+m) for traversal→ Total: O(nlogn+mlogm)
+            - Space Complexity: O(1) extra space (excluding result)
+    - 58c. Method 3: (Pseudo simulation) intersect_streaming(self, nums1, nums2_stream): disk-based streaming scenario for the intersection of two arrays with duplicates, where nums2 is too large to fit into memory.
+        - “I preload the small array into a Counter and then scan the huge array streaming from disk. For each streamed number, if the counter says we still need it, I output it and decrement the count. This preserves multiplicities, uses memory proportional to the small array (not the big one), and runs in linear time over both inputs.”
+        - Intuition: When one array fits in memory and the other is too big (e.g., on disk), build a frequency map of the in-memory array. Then stream the large array in chunks, and for each element, emit it only if the map still has remaining count. This yields the correct intersection with multiplicities while keeping memory bounded.
+        - Approach: 
+            1. Counter(nums1) stores how many times each value can still match.
+            2. Read nums2 chunk-by-chunk (generator).
+            3. For each number in a chunk: if count1[num] > 0, append to result and decrement.
+            4. Continue until the stream ends; return result.
+        - Complexity: Time O(n + m) where n=len(nums1), m=len(nums2); Memory O(U1) for the counter (U1 = unique in nums1) plus O(chunk_size). Works without sorting and with duplicates.
+            - Time Complexity: O(n+m) — where n is size of nums1, m is total elements in nums2.
+            - Space Complexity:O(n) — for storing frequency map of nums1.

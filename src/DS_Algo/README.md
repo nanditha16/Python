@@ -2,130 +2,192 @@
 
 1. lengthOfLongestSubstring(self, s: str) -> int: Given a string s, find the length of the longest substring without duplicate characters.git add 
     - “I solve this using a sliding window with two pointers. I keep a hash map of each character’s last seen index. As I expand the right pointer, if a duplicate appears inside the window, I move the left pointer just past its previous index. At each step I update the max window size. This ensures each character is visited at most twice, so it runs in O(n) time with O(min(n, alphabet)) space.”
-    - Intuition (≈30s):
-    - Approach (≈30s): 
-    - O(n) time where n is the length of the string
-    - O(min(n, m)) space, where m is the size of the character set.
-    
+    - Intuition (≈30s): We want the longest substring without repeating chars. Slide a window over s; if we see a repeated char inside the current window, we jump the left edge past the previous occurrence so the window stays duplicate-free. Track the best window length as we go.
+    - Approach (≈30s): Keep a map char_index of each char’s last seen position, and two pointers: left (window start) and right (current index). For each right:
+        1. If s[right] was seen at or after left, move left = last_index + 1.
+        2. Update char_index[s[right]] = right.
+        3. Update max_length = max(max_length, right - left + 1). Return max_length
+    - Time: O(n). Space: O(min(n, Σ)).
+        - O(n) time where n is the length of the string
+        - O(min(n, m)) space, where m is the size of the character set.
 
 2. myAtoi(self, s: str) -> int: converts a string to a 32-bit signed integer.
     - “I implement atoi by parsing the string step by step. First, I skip leading spaces, then capture the sign if present. Next, I read digits while building the number, checking for overflow before each multiplication. If overflow happens, I clamp to INT_MAX or INT_MIN. Finally, I return the signed integer. This runs in O(n) time with O(1) space since I process each character once.”
-    - Intuition (≈30s):
+    - Intuition (≈30s): Parse the string the way you’d read a number by hand: skip spaces, read an optional sign, then scan consecutive digits to build the integer. While building, guard against 32-bit overflow: if the next digit would push the value past INT_MAX (or below INT_MIN after sign), clamp to the limit. Stop at the first non-digit.
     - Approach (≈30s): 
+        1. Skip leading ' '; set sign from +/- if present.
+        2. Iterate digits: num = num*10 + digit.
+        3. Before adding a digit, check num > (INT_MAX - digit)//10; if so, return INT_MAX or INT_MIN based on sign.
+        4. Return sign * num.
+    - Complexity: O(n) time, O(1) space.
 
 3. romanToInt(self, s: str) -> int: roman numeral to integer.
     - “I map each Roman numeral to its integer value and iterate from right to left. If the current numeral is smaller than the previous one, I subtract it; otherwise, I add it. This correctly handles subtractive cases like IV or IX. The solution runs in O(n) time with O(1) extra space since I just scan once.”
-    - Intuition (≈30s):
-    - Approach (≈30s): 
+    - Intuition (≈30s): Roman numerals use subtraction only when a smaller symbol comes before a larger one (e.g., IV = 4). If you scan the string right→left, you always know whether to add or subtract the current value by comparing it to the previous (right) value you saw.
+    - Approach (≈30s): Make a map roman_map. Initialize total=0, prev=0. For each char in reversed(s):
+        - val = roman_map[char]
+        - If val < prev, do total -= val (subtractive case); else total += val.
+        - Set prev = val. Return total.
+    - Time: O(n), Space: O(1).
 
 4. threeSum(self, nums: List[int]) -> List[List[int]]: Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
     - “I solve 3Sum by first sorting the array, then fixing one element at a time and using a two-pointer approach to find the other two numbers. Sorting helps both with skipping duplicates and moving pointers efficiently. If the sum is zero, I add the triplet and move both pointers while skipping duplicates; if the sum is too small, I move left; if too large, I move right. Sorting takes O(n log n), and the two-pointer scan gives O(n²) overall time with O(1) extra space.”
-    - Intuition (≈30s):
+    - Intuition (≈30s): To find triplets summing to zero, sort the array so we can fix one number and then look for a complementary pair that sums to its negative. Sorting lets us use a two-pointer sweep and easily skip duplicates, ensuring unique triplets.
     - Approach (≈30s): 
-    - Time Complexity: O(n²)  
-    - Space Complexity: O(1) (excluding output list) . 
+        1. Sort nums.
+        2. For each index i:
+            - If nums[i] equals the previous, continue (avoid duplicate first elements).
+            - Set left=i+1, right=n-1.
+            - While left<right: compute total=nums[i]+nums[left]+nums[right].
+                - If total==0, record the triplet, move both pointers, and skip duplicate left/right values.
+                - If total<0, increment left; else decrement right.
+        3. Return all collected triplets.
+    - Complexity: sort O(n log n) + two-pointer loops O(n²) ⇒ O(n²) time; O(1) extra space (output excluded).
+        - Time Complexity: O(n²)  
+        - Space Complexity: O(1) (excluding output list) . 
 
 5. removeDuplicates(self, nums: List[int]) -> int: Given an integer array nums sorted in ascending order, remove the duplicates in-place such that each unique element appears only once. 
     - “Since the array is sorted, duplicates are adjacent. I use two pointers: one (k) to track the position of the next unique element, and one (i) to scan through the array. Whenever I find a new value, I place it at position k and increment k. This way, the first k elements of the array are unique. It runs in O(n) time with O(1) extra space.”
-    - Intuition (≈30s):
+    - Intuition (≈30s): The array is already sorted, so duplicates are adjacent. Keep a write index k that marks where the next unique value should go. Scan from left to right; whenever nums[i] differs from the last unique value (nums[k-1]), copy it to nums[k] and advance k. Everything before k ends up as the de-duplicated array.
     - Approach (≈30s): 
-    - Time Complexity: O(n)
-        - The loop runs from i = 1 to len(nums) - 1, so it iterates once per element in the array.
-        - Each operation inside the loop is constant time: comparisons, assignments, and increments.
-        - Therefore, the total time complexity is linear, or O(n), where n is the length of the input list nums.
-    - Space Complexity: O(1)
-        - No additional data structures are used.
-        - The algorithm modifies the input list in-place.
+        1. If empty, return 0. Initialize k = 1.
+        2. For i from 1..n-1:
+            If nums[i] != nums[k-1]: set nums[k] = nums[i], increment k.
+        3. Return k (new length). The first k positions of nums contain uniques in order.
+    - Complexity: O(n) time, O(1) extra space.
+        - Time Complexity: O(n)
+            - The loop runs from i = 1 to len(nums) - 1, so it iterates once per element in the array.
+            - Each operation inside the loop is constant time: comparisons, assignments, and increments.
+            - Therefore, the total time complexity is linear, or O(n), where n is the length of the input list nums.
+        - Space Complexity: O(1)
+            - No additional data structures are used.
+            - The algorithm modifies the input list in-place.
 
 6. nextPermutation(self, nums: List[int]) -> None: Given an array of integers nums, find the next lexicographically permutation of nums.
     - “To compute the next lexicographical permutation, I scan from the right to find the first index i where nums[i] < nums[i+1]. Then I find the smallest number greater than nums[i] to its right, swap them, and finally reverse the suffix after i to get the next smallest order. If no such i exists, the array is entirely non-increasing, so I reverse the whole thing to get the lowest order. This runs in O(n) time with O(1) space.”
-    - Intuition (≈30s):
+    - Intuition (≈30s): To get the next lexicographic permutation, find the rightmost place where the sequence can be made larger. Scan from the end to find the first ascending pair nums[i] < nums[i+1]. That index i is the “pivot.” To minimally increase, swap nums[i] with the smallest number greater than it to its right, then make the suffix as small as possible by sorting it ascending (which is just reversing because it’s currently non-increasing).
     - Approach (≈30s): 
-    - Time Complexity:
-        - Worst case:  O(n)
-            - Finding the pivot: O(n)
-            - Finding the successor: O(n)
-            - Reversing the suffix: O(n)
-    - Space Complexity: O(1) (in-place modification, no extra space used)
+        1. Scan from right to left to find the first i with nums[i] < nums[i+1]. If none, reverse the whole array (wrap to smallest).
+        2. From the end, find the first j with nums[j] > nums[i] and swap nums[i], nums[j].
+        3. Reverse the subarray nums[i+1:] to get the smallest suffix.
+    - Time: O(n). Space: O(1).
+        - Time Complexity:
+            - Worst case:  O(n)
+                - Finding the pivot: O(n)
+                - Finding the successor: O(n)
+                - Reversing the suffix: O(n)
+        - Space Complexity: O(1) (in-place modification, no extra space used)
 
 7. multiply(self, num1: str, num2: str) -> str: Given two integers num1 and num2 represented as strings, return the product of num1 and num2, also represented as a string.
     - “To multiply two numbers given as strings, I simulate grade-school multiplication. I reverse both strings and use a result array of size m+n to store partial sums. For each digit pair, I multiply, add to the correct position, and carry over. After processing all pairs, I strip leading zeros and build the final string, adding a negative sign if needed. This works in O(m·n) time and O(m+n) space.”
-    - Intuition (≈30s):
+    - Intuition (≈30s): Multiply strings like grade-school multiplication. Treat each char as a digit, multiply every digit of num1 with every digit of num2, and place the product at the correct offset (i+j) in an int array. Manage carry as you go. Handle sign up front and the zero shortcut. At the end, strip leading zeros, reverse the array to form the string, and prepend - if needed.
     - Approach (≈30s): 
-    - Time: O(m⋅n)
-    - Space: O(m+n)
+        1. Determine the sign; strip leading -. If any number is "0", return "0".
+        2. Create result = [0] * (m+n); reverse both numbers to align least significant digits.
+        3. Double loop: for each i,j, do result[i+j] += digit1*digit2; push carry with: result[i+j+1] += result[i+j] // 10, then result[i+j] %= 10.
+        4. Pop trailing zeros from result, reverse, and join to string. Add '-' if negative.
+    - Complexity: Time O(m·n), Space O(m+n).
+        - Time: O(m⋅n)
+        - Space: O(m+n)
 
 8. groupAnagrams(self, strs: List[str]) -> List[List[str]]: Given an array of strings strs, group the anagrams together.
     - “I group words by their sorted character sequence. For each word, I sort its letters, use that as a key in a hash map, and append the word to that group. At the end, I return all the grouped values. Sorting each word takes O(k log k), so the overall complexity is O(n·k log k), where n is the number of words and k is the average word length.”
-    - Intuition (≈30s):
-    - Approach (≈30s): 
-    - Time Complexity:    
-        - Sorting each word: O(klogk)
-        - For n words:  O(n⋅klogk) Where n is number of words, k is average word length
-    - Space Complexity: O(n⋅k) for storing grouped anagrams
+    - Intuition (≈30s): Anagrams have the same multiset of letters. If you sort a word’s characters, all of its anagrams produce the same sorted key (e.g., "eat","tea","ate" → "aet"). So we can bucket words by this key; each bucket is one anagram group.
+    - Approach (≈30s): Create a hashmap key -> list_of_words. For each word, compute key = ''.join(sorted(word)) and append the word to anagram_map[key]. At the end, return all the hashmap’s values.
+    - Complexity: Sorting each word of length L costs O(L log L), so total O(Σ L_i log L_i); space O(Σ L_i) for storing groups. (Alternative: use a 26-count tuple as key for O(L) per word.)
+        - Time Complexity:    
+            - Sorting each word: O(klogk)
+            - For n words:  O(n⋅klogk) Where n is number of words, k is average word length
+        - Space Complexity: O(n⋅k) for storing grouped anagrams
 
 ## *** IMPORTANT*** 
 9. addBinaryaddBinary(self, a: str, b: str) -> str: Given two binary strings a and b, return their sum as a binary string.
     - “To add two binary strings, I simulate binary addition from right to left. At each step I add the corresponding bits plus a carry, compute the new bit (total % 2), and update the carry (total // 2). I keep appending results and reverse at the end. This handles unequal lengths naturally, and runs in O(n) time with O(n) space, where n is the max length of the inputs.”
-    - Intuition (≈30s):
-    - Approach (≈30s): 
-    - Time Complexity: O(max(n,m)), Where n and m are lengths of a and b
-    - Space Complexity: O(max(n,m)) For storing result  
+    - Intuition (≈30s): Add the two binary strings like grade-school addition from right to left. At each position, sum the two bits plus a carry (0 or 1). The result bit is sum % 2; the new carry is sum // 2. Keep going until you’ve exhausted both strings and any leftover carry.
+    - Approach (≈30s): Use two indices i, j at the ends of a and b, and carry = 0. While i >= 0 or j >= 0 or carry:
+        1. Read bit_a = int(a[i]) if i >= 0 else 0; same for bit_b.
+        2. total = bit_a + bit_b + carry; append str(total % 2) to result.
+        3. Update carry = total // 2; decrement i, j. Reverse and join result.
+    - Complexity: O(m+n) time, O(m+n) output space (aux O(1)).
+        - Time Complexity: O(max(n,m)), Where n and m are lengths of a and b
+        - Space Complexity: O(max(n,m)) For storing result  
 
 ## *** IMPORTANT*** 
 10. minWindow(self, s: str, t: str) -> str: Given two strings s and t of lengths m and n respectively, return  the minimum window substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string.
     - “I use a sliding window with two pointers. I count required chars from t and scan s with a right pointer, updating a window map and a formed counter when a char meets its needed freq. When all required chars are satisfied (formed == required), I shrink from the left to find the smallest valid window, updating the best answer. Expanding and contracting each pointer at most |s| times gives O(|s| + |t|) time and O(Σ) space for the frequency maps.”
-    - Intuition (≈30s):
-    - Approach (≈30s): 
-    - Time Complexity: O(m+n) Each character is visited at most twice (once by right, once by left)
-    - Space Complexity: O(n) For storing character counts
+    - Intuition (≈30s): We want the smallest substring of s that covers all chars (with counts) from t. Use a sliding window: expand the right end to include needed chars; once the window has all required counts, shrink from the left to make it as small as possible, keeping track of the best window seen.
+    - Approach (≈30s): Count requirements with t_count; track formed = how many required chars meet their needed count in the current window. For each right in s:
+        1. Add s[right] to window_counts; if its count hits t_count, increment formed.
+        2. While formed == required, update the best window, then move left rightward: decrement window_counts[s[left]] and, if it drops below t_count, decrement formed. Return the recorded min window (or "" if none). 
+    - Time: O(|s| + |t|). Space: O(Σ) for the maps.
+        - Time Complexity: O(m+n) Each character is visited at most twice (once by right, once by left)
+        - Space Complexity: O(n) For storing character counts
 
 11. merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None: Merge ascending two arrays into a single array sorted in ascending order.
     - “I merge from the end to avoid shifting and extra space. I keep three pointers: i at the last real element of nums1, j at the end of nums2, and k at the write position (end of nums1). At each step I place the larger of nums1[i] or nums2[j] into nums1[k] and move pointers. When one side finishes, any remaining nums2 elements are copied over. This is O(m+n) time and O(1) extra space.”
-    - Intuition (≈30s):
-    - Approach (≈30s): 
-    - Time Complexity: O(m+n) Each element is visited once
-    - Space Complexity: O(1) In-place merge, no extra space used
+    - Intuition (≈30s): We need to merge two sorted arrays into nums1 in-place. If we filled from the front, we’d overwrite useful elements in nums1. So we fill from the back: compare the largest remaining elements of nums1 and nums2, place the larger at the end, and move backward. This preserves order without extra space.
+    - Approach (≈30s): Use three pointers: 
+        1. i = m-1 (end of valid nums1), j = n-1 (end of nums2), k = m+n-1 (end of buffer in nums1).
+        2. While i >= 0 and j >= 0, write the larger of nums1[i] / nums2[j] to nums1[k] and decrement that pointer and k. When one side finishes, copy any remaining nums2 elements into nums1 (leftover nums1 are already in place).
+    - Time: O(m+n). Space: O(1).
+        - Time Complexity: O(m+n) Each element is visited once
+        - Space Complexity: O(1) In-place merge, no extra space used
 
-12. isPalindrome(self, s: str) -> bool: Is palindrom using Slicing or two pointers
-    - 12a. Method 1 : using Slicing ([::-1]) - For quick, readable code in small-scale use → Slicing is fine.
-    - Intuition (≈30s):
-    - Approach (≈30s): 
+12. Palindrome varients: Is palindrom using Slicing or two pointers
+    - 12a. Method 1 : isPalindrome(self, s: str) -> bool:  using Slicing ([::-1]) - For quick, readable code in small-scale use → Slicing is fine.
+    - Intuition (≈30s): Ignore everything that isn’t a letter or digit, and compare case-insensitively. If the cleaned sequence reads the same forwards and backwards, it’s a palindrome.
+    - Approach (≈30s): Build filtered = [c.lower() for c in s if c.isalnum()], then return filtered == filtered[::-1] (reverse check).
+    - Time: O(n) to filter + O(n) to compare. Space: O(n) for the filtered list (can be O(1) if you use two pointers without building a list).
         - Time Complexity:
             - Reversing the string: O(n)
             - Comparing strings: O(n)
             - Total: O(n)
         - Space Complexity: Creates a new reversed string →  O(n) extra space 
-    - 12b. Method 2: using pointers - For performance and memory efficiency, especially with large strings 
+    - 12b. Method 2: is_palindrome(self, s: str) -> bool: using pointers - For performance and memory efficiency, especially with large strings 
         - “I normalize the string to compare only alphanumerics case-insensitively. One approach builds a filtered lowercase list and checks if it equals its reverse — simple and Pythonic, O(n) time, O(n) space. More optimal on space uses two pointers from both ends, skipping non-alphanumerics and comparing lowercase characters; if any mismatch appears, return false, otherwise true. That keeps it O(n) time and O(1) extra space.”
-        - Intuition (≈30s):
-        - Approach (≈30s): 
-        - Time Complexity: Single pass through the string → O(n) 
-        - Space Complexity: No extra space used → O(1)
-    - 12c. Method 3: Valid Palindrome - one more 
+        - Intuition (≈30s): Check if the string reads the same forwards and backwards ignoring non-alphanumeric characters and case. Use two pointers from both ends; skip anything that isn’t a letter/digit, then compare the characters case-insensitively.
+        - Approach (≈30s): Set left=0, right=len(s)-1. While left < right:
+            1. Move left rightward while s[left] isn’t alphanumeric; move right leftward while s[right] isn’t.
+            2. Compare s[left].lower() and s[right].lower(). If different → False.3. Otherwise advance both pointers. If the loop completes, return True.
+        - Time: O(n). Space: O(1).
+            - Time Complexity: Single pass through the string → O(n) 
+            - Space Complexity: No extra space used → O(1)
+    - 12c. Method 3: validPalindrome(self, s: str) -> bool: Valid Palindrome - one more 
         - “I use a two-pointer check with one allowed deletion. Move left and right inward while chars match. At the first mismatch, I try both options: skip s[left] or skip s[right], and verify the remaining range is a palindrome with a helper. If either succeeds, the whole string is valid after deleting at most one char. This is O(n) time (each index visited a constant number of times) and O(1) extra space.”
-        - Intuition (≈30s):
-        - Approach (≈30s): 
-        - Time Complexity: Single pass through the string → O(n) 
-        - Space Complexity: No extra space used → O(1)
+        - Intuition (≈30s): We’re allowed to delete at most one character to make a palindrome. Use two pointers from both ends. As long as chars match, move inward. On the first mismatch, we have one “free delete”: either drop the left char or the right char. If either remaining substring is a palindrome, the whole string can be fixed with one deletion.
+        - Approach (≈30s): Set left=0, right=len(s)-1. While left<right:
+            1. If s[left]==s[right], move both pointers.
+            2. Else, call a helper is_palindrome_range(l, r) that checks a substring. Return is_palindrome_range(left+1, right) OR is_palindrome_range(left, right-1). If the loop finishes, return True.
+        - Time: O(n) (two-pointer pass + up to one linear check). Space: O(1).
+            - Time Complexity: Single pass through the string → O(n) 
+            - Space Complexity: No extra space used → O(1)
 
 13. read(self, buf, n): Read N Characters Given read4
     - “I repeatedly call read4 into a 4-char temp buffer and copy out only what I still need, stopping when I’ve read n chars or read4 hits EOF. Each iteration adds min(count, n - total_read) to the destination buf, and I track total_read as I go. This guarantees we never over-read or write past n. The algorithm is O(n) time and O(1) extra space.”
     - Notes (if asked):
         - Handles partial final chunk and EOF cleanly.
         - For the follow-up (function called multiple times), keep a persistent leftover buffer across calls to store unread chars from the last read4.
-    - Intuition (≈30s):
-    - Approach (≈30s): 
-    - Time Complexity: O(n) Because in the worst case, we read one character at a time up to n.
-    - Space Complexity: O(1) Only a fixed-size buffer buf4 of size 4 is used.
+    - Intuition (≈30s): read4 gives up to 4 chars per call, but callers may ask for any n and across multiple calls we must continue where we left off. So we keep a persistent 4-char internal buffer plus two pointers: how many chars read4 filled (buf_count) and where we are within it (buf_ptr). Each read(n) first drains leftovers from this buffer before calling read4 again.
+    - Approach (≈30s): Maintain buffer[4], buf_ptr, buf_count. Loop while total_read < n:
+        1. If buf_ptr == buf_count, refill: buf_count = read4(buffer), reset buf_ptr = 0; if buf_count == 0, EOF → stop.
+        2. Copy from buffer[buf_ptr:buf_count] into buf until you reach n or exhaust the internal buffer; advance buf_ptr and total_read. Return total_read. (On LeetCode you write into preallocated buf by index; in local tests you can append.) 
+    - Runs in O(n) per call, O(1) extra space.
+        - Time Complexity: O(n) Because in the worst case, we read one character at a time up to n.
+        - Space Complexity: O(1) Only a fixed-size buffer buf4 of size 4 is used.
 
 14. read(self, buf: List[str], n: int) -> int: Read N Characters Given read4 - Call multiple times.
     - Your read(buf, n) method may be called multiple times, and you must preserve state between calls. - (persistent buffer)
     - “read returns up to n chars using only read4. I keep a persistent 4-char internal buffer across calls (buffer, buf_ptr, buf_count). For each request, I first drain leftovers from that buffer into buf. When it’s empty, I refill by calling read4, reset the pointer, and continue copying until I’ve produced n chars or read4 hits EOF. This guarantees correct behavior across multiple calls without rereading the file. Time is O(n) per call, extra space is O(1) beyond the fixed internal buffer. (In LeetCode, we write into a preallocated buf; in local tests here I append.)”
-    - Intuition (≈30s):
-    - Approach (≈30s): 
-    - Time Complexity: O(n) — We read up to n characters.
-    - Space Complexity: O(1) — Only a fixed-size buffer is used.
+    - Intuition (≈30s): Two strings are one edit apart if you can make them equal with exactly one insert, delete, or replace. Compare them left-to-right until the first mismatch. At that spot:
+        - If lengths are equal → it must be a replace of that char.
+        - If lengths differ by 1 → it must be a single insert/delete. If no mismatch appears, they’re one edit apart only if the longer string has one extra trailing character.
+    - Approach (≈30s): Let s be the shorter. If len(t)-len(s) > 1, return False. Scan indices:
+        1. On first mismatch at i:
+            - If equal lengths: check s[i+1:] == t[i+1:] (replace).
+            - Else (t longer by 1): check s[i:] == t[i+1:] (insert in s / delete from t). If no mismatch, return len(s)+1 == len(t).
+    - Time: O(n). Space: O(1).
+        - Time Complexity: O(n) — We read up to n characters.
+        - Space Complexity: O(1) — Only a fixed-size buffer is used.
 
 15. isOneEditDistance(self, s: str, t: str) -> bool: Given two strings s and t, return true if they are both one edit distance apart, otherwise return false.
     - “I check if two strings are exactly one edit apart (insert, delete, or replace). I first make s the shorter string; if the length gap > 1, return false. Then I scan until the first mismatch. If lengths are equal, I verify the rest after that index matches (replacement). If lengths differ by 1, I compare s[i:] with t[i+1:] to simulate a single insertion/deletion. If no mismatch appears, it’s true only when t has exactly one extra trailing char. Runs in O(n) time and O(1) space.”
@@ -137,63 +199,95 @@
 ## *** IMPORTANT*** 
 16. productExceptSelf(self, nums: List[int]) -> List[int]: Product of Array Except Self
     - “I compute the product of all elements except self without division using two passes. First pass builds prefix products: answer[i] = product of everything left of i. Second pass runs right-to-left with a running suffix product and multiplies it into answer[i]. This way each index gets (prefix × suffix) of all other elements. It naturally handles zeros and uses O(n) time and O(1) extra space (excluding the output array).”
-    - Intuition (≈30s):
+    - Intuition (≈30s): For each index, the answer is (product of all left elements) × (product of all right elements). Instead of dividing by nums[i], we can precompute these two products without extra arrays by doing two sweeps: one left→right to store prefixes, and one right→left to multiply in suffixes.
     - Approach (≈30s): 
-    - Time Complexity: O(n) — two linear passes.
-    - Space Complexity:O(1) extra space if we don't count the output array. Otherwise, O(n) for the output.
+        1. Init answer with 1s.
+        2. Left pass: keep prefix; for each i, set answer[i]=prefix, then prefix*=nums[i].
+        3. Right pass: keep suffix; for i from end to start, do answer[i]*=suffix, then suffix*=nums[i]. Return answer. Handles zeros naturally. 
+    - Time: O(n). Extra space: O(1) (output excluded).
+        - Time Complexity: O(n) — two linear passes.
+        - Space Complexity:O(1) extra space if we don't count the output array. Otherwise, O(n) for the output.
 
 ## *** IMPORTANT*** 
 17. numberToWords(self, num: int) -> str: Integer to English Words
     - “I convert an integer to English words by processing it in 3-digit chunks (ones/tens/hundreds) from right to left. A recursive helper handles numbers <1000: direct lookup for <20, tens lookup plus ones for <100, and "X Hundred" plus the remainder for >=100. I iterate over the chunks, appending the appropriate scale — ["", "Thousand", "Million", "Billion"] — and concatenate non-zero parts. Edge case 0 → "Zero". Finally I strip() spaces. Runs in O(d) where d is digits (effectively constant for 32-bit ints), with O(1) extra space.”
-    - Intuition (≈30s):
-    - Approach (≈30s): 
-    - Time Complexity: O(log 10​ (n)) — we process each group of 3 digits.
-    - Space Complexity: O(1) — fixed-size arrays and recursion depth.
+    - Intuition (≈30s): Spell the number in chunks of three digits because English names change every thousand (Thousand, Million, Billion). For any chunk < 1000, you can say it with a small set of rules: direct words for <20, tens words for 20–90, and "X Hundred" plus the remainder.
+    - Approach (≈30s): If num == 0 return "Zero". Define lookup tables for <20, tens, and the scales ["", "Thousand", "Million", "Billion"]. A helper helper(n) converts a number <1000:
+        - <20 → direct word
+        - <100 → tens[n//10] + helper(n%10)
+        - otherwise → below_20[n//100] + " Hundred " + helper(n%100). Then iterate over the number, taking num % 1000 each time, prefix the helper’s words plus the proper scale, and divide num //= 1000. Trim spaces and return. 
+    - Time: Θ(log₁₀ n) — you process one 3-digit chunk per iteration, i.e., proportional to the number of digits. Space (aux): Θ(log₁₀ n) due to recursion depth of helper across chunks (and a few locals). Often treated as O(1) for fixed-width integers (e.g., 32-bit), since the number of chunks is bounded. Output size: The returned string length is also Θ(log n), which is unavoidable.; space: O(1).
+        - Time Complexity: O(log 10​ (n)) — we process each group of 3 digits.
+         - Space Complexity: O(1) — fixed-size arrays and recursion depth.
 
 18. moveZeroes
     - 18.a Method 1 : moveZeroes(self, nums: List[int]) -> None: Two pass
         - “I use a two-pass, in-place approach. First pass compacts all non-zeros to the front while tracking last_non_zero, writing each seen non-zero to that index. After this, the first last_non_zero positions are correct but the tail may contain old values; second pass fills the rest with zeros. This preserves the relative order of non-zeros (stable) and uses O(1) extra space. Overall time is O(n).”
         - (If asked for a one-pass variant: swap nums[last_non_zero], nums[i] whenever nums[i] != 0, increment last_non_zero.)
-        - Intuition (≈30s):
-        - Approach (≈30s): 
-        - Time Complexity: O(n)
-        - Space Complexity: O(1) (in-place)
-        - Writes: Up to n writes (non-zero + zero fill)
+        - Intuition (≈30s): Pack all non-zeros to the front in their original order, then fill the remaining tail with zeros. This avoids lots of swaps and keeps writes minimal: each non-zero is written once to its correct spot, and then we do a single sweep to write the needed zeros.
+        - Approach (≈30s): Keep a write index last_non_zero = 0.
+            1. First pass: scan left→right; for every nums[i] != 0, write nums[last_non_zero] = nums[i] and increment last_non_zero.
+            2. Second pass: set all indices from last_non_zero to end to 0. This is stable, in-place. 
+        - Time: O(n). Space: O(1).
+            - Time Complexity: O(n)
+            - Space Complexity: O(1) (in-place)
+            - Writes: Up to n writes (non-zero + zero fill)
     - 18.b Method 2 : moveZeroesOnePass(self, nums: List[int]) -> None: One pass
         - “I keep a write pointer last_non_zero. As I scan, every non-zero goes to last_non_zero; if positions differ, I set the current to zero. That compacts non-zeros stably and pushes zeros to the end in one pass, O(n) time, O(1) space.”
-        - Intuition (≈30s):
-        - Approach (≈30s): 
-        - Time: O(n)
-        - Space: O(1)
-        - Swaps: Fewer than n, but each swap is 2 writes. - Swapping involves 2 writes per operation, which may be more costly than direct assignment.
+        - Intuition (≈30s): Compact all non-zeros to the front, preserving their order, and let zeros naturally drift to the end. Keep a write pointer last_non_zero that marks where the next non-zero should go. As you scan, whenever you see a non-zero at i, place it at last_non_zero (swap if needed) and advance last_non_zero.
+        - Approach (≈30s): Scan i = 0..n-1:
+            1. If nums[i] != 0:
+                - If i != last_non_zero, swap nums[i] with nums[last_non_zero] (avoids self-swap).
+                - Increment last_non_zero. By the end, indices [0..last_non_zero-1] hold all non-zeros in order; the rest are zeros. 
+        - Time: O(n). Space: O(1).
+            - Time: O(n)
+            - Space: O(1)
+            - Swaps: Fewer than n, but each swap is 2 writes. - Swapping involves 2 writes per operation, which may be more costly than direct assignment.
     - 18.c Method 3 : moveZeroesFewerWritesThanSwapping(self, nums: List[int]) -> None: optimal for writes without extra passes;
         - “I keep a write index last_non_zero. As I scan once, every non-zero is written to nums[last_non_zero]. If the current index differs, I set the current slot to 0. This compacts non-zeros in stable order and pushes zeros to the end in a single pass. It minimizes writes vs swapping (each non-zero written once; zeros only written when needed). Runs in O(n) time and O(1) extra space.”
-        - Intuition (≈30s):
-        - Approach (≈30s): 
-        - Time: O(n)
-        - Space: O(1)
-        - Writes: Minimal — only when necessary.
+        - Intuition (≈30s): We want all non-zeros compacted to the front in order, with zeros pushed to the end—without extra space and with fewer writes than swapping. As we scan, keep a write index last_non_zero pointing to where the next non-zero should go. When we see a non-zero at i, place it at last_non_zero. If i is ahead, set nums[i] to 0—this both moves the value forward and leaves a zero behind.
+        - Approach (≈30s): Initialize last_non_zero = 0. For each i:
+            1. If nums[i] != 0:
+                - Write nums[last_non_zero] = nums[i].
+                - If i != last_non_zero, write nums[i] = 0 (avoids self-write).
+                - Increment last_non_zero. This is one pass, preserves order, uses O(1) space, and minimizes writes vs swapping. 
+        - Time: O(n). Space: O(1).
+            - Time: O(n)
+            - Space: O(1)
+            - Writes: Minimal — only when necessary.
 
 19. lengthOfLongestSubstringKDistinct(self, s: str, k: int) -> int:  Longest Substring with At Most K Distinct Characters
     - “I use a sliding window with a hash map counting chars. Expand the right pointer, increment the count for s[right]. If the window has > k distinct characters, I shrink from the left: decrement s[left], remove it from the map when its count hits 0, and move left forward until we’re back to ≤ k distinct. After each step I update the best length. Each char enters and leaves the window at most once → O(n) time and O(k) space.”
-    - Intuition (≈30s):
-    - Approach (≈30s): 
-    - Time Complexity: O(n) — each character is visited at most twice.
-    - Space Complexity: O(k) — for the character count dictionary.
+    - Intuition (≈30s): Use a sliding window to keep the longest substring that contains at most k distinct characters. As you expand the right end, track character frequencies. If you exceed k distinct, move the left end rightward to drop chars until you’re back to ≤ k. The window always represents a valid candidate; track the max length seen.
+    - Approach (≈30s): Maintain left, char_count, and iterate right over s:
+        1. Add s[right] to char_count.
+        2. While len(char_count) > k, decrement s[left]; if its count hits 0, remove it; then left += 1.
+        3. Update max_len = max(max_len, right - left + 1) each step. Return max_len. 
+    - Time: O(n) (each index enters/leaves window once). Space: O(k) (map holds ≤ k keys).
+        - Time Complexity: O(n) — each character is visited at most twice.
+        - Space Complexity: O(k) — for the character count dictionary.
 
 20. validIPAddress(self, queryIP: str) -> str: Given a string queryIP, return "IPv4" if IP is a valid IPv4 address, "IPv6" if IP is a valid IPv6 address or "Neither" if IP is not a correct IP of any type.
     - “I validate by trying IPv4 and IPv6 separately. For IPv4, I split on dots into 4 parts; each must be all digits, in [0..255], and no leading zeros unless the part is exactly ‘0’. For IPv6, I split on colons into 8 parts; each part length 1–4 and only hex digits. If IPv4 check passes return ‘IPv4’; else if IPv6 passes return ‘IPv6’; otherwise ‘Neither’. Splits and scans are linear → O(n) time, O(1) extra space.”
-    - Intuition (≈30s):
+    - Intuition (≈30s): Decide whether the string fits IPv4 rules, IPv6 rules, or neither. IPv4 has 4 dot-separated decimal chunks with strict bounds and no leading zeros. IPv6 has 8 colon-separated chunks of 1–4 hex digits. If it passes one set of rules exactly, return that version; otherwise it’s “Neither.”
     - Approach (≈30s): 
-    - Time Complexity:O(n)
-    - Space Complexity: O(1)  — no extra space used beyond a few variables.
+        1. IPv4 check: split('.') → need 4 parts; each part must be all digits, value in [0..255], and no leading ‘0’ unless the part is exactly "0".
+        2. IPv6 check: split(':') → need 8 parts; each part length 1–4 and every char in [0-9a-fA-F].
+        3. Run IPv4 check; if true return "IPv4". Else run IPv6 check; if true return "IPv6". Else return "Neither".
+    - Complexity: O(n) time, O(1) extra space.
+        - Time Complexity:O(n)
+        - Space Complexity: O(1)  — no extra space used beyond a few variables.
 
 21. subarraySum(self, nums: List[int], k: int) -> int: Subarray Sum Equals K
     - “I use a prefix sum + hashmap to count subarrays summing to k. As I scan, let prefix_sum be sum up to the current index. Any earlier prefix x where prefix_sum − x = k implies a subarray (x+1..i) sums to k. So I keep a map prefix_map of how many times each prefix has occurred; at each step I add prefix_map[prefix_sum - k] to the answer, then increment prefix_map[prefix_sum]. Initialize prefix_map[0]=1 for subarrays starting at index 0. Works with negatives, runs in O(n) time and O(n) space.”
-    - Intuition (≈30s):
-    - Approach (≈30s): 
-    - Time:  O(n) We traverse the array once..
-    - Space:  O(n) We store prefix sums in a hashmap.
+    - Intuition (≈30s):  Use running (prefix) sums to spot subarrays that add to k. If the sum up to index i is S, then any earlier prefix sum S - k means the subarray between that earlier point and i sums to k. So as you scan, you just need to know how many times you’ve seen each prefix sum before.
+    - Approach (≈30s): Maintain prefix_sum and a hashmap prefix_map counting occurrences of each prefix, seeded with {0:1} (handles subarrays starting at index 0). For each num:
+        1. Update prefix_sum += num.
+        2. Add prefix_map[prefix_sum - k] to count.
+        3. Increment prefix_map[prefix_sum]. Return count. 
+    - Time: O(n). Space: O(n). Works with negatives too.
+        - Time:  O(n) We traverse the array once..
+        - Space:  O(n) We store prefix sums in a hashmap.
 
 22. addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]: Add Two Numbers Singly Linked List
     - “I add two numbers stored in reverse-order linked lists using a running carry. I walk both lists simultaneously; for each step I take value1/value2 (0 if a list ended), compute carry, digit = divmod(value1 + value2 + carry, 10), append digit to the result via a dummy head, and advance pointers. The loop continues while either list has nodes or a carry remains, so it naturally handles unequal lengths and a final carry node. Time: O(max(m, n)) (a.k.a. O(m+n)). Space: O(max(m, n)) for the output list; aux space: O(1).”

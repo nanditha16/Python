@@ -1139,3 +1139,40 @@
             Each digit can be followed by 3 operators or be part of a longer number.
             Exponential due to recursive branching.
         - Space Complexity: O(n) for recursion stack and path string.
+
+71. findAnagrams(self, s: str, p: str) -> List[int]: Find All Anagrams in a String
+    - “I keep a 26-length frequency array for p and another for the current window of size len(p) in s. As I expand right, I increment that char; if the window gets too big, I decrement the left char and move left. Whenever window size equals m and the two arrays match, I push left to the result. Runs in O(n) time, O(1) space.”
+    - Intuition: An anagram of p is just a reordering of its letters. So as we slide a window of length len(p) over s, we only need to check if the window’s letter frequencies match p’s frequencies. Keep counts for a..z and update them incrementally as the window moves, instead of recomputing from scratch.
+    - Approach: Precompute target_freq[26] for p. Sweep s with a sliding window [left..right]:
+        1. Add s[right] to window_freq.
+        2. If window size exceeds m, remove s[left] and increment left.
+        3. When window size equals m, if window_freq == target_freq, record left.
+            his uses two fixed-size arrays (26) and O(1) updates per step.
+    - Complexity: Let: n=len(s), mad=len(p)
+        - Time Complexity: O(n) — each character is processed once in the sliding window.
+        - Space Complexity: O(1) — fixed-size arrays of 26 elements (constant space).
+
+72. checkInclusion(self, s1: str, s2: str) -> bool: Permutation in String
+    - “I keep two 26-length counters: one for s1, one for a moving window in s2 of the same length. I initialize on the first window, then slide: increment the entering char, decrement the leaving char. If the counters ever match, that window is a permutation of s1 → return True. Otherwise, return False. Linear time, constant space.”
+    - Intuition: We’re checking if any substring of s2 is a permutation of s1. Two strings are permutations if their letter counts match. So keep a sliding window of length len(s1) over s2 and compare frequency arrays (size 26). Update counts in O(1) as the window moves; if a window’s counts equal s1’s counts, we found a permutation.
+    - Approach: 
+        1. Build s1_freq[26] and the first window’s window_freq[26] from s2[0:len_s1].
+        2. If they match, return True.
+        3. Slide the window from left to right:
+            Add the new right char, remove the old left char from window_freq.
+            After each slide, if window_freq == s1_freq, return True.
+        4. If no match by the end, return False.
+    - Complexity: Time O(n) over s2 with O(1) work per step; Space O(1) (two fixed 26-length arrays). Let: n=len(s2), m=len(s1)
+        - Time Complexity: O(n) — each character is processed once in the sliding window.
+        - Space Complexity: O(1) — fixed-size arrays of 26 elements (constant space).
+
+73. intervalIntersection(self, firstList: List[List[int]], secondList: List[List[int]]) -> List[List[int]]: Interval List Intersections
+    - “I sweep both sorted lists with two pointers. For each pair, if they overlap, I record [max start, min end]. Then I advance the interval that ends first, since it can’t intersect future intervals. One linear pass yields all intersections.”
+    - Intuition: Two sorted interval lists overlap only around the intervals that are currently “active.” If the current pair overlaps, their intersection is simply [max(starts), min(ends)]. After processing a pair, advance the pointer of the interval that finishes first—it can’t intersect anything later.
+    - Approach: Use two pointers i, j over firstList and secondList. While both in-bounds:
+        1. Let [s1,e1]=first[i], [s2,e2]=second[j].
+        2. If they overlap (s1 ≤ e2 and s2 ≤ e1), append [max(s1,s2), min(e1,e2)].
+        3. Move the pointer whose end is smaller: i += 1 if e1 < e2, else j += 1.Return all collected intersections.
+    - Complexity: O(m + n) time, O(1) extra space (output aside). Let: n=len(firstList), m=len(secondList)
+        - Time Complexity: O(n+m) — each interval is processed once.
+        - Space Complexity: O(k) — where k is the number of intersections (output size).

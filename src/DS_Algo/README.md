@@ -1107,3 +1107,20 @@
                 d = number of . wildcards
                 In practice: much faster due to early pruning, worst-case with many . can branch to O(Σ^d) where d is number of wildcards (Σ = alphabet size).
             Space: O(h) for recursion stack (h = length of word)
+
+## *** IMPORTANT*** 
+69. class Codec: Serialize and Deserialize Binary Tree
+    - “I run a preorder DFS, writing each value and "null" for absent children. That string is a complete blueprint. To rebuild, I read tokens in order: on a value, create a node and recursively build its left and right; on "null", return None. Since both processes use the same traversal, structure and values line up perfectly.”
+    - Intuition: Serialize the tree with a preorder DFS (root, left, right), writing "null" for missing children. This uniquely captures structure and values. To deserialize, read the same sequence back in preorder: when you see a value, make a node; when you see "null", return None. Because encode/decode traverse in the same order, the tree reconstructs exactly.
+    - Approach: 
+        1. Serialize: Do a recursive DFS. Append str(node.val) for real nodes; append "null" for None. Join with commas.
+        2. Deserialize: Split by commas, turn into an iterator, and recursively rebuild:
+            - Read next token; if "null", return None.
+            - Else create TreeNode(int(val)), then set left = dfs(), right = dfs(). Return the root from the top call.
+    - Complexity: Both serialize and deserialize visit each node once → O(n) time, O(n) space for the output/input string; recursion uses O(h) call stack (h = tree height).
+        - Serialization
+            Time Complexity: O(n) Each node is visited once.
+            Space Complexity: O(n) Output list + recursion stack.
+        - Deserialization
+            Time Complexity: O(n) Each value is processed once.
+            Space Complexity: O(n) Recursion stack + tree nodes.

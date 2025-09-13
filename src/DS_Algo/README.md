@@ -1061,3 +1061,49 @@
     - Complexity: O(n) time and O(min(n, k)) space.”
         - Time Complexity: O(n) — single pass through the array.
         - Space Complexity: O(k) — hashmap stores remainders (bounded by k).
+
+66. class LRUCache: LRU Cache
+    - “I pair a hash map with a doubly linked list. The map finds nodes in O(1); the list orders them by recency. On every get/put, I remove the node from its spot and append it near the tail (most recent). When capacity is hit, I evict the node right after the head (least recent). All operations are O(1) time, O(capacity) space.”
+    - Intuition: LRU needs O(1) get/put and a way to evict the least-recently used item. A hash map gives O(1) key→node lookup; a doubly linked list maintains recency order: most-recent at the tail, least-recent at the head. Every access promotes the node to “most recent”; when full, evict the node at the head.
+    - Approach: Store cache: key → Node. The DLL has dummy head/tail to simplify inserts/removals.
+        1. get(k): if present, unlink node and move it to tail; return value; else -1.
+        2. put(k,v): if present, update value and move to tail. Else, if at capacity, remove head.next (LRU) and delete from map; then create a new node, add to map, and append to tail.
+        3. Helper methods _remove(node) and _add_to_tail(node) do O(1) list ops.
+    - All operations are O(1) time, O(capacity) space.
+        - get	O(1)	Hashmap lookup + constant-time list operations
+        - put	O(1)	Hashmap insert/update + constant-time list operations
+        - Space	O(capacity)	Stores up to capacity nodes and hashmap entries
+
+67. class BSTIterator: Binary Search Tree Iterator
+    - “I simulate an in-order traversal with a stack. On init, I push the leftmost chain. Each next() pops the current smallest and, if it has a right child, I push that child’s left chain. hasNext() checks if the stack isn’t empty. This gives ascending outputs with O(1) amortized time per call and O(h) space (h = tree height).”
+    - Intuition: An in-order traversal of a BST yields values in ascending order. To iterate lazily (O(1) amortized per call), keep a stack of the path to the next node. Initially push the leftmost path (smallest). Each next() pops one node (the current smallest) and, if it has a right child, pushes that right child’s leftmost path—which makes the following smallest ready.
+    - Approach: 
+        1. Constructor: call _push_left(root) to push root, root.left, … until None.
+        2. next(): pop top node. If node.right exists, _push_left(node.right) to preload the next run of smallers. Return node.val.
+        3. hasNext(): stack non-empty? then there’s a next.
+        4. Helpers do all work in O(height) per expansion but O(1) amortized per next().
+    - O(1) amortized time per call and O(h) space (h = tree height).
+        - get	O(1)	Hashmap lookup + constant-time list operations
+        - put	O(1)	Hashmap insert/update + constant-time list operations
+        - Space	O(capacity)	Stores up to capacity nodes and hashmap entries
+
+68. class WordDictionary: Add and Search Word - Data structure design
+    - “I store words in a Trie. To search, I walk the Trie; a normal character follows one edge, while . tries all child edges at that level via recursion. If any path reaches a node marked is_end exactly at the word’s length, it’s a match. Adds are linear in word length; searches are linear on average, branching only on ..”
+    - Intuition: We need a dictionary that supports normal word lookups and wildcard . (matches any single letter). A Trie is perfect: it stores words character-by-character. For wildcards, instead of a single path, we can branch to all children at that position. Recursing down the Trie naturally handles both exact chars and ..
+    - Approach: 
+        1. addWord: insert chars into the Trie, creating nodes as needed; mark is_end=True at the last node.
+        2. search(word): recursive DFS:
+            If we reach the end of the word, return node.is_end.
+            If word[i] is a normal char, follow that child (if missing → False).
+            If it’s ., try all children; if any recursive call returns True, succeed.
+            This explores only necessary branches.
+    - Complexity:
+        - addWord(word)
+            Time: O(n), where n is the length of the word
+            Space: O(n) for new nodes
+        - search(word)
+            Time: Worst-case: O(n × 26^d), where:
+                n = length of the word
+                d = number of . wildcards
+                In practice: much faster due to early pruning, worst-case with many . can branch to O(Σ^d) where d is number of wildcards (Σ = alphabet size).
+            Space: O(h) for recursion stack (h = length of word)

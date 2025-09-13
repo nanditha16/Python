@@ -191,8 +191,15 @@
 
 15. isOneEditDistance(self, s: str, t: str) -> bool: Given two strings s and t, return true if they are both one edit distance apart, otherwise return false.
     - “I check if two strings are exactly one edit apart (insert, delete, or replace). I first make s the shorter string; if the length gap > 1, return false. Then I scan until the first mismatch. If lengths are equal, I verify the rest after that index matches (replacement). If lengths differ by 1, I compare s[i:] with t[i+1:] to simulate a single insertion/deletion. If no mismatch appears, it’s true only when t has exactly one extra trailing char. Runs in O(n) time and O(1) space.”
-    - Intuition (≈30s):
-    - Approach (≈30s): 
+    - Intuition (≈30s): Two strings are one edit apart if you can make them equal by one replace, insert, or delete. Compare them left to right. At the first mismatch, either:
+        - lengths equal → it must be a replace; the rest must match, or
+        - lengths differ by 1 → it must be an insert/delete; skip one char on the longer string and the rest must match. If no mismatch occurs, they’re one edit apart only if the longer string has exactly one extra trailing char.
+    - Approach (≈30s): Ensure s is the shorter. If length diff > 1 → False. Scan indices:
+        - On mismatch at i:
+            - if len_s == len_t: check s[i+1:] == t[i+1:] (replace).
+            - else: check s[i:] == t[i+1:] (insert/delete).
+            If no mismatch found, return len_s + 1 == len_t (extra tail char).
+    - Time: O(n). Space: O(1).
     - Time Complexity: O(n) — where n is the length of the shorter string.
     - Space Complexity: O(1) — no extra space used.
 

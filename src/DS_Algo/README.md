@@ -1050,4 +1050,14 @@
                 Time: O(1)
                 Space: O(1)
 
-65. 
+65. checkSubarraySum(self, nums: List[int], k: int) -> bool: Continuous Subarray Sum  using an  efficient prefix sum with modulo and hashmap approach.
+    - “I compute running sums and their remainder mod k. If a remainder repeats, the subarray between those positions sums to a multiple of k. I keep the first index of each remainder so the subarray is as long as possible, and I ensure its length ≥ 2. A seed {0:-1} handles subarrays starting at the beginning. This is O(n) time and O(min(n, k)) space.”
+    - Intuition: If two prefix sums have the same remainder mod k, their difference (i.e., the sum of the subarray between them) is a multiple of k. So as we scan, we track the earliest index where each remainder first appeared. When we see the same remainder again at index i, the subarray from the first index+1 to i sums to a multiple of k. We also need length ≥ 2.
+    - Approach: Keep cumulative_sum, and a map mod_map from remainder → earliest index, seeded with {0: -1} to allow subarrays starting at 0. For each i:
+        - Add nums[i] to cumulative_sum. If k != 0, set cumulative_sum %= k.
+        - If this remainder was seen before at index j, check if i - j > 1; if yes, return True.
+        - Otherwise, store the remainder’s first occurrence: mod_map[rem] = i.
+        If the loop ends, return False.
+    - Complexity: O(n) time and O(min(n, k)) space.”
+        - Time Complexity: O(n) — single pass through the array.
+        - Space Complexity: O(k) — hashmap stores remainders (bounded by k).

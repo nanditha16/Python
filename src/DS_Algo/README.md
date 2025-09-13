@@ -1033,4 +1033,21 @@
                 n for memoization
                 m = number of words
                 k = average word length (Trie size)
-    
+
+64.  sumRegion(self, row1: int, col1: int, row2: int, col2: int) -> int: Range Sum Query 2D - Immutable
+    - “I preprocess a padded 2D prefix sum so each cell holds the sum from the origin to that cell. Then any rectangular sum is computed via inclusion–exclusion of four prefix corners in O(1). Building the prefix is O(m·n); each sumRegion query is O(1).”
+    - Intuition: Precompute a 2D prefix-sum so any rectangle sum can be answered in O(1). With a padded prefix grid, each cell prefix[i+1][j+1] stores the sum of the submatrix from (0,0) to (i,j). Then any query rectangle is just inclusion–exclusion of four prefix values.
+    - Approach: 
+        1. Build prefix of size (m+1)×(n+1) with a zero top row/left col:
+            prefix[i+1][j+1] = matrix[i][j] + prefix[i][j+1] + prefix[i+1][j] - prefix[i][j]
+        2. To get sum of (row1,col1)..(row2,col2):
+            prefix[row2+1][col2+1] - prefix[row1][col2+1] - prefix[row2+1][col1] + prefix[row1][col1]
+    - Complexity: Preprocessing O(m·n) time, O(m·n) space; each query O(1).
+        - Initialization (__init__):
+                Time:  O(m⋅n)
+                Space: O(m⋅n)
+        - Query (sumRegion):
+                Time: O(1)
+                Space: O(1)
+
+65. 

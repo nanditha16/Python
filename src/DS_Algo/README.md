@@ -990,3 +990,47 @@
         - Complexity: O(n) time, O(n) space (can be reduced to O(1) with two rolling vars).
             - Time Complexity: O(n) — each index is processed once.
             - Space Complexity: O(n) — dictionary dp stores results for each index.
+
+## *** IMPORTANT*** 
+62. maxProfit(self, prices: List[int]) -> int: Best Time to Buy and Sell Stock
+    - “I sweep once, tracking the lowest price so far and the best profit if I sold today. Each step: update the low, compute price - min_price, and keep the max. That yields the optimal single-transaction profit in linear time with constant space.”
+    - Intuition: You want the best single buy–sell profit. As you scan prices left→right, keep track of the cheapest price seen so far. At each day, the best profit if you sell today is price - min_price. Update the max profit with that, and keep lowering min_price whenever you see a new low. One pass gives the answer.
+    - Approach: Initialize min_price = prices[0], max_profit = 0. For each price:
+        If price < min_price, set min_price = price (better buy).
+        Else update max_profit = max(max_profit, price - min_price) (sell today).
+        Return max_profit.
+    - Complexity: O(n) time, O(1) space.
+        - Time Complexity: O(n) — single pass through the array.
+        - Space Complexity: O(1) — only two variables used.
+
+63. Word Break
+    - 63a. Method 1: wordBreakForward(self, s: str, wordDict: List[str]) -> bool: Dynamic Programming    
+        - “I run DP on prefixes. dp[i] means s[:i] is splittable. For each end i, I try cuts j<i:
+        if we already know s[:j] is valid and s[j:i] is in the dictionary, mark dp[i]=True and move on. After filling the table, dp[n] tells if the whole string can be segmented. Runs in O(n²) time, O(n) space.”
+        - Intuition: We’re asking: can the prefix s[0:i] be split into dictionary words for every i? If some earlier cut j is valid and s[j:i] is a word, then s[0:i] is valid too. That “current depends on earlier” pattern is perfect for DP over prefixes.
+        - Approach: Use dp[i] = True iff s[:i] can be segmented. Seed dp[0]=True (empty string). For each i from 1..n, scan j from 0..i-1: if dp[j] is true and s[j:i] is in word_set, set dp[i]=True and break (no need to check more j). Return dp[n].
+        - Complexity: Time O(n²) substring checks with O(1) set lookups; Space O(n).
+            - Time Complexity: O(n^2) — nested loop over i and j, and substring checks.
+            - Space Complexity: O(n+m) — dp array of size n+1, and word_set of size m.
+    - 63b. Method 2: wordBreakBackward(self, s: str, wordDict: List[str]) -> bool:  Dynamic Programming
+        - “I do backward DP on suffixes. Starting from the end, at each index i I try every dictionary word w. If w matches at i and the rest dp[i+len(w)] is True, then dp[i]=True. I break early when I find a match. After filling, dp[0] tells if the whole string is segmentable. Runs in O(n·k·L) time (k words, max length L), O(n) space.”
+        - Intuition: Ask from each index i: “Can the suffix s[i:] be segmented?” If some word w in the dictionary matches s[i:i+len(w)] and the remainder s[i+len(w):] is segmentable, then s[i:] is segmentable. This flips the usual prefix DP to a suffix DP, letting us reuse answers we’ve already computed for later positions.
+        - Approach: Create a DP array dp where dp[i] is True iff s[i:] can be split; seed dp[n]=True (empty suffix). Iterate i from n-1 down to 0. For each word w in wordDict, if s[i:i+len(w)] == w, set dp[i] = dp[i+len(w)]. Break early once dp[i] becomes True. Finally return dp[0].
+        - Complexity: Runs in O(n·k·L) time (k words, max length L), O(n) space.
+            - Time Complexity: Worst-case:  O(n⋅m⋅k)
+                Where:
+                    n = length of s
+                    m = number of words in wordDict
+                    k = average length of words
+            - Space Complexity: O(n) — for the dp array
+    - 63c. Method 3: Trie-based optimization 
+        - “I insert all dictionary words into a Trie and run a memoized DFS over s. Starting at index i, I follow Trie edges along s; when I land on a word end, I try to recurse from the next index. I cache each i to prevent repeated work. If any path reaches the end, segmentation is possible.”
+        - Intuition: We want to see if s can be split into dictionary words. Instead of checking every substring against a hash set, a Trie lets us walk character-by-character and quickly stop when no word can start here. Use DFS from each start index and memoize results so each position in s is solved once.
+        - Approach: Build a Trie from wordDict (is_word marks word ends). Define dfs(i) = can s[i:] be segmented? From i, walk the Trie along s[i:]; every time you hit a Trie node with is_word=True, recursively try dfs(next_index). Cache dfs(i) in memo to avoid recomputation. If any path reaches the end of s, return True; else False.
+        - Building Trie: O(Σ|w|). DFS: O(n·L) states/steps on average, where n is len(s) and L is max word length (each index explores at most L chars), thanks to memoization. Space: O(Σ|w| + n) for Trie + memo.
+            - Time Complexity: Worst-case: O(n^2 ) But often faster due to early pruning via Trie.
+            - Space Complexity: O(n+m⋅k)
+                n for memoization
+                m = number of words
+                k = average word length (Trie size)
+    

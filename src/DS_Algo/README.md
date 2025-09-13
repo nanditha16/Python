@@ -1124,3 +1124,18 @@
         - Deserialization
             Time Complexity: O(n) Each value is processed once.
             Space Complexity: O(n) Recursion stack + tree nodes.
+
+70. addOperators(self, num: str, target: int) -> List[str]: Expression Add Operators
+    - “I do a DFS that splits the string into numbers and inserts +/-/*. I carry a running value and the last operand so multiplication can retroactively apply before addition/subtraction (value = value - last + last*curr). I skip numbers with leading zeros. Whenever I reach the end and the value equals target, I add the expression.”
+    - Intuition: We need to place +, -, * (or nothing for the first chunk) between digits so the expression evaluates to target. This is a classic backtracking over all ways to split num into numbers and interleave operators. The trick is handling * without re-parsing the whole expression: keep the running value and the last operand so we can “fix up” precedence (e.g., … + last * curr).
+    - Approach: DFS over num[index:]. At each step, choose a substring curr_str = num[index:i+1] (skip leading-zero numbers).
+        - If it’s the first number, start the path with it: (path=curr_str, value=curr, last=curr).
+        - Otherwise branch three ways:
+            +: value + curr, last = +curr
+            -: value - curr, last = -curr
+            *: undo the last add/sub: value - last + last*curr, and set last = last*curr. When index == len(num), if value == target, record path.
+    - Complexity: In worst case ~O(3^{n-1}) states (three operators between each of n digits), with O(n) work per state building strings → exponential overall; O(n) recursion depth.
+        - Time Complexity: Worst case: O(4^n) 
+            Each digit can be followed by 3 operators or be part of a longer number.
+            Exponential due to recursive branching.
+        - Space Complexity: O(n) for recursion stack and path string.

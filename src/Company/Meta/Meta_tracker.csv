@@ -1,7 +1,7 @@
 Done,ID,Title,Acceptance,Difficulty,Frequency,Leetcode Question Link
 In progress,953,Verifying an Alien Dictionary,54.1%,Easy,3.672929743430384, https://leetcode.com/problems/verifying-an-alien-dictionary
 In progress,1249,Minimum Remove to Make Valid Parentheses,62.5%,Medium,3.495670386899169, https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses
-,973,K Closest Points to Origin,63.8%,Medium,3.3184110303679546, https://leetcode.com/problems/k-closest-points-to-origin
+In progress,973,K Closest Points to Origin,63.8%,Medium,3.3184110303679546, https://leetcode.com/problems/k-closest-points-to-origin
 In Progress,238,Product of Array Except Self,60.1%,Medium,3.283232213950597, https://leetcode.com/problems/product-of-array-except-self
 In Progress,301,Remove Invalid Parentheses,43.3%,Hard,3.2812706407880663, https://leetcode.com/problems/remove-invalid-parentheses
 In progress,680,Valid Palindrome II,36.6%,Easy,3.271459420826784, https://leetcode.com/problems/valid-palindrome-ii
@@ -11,10 +11,10 @@ In progress,269,Alien Dictionary,33.3%,Hard,2.878368669651309, https://leetcode.
 ,415,Add Strings,47.5%,Easy,2.7192844822779243, https://leetcode.com/problems/add-strings
 In progress,158,Read N Characters Given Read4 II - Call multiple times,33.8%,Hard,2.5420251257467097, https://leetcode.com/problems/read-n-characters-given-read4-ii-call-multiple-times
 In Progress,124,Binary Tree Maximum Path Sum,34.3%,Hard,2.5244353385109877, https://leetcode.com/problems/binary-tree-maximum-path-sum
-,297,Serialize and Deserialize Binary Tree,47.5%,Hard,2.4916605427137495, https://leetcode.com/problems/serialize-and-deserialize-binary-tree
+In Progress,297,Serialize and Deserialize Binary Tree,47.5%,Hard,2.4916605427137495, https://leetcode.com/problems/serialize-and-deserialize-binary-tree
 In progress,199,Binary Tree Right Side View,54.1%,Medium,2.4876454517631963, https://leetcode.com/problems/binary-tree-right-side-view
 In progress,438,Find All Anagrams in a String,43.3%,Medium,2.397524297872021, https://leetcode.com/problems/find-all-anagrams-in-a-string
-,211,Add and Search Word - Data structure design,38.1%,Medium,2.3759545223677563, https://leetcode.com/problems/add-and-search-word-data-structure-design
+In Progress,211,Add and Search Word - Data structure design,38.1%,Medium,2.3759545223677563, https://leetcode.com/problems/add-and-search-word-data-structure-design
 In Progress,278,First Bad Version,35.7%,Easy,2.1986951658365417, https://leetcode.com/problems/first-bad-version
 In Progress,523,Continuous Subarray Sum,24.6%,Medium,2.166716009367632, https://leetcode.com/problems/continuous-subarray-sum
 ,23,Merge k Sorted Lists,40.2%,Hard,2.1408121493810057, https://leetcode.com/problems/merge-k-sorted-lists

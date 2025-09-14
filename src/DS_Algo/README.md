@@ -1183,3 +1183,11 @@
     - Complexity: O(m + n) time, O(1) extra space (output aside). Let: n=len(firstList), m=len(secondList)
         - Time Complexity: O(n+m) — each interval is processed once.
         - Space Complexity: O(k) — where k is the number of intersections (output size).
+
+74. kClosest(self, points: List[List[int]], k: int) -> List[List[int]]: K Closest Points to Origin
+    - “I rank points by squared distance x² + y² (no need for sqrt). Then I use heapq.nsmallest to extract the k closest without sorting the entire list. It’s concise, leverages a heap under the hood, and returns exactly the k nearest points.”
+    - Intuition: We need the k points with smallest distance to the origin. Distances preserve order under squaring, so we can compare by x² + y² and avoid a costly square root. Using a heap lets us pull the k smallest efficiently without fully sorting everything.
+    - Approach: Your one-liner uses heapq.nsmallest(k, points, key=lambda p: p[0]**2 + p[1]**2). Python internally keeps a heap and returns the k items with the smallest key (here, squared distance). That’s clean and optimal for interviews; it avoids computing sqrt and handles all tie cases naturally.
+    - Complexity: Typically O(n log k) time (heap-based) and O(k) extra space. (Python may switch to sort for very large k, giving O(n log n).)
+
+75. Add Strings

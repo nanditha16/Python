@@ -177,15 +177,14 @@
 
 14. read(self, buf: List[str], n: int) -> int: Read N Characters Given read4 - Call multiple times.
     - Your read(buf, n) method may be called multiple times, and you must preserve state between calls. - (persistent buffer)
-    - “read returns up to n chars using only read4. I keep a persistent 4-char internal buffer across calls (buffer, buf_ptr, buf_count). For each request, I first drain leftovers from that buffer into buf. When it’s empty, I refill by calling read4, reset the pointer, and continue copying until I’ve produced n chars or read4 hits EOF. This guarantees correct behavior across multiple calls without rereading the file. Time is O(n) per call, extra space is O(1) beyond the fixed internal buffer. (In LeetCode, we write into a preallocated buf; in local tests here I append.)”
-    - Intuition (≈30s): Two strings are one edit apart if you can make them equal with exactly one insert, delete, or replace. Compare them left-to-right until the first mismatch. At that spot:
-        - If lengths are equal → it must be a replace of that char.
-        - If lengths differ by 1 → it must be a single insert/delete. If no mismatch appears, they’re one edit apart only if the longer string has one extra trailing character.
-    - Approach (≈30s): Let s be the shorter. If len(t)-len(s) > 1, return False. Scan indices:
-        1. On first mismatch at i:
-            - If equal lengths: check s[i+1:] == t[i+1:] (replace).
-            - Else (t longer by 1): check s[i:] == t[i+1:] (insert in s / delete from t). If no mismatch, return len(s)+1 == len(t).
-    - Time: O(n). Space: O(1).
+    - “I use a persistent 4-byte buffer. Each read(n) first consumes any leftovers (buf_ptr .. buf_count). If empty, I call read4 to refill. I copy from the internal buffer into the output until I’ve produced n chars or hit EOF, carrying any extra chars over to the next call. This ensures correctness across multiple calls.”
+    - Intuition (≈30s): read4 gives up to 4 chars per call, but read(n) may be called multiple times, so leftover chars must persist across calls. Keep a small internal buffer of size 4 plus two pointers: how many chars are currently in it (buf_count) and where we are reading from it (buf_ptr). Each call to read first drains this buffer; only when empty do we call read4 again.
+    - Approach (≈30s): Maintain buffer[4], buf_ptr, buf_count. In read(buf, n):
+        1. While we still need chars:
+            - If internal buffer is empty (buf_ptr == buf_count), refill it via read4(buffer), reset buf_ptr=0; if read4 returns 0 → EOF.
+            - Copy from buffer[buf_ptr:buf_count] into buf until we either fill n or exhaust the internal buffer, advancing buf_ptr and a total_read counter.
+        Return total_read. This preserves leftovers between calls.
+    - Complexity: Each character is moved at most once → O(n) per call, O(1) extra space.
         - Time Complexity: O(n) — We read up to n characters.
         - Space Complexity: O(1) — Only a fixed-size buffer is used.
 
@@ -1190,4 +1189,28 @@
     - Approach: Your one-liner uses heapq.nsmallest(k, points, key=lambda p: p[0]**2 + p[1]**2). Python internally keeps a heap and returns the k items with the smallest key (here, squared distance). That’s clean and optimal for interviews; it avoids computing sqrt and handles all tie cases naturally.
     - Complexity: Typically O(n log k) time (heap-based) and O(k) extra space. (Python may switch to sort for very large k, giving O(n log n).)
 
-75. Add Strings
+75.  addStrings(self, num1: str, num2: str) -> str: Add Strings : Manual Digit-by-Digit Addition
+    - “I walk both strings from right to left, summing digit pairs plus carry and pushing total % 10. I keep going until both are exhausted and there’s no carry, then reverse the digits to form the answer. It’s exactly manual addition.”
+    - Intuition: Add two numbers as if by hand: start from the least significant digits (right ends), keep a running carry, and append each resulting digit. When one string runs out, keep using the other plus the carry. At the end, reverse the collected digits.
+    - Approach: Use two pointers i, j at the ends of num1, num2, and carry=0. While any of i, j, or carry remains:
+        1. Read digit1 = num1[i] if i>=0 else 0; same for digit2.
+        2. total = digit1 + digit2 + carry; push total % 10; set carry = total // 10.
+        3.Decrement i, j. Finally ''.join(reversed(result)).
+    - Complexity:
+        - Time: O(max(m, n)), each digit processed once.
+        - Space: O(max(m, n)) for the output string; O(1) extra working space aside from the result container.
+
+76. mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]: Merge k Sorted Lists Using Min-Heap
+    - “I maintain a min-heap of the current heads of all k lists. Each step, I pop the smallest node, attach it, and push its next (if any). This guarantees global order without scanning all lists each time. Each node is pushed and popped once, so with N total nodes the time is O(N log k) (heap ops), space is O(k) for the heap (plus the output list).”
+    - Intuition: You have k sorted linked lists; you want one sorted list. Always pick the smallest current head among the k lists, append it to the result, then advance that list. A min-heap (priority queue) lets us fetch the smallest head in O(log k) each time, ensuring we always attach the next correct node.
+    - Approach:Initialize a min-heap with the head of each non-empty list as (value, list_index, node). Create a dummy head for the result. Repeatedly:
+        1. Push each non-empty list head into a min-heap as (val, list_id, node).
+        2. Repeatedly pop the smallest, append it to the result, and if it has a next, push that next back into the heap.
+        3. Continue until the heap is empty; return the merged list starting at dummy.next.
+    - Complexity:
+        - Time Complexity: O(N log k)
+            N = total number of nodes across all lists
+            k = number of linked lists
+            Each node is pushed and popped from the heap once → O(log k) per operation
+        - Space Complexity: O(k) The heap stores at most k nodes at any time
+

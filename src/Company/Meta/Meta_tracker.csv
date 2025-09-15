@@ -8,7 +8,7 @@ In progress,680,Valid Palindrome II,36.6%,Easy,3.271459420826784, https://leetco
 In progress,560,Subarray Sum Equals K,43.9%,Medium,3.2328873827137383, https://leetcode.com/problems/subarray-sum-equals-k
 In progress,273,Integer to English Words,27.1%,Hard,3.0556280261825237, https://leetcode.com/problems/integer-to-english-words
 In progress,269,Alien Dictionary,33.3%,Hard,2.878368669651309, https://leetcode.com/problems/alien-dictionary
-,415,Add Strings,47.5%,Easy,2.7192844822779243, https://leetcode.com/problems/add-strings
+In Progress,415,Add Strings,47.5%,Easy,2.7192844822779243, https://leetcode.com/problems/add-strings
 In progress,158,Read N Characters Given Read4 II - Call multiple times,33.8%,Hard,2.5420251257467097, https://leetcode.com/problems/read-n-characters-given-read4-ii-call-multiple-times
 In Progress,124,Binary Tree Maximum Path Sum,34.3%,Hard,2.5244353385109877, https://leetcode.com/problems/binary-tree-maximum-path-sum
 In Progress,297,Serialize and Deserialize Binary Tree,47.5%,Hard,2.4916605427137495, https://leetcode.com/problems/serialize-and-deserialize-binary-tree
@@ -17,10 +17,10 @@ In progress,438,Find All Anagrams in a String,43.3%,Medium,2.397524297872021, ht
 In Progress,211,Add and Search Word - Data structure design,38.1%,Medium,2.3759545223677563, https://leetcode.com/problems/add-and-search-word-data-structure-design
 In Progress,278,First Bad Version,35.7%,Easy,2.1986951658365417, https://leetcode.com/problems/first-bad-version
 In Progress,523,Continuous Subarray Sum,24.6%,Medium,2.166716009367632, https://leetcode.com/problems/continuous-subarray-sum
-,23,Merge k Sorted Lists,40.2%,Hard,2.1408121493810057, https://leetcode.com/problems/merge-k-sorted-lists
-,125,Valid Palindrome,36.7%,Easy,2.10463501498305, https://leetcode.com/problems/valid-palindrome
+In Progress,23,Merge k Sorted Lists,40.2%,Hard,2.1408121493810057, https://leetcode.com/problems/merge-k-sorted-lists
+In Progress,125,Valid Palindrome,36.7%,Easy,2.10463501498305, https://leetcode.com/problems/valid-palindrome
 In progress,426,Convert Binary Search Tree to Sorted Doubly Linked List,59.1%,Medium,2.0376808407812033, https://leetcode.com/problems/convert-binary-search-tree-to-sorted-doubly-linked-list
-,173,Binary Search Tree Iterator,56.6%,Medium,2.0078306132610235, https://leetcode.com/problems/binary-search-tree-iterator
+In progress,173,Binary Search Tree Iterator,56.6%,Medium,2.0078306132610235, https://leetcode.com/problems/binary-search-tree-iterator
 In progress,67,Add Binary,45.2%,Easy,2.0006884437372294, https://leetcode.com/problems/add-binary
 ,282,Expression Add Operators,35.5%,Hard,1.9743024644234966, https://leetcode.com/problems/expression-add-operators
 In progress,340,Longest Substring with At Most K Distinct Characters,44.1%,Hard,1.9268050203671723, https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters

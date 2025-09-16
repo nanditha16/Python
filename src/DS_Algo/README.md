@@ -1214,3 +1214,45 @@
             Each node is pushed and popped from the heap once → O(log k) per operation
         - Space Complexity: O(k) The heap stores at most k nodes at any time
 
+77. findKthLargest(self, nums: List[int], k: int) -> int: Kth Largest Element in an Array
+    - “I maintain a size-k min-heap holding the k largest numbers seen. For each new number, if it exceeds the heap’s smallest, I push-pop to keep only the top-k. At the end, the heap’s root is the k-th largest. Each of the n-k elements may trigger a log k heap op → O(n log k) time, O(k) extra space.”
+    - Intuition: To get the k-th largest, you don’t need to sort everything. Keep the k largest seen so far in a min-heap: the heap’s top is the smallest among those k, i.e., the current k-th largest. When a new number is bigger than the heap’s top, it deserves to be in the top-k—replace the top.
+    - Approach: 
+        1. Build a min-heap from the first k elements.
+        2. For each remaining element:
+            If num > heap[0], do heappushpop(heap, num) (push then pop smallest).
+        3. After processing all numbers, the k-th largest is heap[0].
+    - Complexity: 
+        - Time Complexity: O(n log k)
+            n = number of elements in nums
+            Heap operations (heapify, heappushpop) are O(log k)
+            We process each of the n - k remaining elements → total time is O(n log k)
+        - Space Complexity: O(k)
+            The heap stores only k elements
+
+78. exclusiveTime(self, n: int, logs: List[str]) -> List[int]: Exclusive Time of Functions
+    - “I parse logs and simulate a call stack. On start, I credit the active function with time - prev_time, push the new one, and set prev_time = time. On end, I pop and credit time - prev_time + 1 (inclusive end), then set prev_time = time + 1. This accumulates exclusive times by slicing the timeline around nested calls. Time: O(L) over logs; Space: O(n) worst-case stack (plus O(n) result).”
+    - Intuition: Treat the logs like a real call stack. When a function starts, the currently running function (top of stack) is paused—we add the elapsed time since prev_time to that function. Push the new function. When a function ends, pop it and add its final slice end_time - prev_time + 1. Then move prev_time to the next tick (end + 1). This correctly excludes time spent in nested calls.
+    - Approach: Keep:
+        - stack: function IDs currently running (top = active).
+        - result[i]: exclusive time for function i.
+        - prev_time: last processed timestamp.
+        For each log:
+        - start: if stack non-empty, result[top] += time - prev_time; push fn; set prev_time = time.
+        - end: pop fn; result[fn] += time - prev_time + 1; set prev_time = time + 1.
+        - Return result.
+    - Complexity: 
+        - Time Complexity: O(m) where m = len(logs)
+        - Space Complexity: O(n + m) for result array and stack
+
+79.
+    - 
+    - Intuition: 
+    - Approach: 
+    - Complexity: 
+        - Time Complexity: O(m) where m = len(logs)
+        - Space Complexity: O(n + m) for result array and stack
+
+
+
+

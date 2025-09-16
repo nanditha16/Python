@@ -1146,6 +1146,7 @@
             Exponential due to recursive branching.
         - Space Complexity: O(n) for recursion stack and path string.
 
+## *** IMPORTANT*** 
 71. findAnagrams(self, s: str, p: str) -> List[int]: Find All Anagrams in a String
     - “I keep a 26-length frequency array for p and another for the current window of size len(p) in s. As I expand right, I increment that char; if the window gets too big, I decrement the left char and move left. Whenever window size equals m and the two arrays match, I push left to the result. Runs in O(n) time, O(1) space.”
     - Intuition: An anagram of p is just a reordering of its letters. So as we slide a window of length len(p) over s, we only need to check if the window’s letter frequencies match p’s frequencies. Keep counts for a..z and update them incrementally as the window moves, instead of recomputing from scratch.
@@ -1183,6 +1184,7 @@
         - Time Complexity: O(n+m) — each interval is processed once.
         - Space Complexity: O(k) — where k is the number of intersections (output size).
 
+## *** IMPORTANT*** 
 74. kClosest(self, points: List[List[int]], k: int) -> List[List[int]]: K Closest Points to Origin
     - “I rank points by squared distance x² + y² (no need for sqrt). Then I use heapq.nsmallest to extract the k closest without sorting the entire list. It’s concise, leverages a heap under the hood, and returns exactly the k nearest points.”
     - Intuition: We need the k points with smallest distance to the origin. Distances preserve order under squaring, so we can compare by x² + y² and avoid a costly square root. Using a heap lets us pull the k smallest efficiently without fully sorting everything.
@@ -1200,6 +1202,7 @@
         - Time: O(max(m, n)), each digit processed once.
         - Space: O(max(m, n)) for the output string; O(1) extra working space aside from the result container.
 
+## *** IMPORTANT*** 
 76. mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]: Merge k Sorted Lists Using Min-Heap
     - “I maintain a min-heap of the current heads of all k lists. Each step, I pop the smallest node, attach it, and push its next (if any). This guarantees global order without scanning all lists each time. Each node is pushed and popped once, so with N total nodes the time is O(N log k) (heap ops), space is O(k) for the heap (plus the output list).”
     - Intuition: You have k sorted linked lists; you want one sorted list. Always pick the smallest current head among the k lists, append it to the result, then advance that list. A min-heap (priority queue) lets us fetch the smallest head in O(log k) each time, ensuring we always attach the next correct node.
@@ -1214,6 +1217,7 @@
             Each node is pushed and popped from the heap once → O(log k) per operation
         - Space Complexity: O(k) The heap stores at most k nodes at any time
 
+## *** IMPORTANT*** 
 77. findKthLargest(self, nums: List[int], k: int) -> int: Kth Largest Element in an Array
     - “I maintain a size-k min-heap holding the k largest numbers seen. For each new number, if it exceeds the heap’s smallest, I push-pop to keep only the top-k. At the end, the heap’s root is the k-th largest. Each of the n-k elements may trigger a log k heap op → O(n log k) time, O(k) extra space.”
     - Intuition: To get the k-th largest, you don’t need to sort everything. Keep the k largest seen so far in a min-heap: the heap’s top is the smallest among those k, i.e., the current k-th largest. When a new number is bigger than the heap’s top, it deserves to be in the top-k—replace the top.
@@ -1245,14 +1249,41 @@
         - Time Complexity: O(m) where m = len(logs)
         - Space Complexity: O(n + m) for result array and stack
 
-79.
+79. isNumber(self, s: str) -> bool: Valid Number
+    - “I split on e/E. The base must be an integer or decimal (optional sign; decimals need a dot and at least one side digit). The exponent, if present, must be an integer (optional sign, digits only). If both parts pass, it’s a number. One pass over the string → O(n) time, O(1) space.”
+    - Intuition: A valid number is either an integer or a decimal, optionally followed by an exponent e/E with an integer exponent. We can split on e/E to validate the base and exponent independently. Integers allow an optional sign and digits; decimals allow an optional sign and a single dot with digits on at least one side.
+    - Approach: 
+        1. Lowercase and partition('e') if e/E exists → (base, 'e', exponent).
+        2. Validate:
+            - Integer: optional +/-, then all digits.
+            - Decimal: optional +/-, must contain ., at least one of integer_part or fractional_part is digits (and both, if present, must be digits).
+        3. Return (isInteger(base) or isDecimal(base)) and isInteger(exponent) if exponent exists; else isInteger(s) or isDecimal(s).
+    - Complexity: 
+        - Time Complexity: O(n), where n is the length of the string.
+        - Space Complexity: O(1), constant space used.
+
+## *** IMPORTANT*** 
+80. leftMostColumnWithOne(self, binaryMatrix: 'BinaryMatrix') -> int: Leftmost Column with at Least a One in a row-sorted binary matrix using the BinaryMatrix interface.
+    - “I walk from the top-right corner. On a 1, I record the column and move left; on a 0, I move down. Because rows are sorted, these are the only moves needed. I stop when I fall off the grid; the last recorded column is the answer. This runs in O(rows + cols) time with O(1) space.”
+    - Intuition: Each row is sorted (0s → 1s). If you start at the top-right, every move is forced: seeing a 1 means there might be a more-left 1 in the same row → move left; seeing a 0 means nothing to the left in this row can be 1 (since sorted) → move down. This greedy walk finds the leftmost column containing a 1 without scanning everything.
+    - Approach: 
+        1. Get rows, cols. Start at (row=0, col=cols-1) with leftmost = -1.
+        2. While row < rows and col >= 0:
+            If get(row,col) == 1: set leftmost = col, col -= 1 (try further left).
+            Else (0): row += 1 (go to next row).
+        3. Return leftmost (remains -1 if no 1 exists).
+    - Complexity: 
+        - Time Complexity: O(rows + cols)
+            Each step moves either left or down.
+            At most rows + cols steps are made.
+        - Space Complexity: O(1)
+            No extra space used beyond a few variables.
+
+
+## *** IMPORTANT*** 
+81. 
     - 
     - Intuition: 
     - Approach: 
     - Complexity: 
-        - Time Complexity: O(m) where m = len(logs)
-        - Space Complexity: O(n + m) for result array and stack
-
-
-
-
+        - 

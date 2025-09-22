@@ -1,16 +1,16 @@
-Given a string s, return the longest palindromic substring in s.
+# Given a string s, return the longest palindromic substring in s.
 
-Constraints:
-1 <= s.length <= 1000
-s consist of only digits and English letters.
+# Constraints:
+# 1 <= s.length <= 1000
+# s consist of only digits and English letters.
 
-Example:
-Input: s = "babad"
-Output: "bab"
-Explanation: "aba" is also a valid answer.
+# Example:
+# Input: s = "babad"
+# Output: "bab"
+# Explanation: "aba" is also a valid answer.
 
-Input: s = "cbbd"
-Output: "bb"
+# Input: s = "cbbd"
+# Output: "bb"
 
 # Method 1: Around Center**:
 # Every palindrome is centered at a character (odd-length) or between two characters (even-length).

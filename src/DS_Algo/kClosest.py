@@ -8,9 +8,9 @@
 # You may return the answer in any order. The answer is guaranteed
 #  to be unique (except for the order that it is in).
 
-Constraints:
-1 <= k <= points.length <= 10^4
--10^4 <= xi, yi <= 10^4
+# Constraints:
+# 1 <= k <= points.length <= 10^4
+# -10^4 <= xi, yi <= 10^4
 
 # Example:
 # Input: points = [[1,3],[-2,2]], k = 1

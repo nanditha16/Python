@@ -88,7 +88,7 @@ class Solution:
         res = []
         def dfs(node, depth):
             if not node:
-                return
+                return []
             if depth == len(res):          # first node seen at this depth
                 res.append(node.val)
             dfs(node.right, depth + 1)     # go right first

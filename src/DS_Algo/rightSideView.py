@@ -96,7 +96,7 @@ class Solution:
         dfs(root, 0)
         return res
     
-    # Method 2: Iterative DFS (stack, right-first)
+    # Method 3: Iterative DFS (stack, right-first)
     def rightSideViewIterative(self, root: Optional[TreeNode]) -> List[int]:
         if not root:
             return []

@@ -1281,7 +1281,21 @@
 
 
 ## *** IMPORTANT*** 
-81. 
+81. Vertical Order Traversal of a Binary Tree
+    - I BFS the tree tagging each node with its (col,row). I then sort all (col,row,val) triples by column, then row, then value to satisfy the ordering rules, and group by column. Sorting dominates: O(n log n) time; BFS/arrays use O(n) space.
+    - Intuition: Think of each node’s position on a grid: root at (row=0, col=0), left child (row+1, col-1), right child (row+1, col+1). “Vertical traversal” groups nodes by column (x-axis). When multiple nodes share a column, we order them by row (top to bottom), and if ties remain (same row & col), by value.
+    - Approach: Do a BFS that tracks (node, col, row) and collect triples into a list. Sort that list by (col, row, val). Finally, sweep the sorted triples and group values by col to build the output lists from leftmost column to rightmost. 
+    - Complexity: 
+        - Time Complexity:
+            BFS Traversal: O(n) — each node is visited once.
+            Sorting: O(nlogn) — sorting the list of nodes.
+            Grouping: O(n) — building the final result.
+        - Space Complexity:
+            Queue + node list + result dictionary:  O(n)
+
+
+## *** IMPORTANT*** 
+82. 
     - 
     - Intuition: 
     - Approach: 

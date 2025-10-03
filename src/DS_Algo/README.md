@@ -1295,7 +1295,14 @@
 
 
 ## *** IMPORTANT*** 
-82. 
+82. Word Pattern
+    - 
+    - Intuition: 
+    - Approach: 
+    - Complexity: 
+   
+## *** IMPORTANT*** 
+83. Kth largest elemnent in an array
     - 
     - Intuition: 
     - Approach: 

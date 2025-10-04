@@ -1295,16 +1295,36 @@
 
 
 ## *** IMPORTANT*** 
-82. Word Pattern
-    - 
-    - Intuition: 
-    - Approach: 
+82. wordPattern(self, pattern: str, s: str) - Word Pattern
+    - “I enforce a one-to-one mapping using two hash maps: char→word and word→char. For each position I verify consistency both ways; any mismatch fails. Lengths must match up front. This is O(n) time over tokens and O(u) space for unique mappings (u ≤ min(#letters, #words)).”
+    - Intuition: We need a bijection between pattern letters and words: each letter maps to exactly one word and each word maps back to exactly one letter. If at any step a letter wants a different word, or a word is already taken by another letter, the pattern breaks.
+    - Approach: Split s into words. If lengths differ from pattern, return False. Walk pairs (char, word):
+        If char already mapped, it must equal word.
+        Else if word already mapped to a different char, fail.
+        Otherwise create both mappings (char→word and word→char).
+        If you finish without conflicts, return True.
     - Complexity: 
+        - Time Complexity: Total: O(n+m)
+            Splitting the string: O(n) where nnn is the length of s.
+            Iterating through pattern and words: O(m) where mmm is the length of pattern.
+            Dictionary operations are O(1) on average.
+        - Space Complexity: Total: O(m)
+            Two dictionaries storing up to mmm entries each.
    
 ## *** IMPORTANT*** 
-83. Kth largest elemnent in an array
-    - 
-    - Intuition: 
+83. topKFrequent(self, nums, k) -> top k most frequent elements in an array
+    - “I tally counts in O(n), then use nlargest which keeps a size-k heap of the best candidates, giving O(n log k) time. Space is O(n) for the frequency map plus O(k) for the heap. This avoids sorting all items (O(n log n)) and directly returns the top-k frequent elements.”
+    - Intuition: We just need the k most frequent elements, not a full sort. Count how often each number appears, then keep only the top k by frequency. A small min-heap of size k is perfect: it maintains the biggest k counts while scanning once.
     - Approach: 
+        - Build a frequency map: freq_map = Counter(nums).
+        - Use heapq.nlargest(k, freq_map.keys(), key=freq_map.get) to fetch the k keys with highest counts.
+        - Return that list.
     - Complexity: 
-        - 
+        - Time Complexity:
+            Counting frequencies: O(n)
+            Getting top k elements: O(nlogk)
+            Total: O(nlogk)
+        - Space Complexity:
+            Frequency map: O(n)
+            Heap and result list: O(k)
+            Total: O(n)

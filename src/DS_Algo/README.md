@@ -1381,7 +1381,7 @@
                 Worst case: O(n) (skewed tree)
                 Best case: O(logn) (balanced tree)
 
-86. Sparse Matrix Multiplication
+86. sparseMatricesMultiply(self, mat1: List[List[int]], mat2: List[List[int]]) -> List[List[int]]: Sparse Matrix Multiplication
     - “I precompute the nonzero lists: A by rows and B by the shared index 𝑗. Then for each nonzero A[i,j], I only iterate the nonzeros in row 𝑗 of 𝐵, adding a\*b to C[i,k]. This touches exactly the pairs that can contribute. Time is O(∑_{i,j∈nz(A)} nnz(B[j,:])) (≈ number of contributing pairs; dense worst-case O(mkn)). Space is O(nnz(A)+nnz(B)+mn) for the maps and dense output (use a sparse dict to reduce output space if needed).”
     - Intuition: Matrix multiply C=A×B only needs pairs where A[i][j] ≠ 0 and B[j][k] ≠ 0. For sparse inputs most entries are zero, so iterating all i,j,k is wasteful. Pre-index the nonzeros of 𝐴 by row and of 𝐵 by the shared index 𝑗 (its rows), then only “join” matching nonzeros on j to accumulate C[i][k]+=A[i][j]⋅B[j][k].
     - Approach: 

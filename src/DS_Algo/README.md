@@ -1279,7 +1279,6 @@
         - Space Complexity: O(1)
             No extra space used beyond a few variables.
 
-
 ## *** IMPORTANT*** 
 81. Vertical Order Traversal of a Binary Tree
     - I BFS the tree tagging each node with its (col,row). I then sort all (col,row,val) triples by column, then row, then value to satisfy the ordering rules, and group by column. Sorting dominates: O(n log n) time; BFS/arrays use O(n) space.
@@ -1292,7 +1291,6 @@
             Grouping: O(n) — building the final result.
         - Space Complexity:
             Queue + node list + result dictionary:  O(n)
-
 
 ## *** IMPORTANT*** 
 82. wordPattern(self, pattern: str, s: str) - Word Pattern
@@ -1329,9 +1327,144 @@
             Heap and result list: O(k)
             Total: O(n)
 
- 
+84. pick(self, target: int) -> int: Random Pick Index
+    - “I pre-index every value to a list of its positions. When asked to pick, I use random.choice over that list, so each occurrence is equally likely. Init: O(n) time and O(n) space. pick: O(1) time and O(1) space. (If memory were tight, we could use reservoir sampling for O(1) space but O(n) time per pick.)”
+    - Intuition: If you know all positions where a target appears, picking one uniformly at random is trivial: just choose a random index from that list. So we preprocess once to map each number → list of its indices.
+    - Approach: 
+        In __init__, scan nums and fill indices_map[num].append(i).
+        In pick(target), return random.choice(self.indices_map[target]), which gives each occurrence equal probability 1 / count(target).
+    - Complexity: 
+        - Time Complexity
+            Initialization: O(n)— one pass through nums to build the map
+            Pick operation: O(1)— dictionary lookup and random selection
+        - Space Complexity
+            Storage: O(n)— storing all indices in a dictionary
+
+85. Range Sum of BST
+    - 85.a: Method 1: rangeSumBSTRecursive(self, root: Optional[TreeNode], low: int, high: int) -> int:
+        - “I DFS the BST but prune branches that can’t contain valid values using the BST order. Values < low skip left; values > high skip right; in-range adds value and explores both. Worst-case visits all nodes → O(n) time; with pruning it’s O(#visited). Recursion uses O(h) space (tree height).”
+        - Intuition: Use the BST property to prune. If a node’s value is < low, everything in its left subtree is even smaller ⇒ skip left. If it’s > high, everything in its right subtree is larger ⇒ skip right. Only when the value is within [low, high] do we count it and explore both sides.
+        - Approach: Recurse:
+            If node is None: return 0.
+            If node.val < low: return recurse on node.right.
+            If node.val > high: return recurse on node.left.
+            Else: return node.val + recurse(left) + recurse(right).
+        - Complexity: 
+            - Time Complexity
+                Best case (balanced BST with pruning):O(logn)
+                Worst case (unbalanced BST or all nodes in range): O(n)
+            - Space Complexity
+                Recursive stack: O(h) where hhh is the height of the tree
+                Worst case: O(n)(skewed tree)
+                Best case: O(logn) (balanced tree)
+    - 85.b: Method 2: rangeSumBSTIterative(self, root: TreeNode, low: int, high: int) -> int: Better in this case
+        - “I do an iterative DFS on the BST and prune using its order: if a node is in [low, high], add it; if node.val > low, the left might still have valid values; if node.val < high, the right might. This skips whole subtrees that can’t contain answers. Worst case visits all nodes → O(n) time; stack uses O(h) space (tree height).”
+        - Intuition: Use the BST’s ordering to prune whole subtrees.
+            If a node’s value is < low, everything in its left subtree is even smaller → ignore left, only go right.
+            If it’s > high, everything in its right subtree is larger → ignore right, only go left.
+            If the value lies in [low, high], add it and explore both sides.
+            This skips irrelevant nodes and sums only what can possibly be in range.
+        - Approach: Do an iterative DFS with a stack:
+            1. res = 0, stack = [root].
+            2. While stack:
+                Pop node; if None, continue.
+                If low ≤ node.val ≤ high, add to res.
+                If node.val > low, push node.left (left might contain in-range values).
+                If node.val < high, push node.right (right might contain in-range values).
+            3. Return res.
+        - Complexity: Visits only necessary nodes → O(#visited) (worst-case O(n)). Stack uses O(h) space (tree height).
+            - Time Complexity
+                Best case (pruned traversal): O(logn)
+                Worst case (all nodes visited): O(n)
+            - Space Complexity
+                Stack size: up to O(h)) where hhh is tree height
+                Worst case: O(n) (skewed tree)
+                Best case: O(logn) (balanced tree)
+
+86. Sparse Matrix Multiplication
+    - “I precompute the nonzero lists: A by rows and B by the shared index 𝑗. Then for each nonzero A[i,j], I only iterate the nonzeros in row 𝑗 of 𝐵, adding a\*b to C[i,k]. This touches exactly the pairs that can contribute. Time is O(∑_{i,j∈nz(A)} nnz(B[j,:])) (≈ number of contributing pairs; dense worst-case O(mkn)). Space is O(nnz(A)+nnz(B)+mn) for the maps and dense output (use a sparse dict to reduce output space if needed).”
+    - Intuition: Matrix multiply C=A×B only needs pairs where A[i][j] ≠ 0 and B[j][k] ≠ 0. For sparse inputs most entries are zero, so iterating all i,j,k is wasteful. Pre-index the nonzeros of 𝐴 by row and of 𝐵 by the shared index 𝑗 (its rows), then only “join” matching nonzeros on j to accumulate C[i][k]+=A[i][j]⋅B[j][k].
+    - Approach: 
+        Build mat1_map[i] = [(j, a_ij)] for all nonzero A[i][j].
+        Build mat2_map[j] = [(k, b_jk)] for all nonzero B[j][k].
+        For each row i in mat1_map, for each (j, a) there, look up mat2_map[j] and for each (k, b) do result[i][k] += a*b.
+        Return the dense result.
+    - Complexity: 
+        - Time Complexity
+            Preprocessing: O(mk+kn)
+            Multiplication: Only non-zero entries → efficient for sparse matrices
+            Worst case: O(m⋅k⋅n) (dense matrices)
+            Best case: Much less for sparse matrices
+        - Space Complexity
+            Maps for non-zero entries: O(non-zero entries)
+            Result matrix: O(m⋅n)
+
+87. closestValue(self, root: Optional[TreeNode], target: float) -> int: Closest Binary Search Tree Value
+    - “I traverse the BST like binary search, updating a closest value at each node. Based on the BST property, I go left if the target is smaller, otherwise right, so I never revisit nodes. When distances tie, I pick the smaller value. This runs in O(h) time and O(1) space (h = tree height; worst case O(n) for a skewed tree).”
+    - Intuition: A BST lets you compare the target with the current node and discard half the tree each step. While walking down, keep a running best (closest) value. If the target is smaller than the node, any closer value must be in the left subtree; otherwise in the right. Update the best whenever you find a closer node (and tie-break by the smaller value).
+    - Approach: Initialize closest = root.val. Then iterate:
+        If abs(node.val - target) improves the gap (or ties—pick min(closest, node.val)), update closest.
+        If target < node.val, move node = node.left; else node = node.right.
+        Stop at a leaf and return closest.
+    - Complexity: 
+        - Time Complexity
+            O(h) where h is the height of the tree
+            Worst case: O(n) (skewed tree)
+            Best case: O(logn) (balanced tree)
+        - Space Complexity
+            O(1) — iterative approach uses constant space
+
 ## *** IMPORTANT*** 
-84. 
+88. maxSumOfThreeSubarrays(self, nums: List[int], k: int) -> List[int]: Maximum Sum of 3 Non-Overlapping Subarrays
+    - “I first compute all k-window sums. Then I precompute for every position the best left window so far and the best right window ahead. Now for each valid middle window I can instantly add best-left + mid + best-right and keep the max; >= on the right pass handles lexicographic ties. This is O(n) time and O(n) space.”
+    - Intuition: Fix the window size k. Turn the array into a new array window_sum[i] = sum of nums[i:i+k]. Now the task is to pick three non-overlapping windows l < mid < r with gaps of at least k that maximize window_sum[l] + window_sum[mid] + window_sum[r]. If we know, for every position, the best left window up to it and the best right window from it, then each mid can be scored in O(1).
+    - Approach:    
+        1. Build window_sum in O(n) via a sliding window.
+        2. Precompute:
+            left[i]: index of the max window in window_sum[0..i] (ties keep the earlier index).
+            right[i]: index of the max window in window_sum[i..end] (iterate right→left; using >= keeps the earlier index to ensure lexicographically smallest result).
+        3. Iterate mid from k to len(window_sum)-k-1. For each, combine:
+             l = left[mid - k], r = right[mid + k]
+             total = window_sum[l] + window_sum[mid] + window_sum[r]
+            Track the best total and indices [l, mid, r]. Return the best triple.
+    - Complexity: 
+        - Time Complexity: Total:  O(n)
+            Prefix sums: O(n)
+            Left/right tracking: O(n)
+            Final scan: O(n)
+        - Space Complexity : Total: O(n)
+            window_sum, left, right: O(n)
+
+## *** IMPORTANT*** 
+89. simplifyPath(self, path: str) -> str: Simplify Path
+    - “I split the path on / and walk tokens. If it’s a real folder, I push it; if it’s .., I pop; if it’s . or empty, I ignore. The stack holds the canonical path components, which I join with a leading /. Runs in O(n) time over the string and O(d) space for at most d directories.”
+    - Intuition: We’re normalizing a Unix path. Tokens . mean “stay”, .. mean “go up one directory”, and multiple slashes collapse to one. A stack perfectly models the current path: push directory names as you go deeper; pop on ...
+    - Approach: Split by /. For each token: 
+        skip "" and ".";
+        on ".." pop if stack nonempty;
+        otherwise push the directory name.
+        Finally join the stack with / and prepend a leading /.
+    - Complexity: 
+        - Time Complexity - Total: O(n)
+            Splitting path: O(n)
+            Iterating parts: O(n)
+            Stack operations: O(1) per operation
+        - Space Complexity - Total: O(n)
+            Stack: O(n) in worst case (all valid directories)
+
+90. isMonotonic(self, nums: List[int]) -> bool: Monotonic Array
+    - “I walk the array once, tracking two booleans: could it still be non-decreasing or non-increasing? Every rise kills ‘decreasing’; every drop kills ‘increasing’. If either survives, it’s monotonic. Time: O(n). Space: O(1). Works with duplicates and short arrays.”
+    - Intuition: An array is monotonic if it’s entirely non-decreasing or entirely non-increasing. As you scan once, any rise rules out “decreasing”; any drop rules out “increasing”. If at least one of those flags survives to the end, the array is monotonic.
+    - Approach: Initialize increasing = decreasing = True. Loop i=1..n-1:
+        If nums[i] > nums[i-1], set decreasing = False.
+        Else if nums[i] < nums[i-1], set increasing = False.
+        Return increasing or decreasing.
+    - Complexity: 
+        - Time Complexity: O(n) — single pass through the array
+        - Space Complexity: O(1) — only uses two boolean flags
+
+## *** IMPORTANT*** 
+91. 
     - 
     - Intuition: 
     - Approach: 
